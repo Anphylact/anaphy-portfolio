@@ -1,1 +1,63 @@
-:root{color-scheme:dark;--blue:#002FA7}*{box-sizing:border-box}body{margin:0;min-height:100svh;background:var(--blue);color:#fff;font-family:Arial,"Microsoft YaHei",sans-serif;display:flex;flex-direction:column}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}a:focus-visible,button:focus-visible,.carousel:focus-visible{outline:2px solid white;outline-offset:7px}.page-header{display:flex;justify-content:space-between;align-items:center;padding:32px 40px}.page-header a{font-size:22px;letter-spacing:-.7px}.page-header span,.eyebrow,footer{font-size:10px;letter-spacing:2px}.page-header span{opacity:.65}main{flex:1;text-align:center;overflow:hidden}.heading{padding:34px 24px 0;min-height:170px}.eyebrow{opacity:.65;margin:0 0 20px}h1{font-size:clamp(28px,4vw,52px);font-weight:400;letter-spacing:.04em;margin:0;transition:opacity .18s,transform .18s}h1.changing{animation:title-enter .22s ease-out}@keyframes title-enter{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}#project-meta{font-size:11px;opacity:.65;letter-spacing:1px;margin-top:16px;min-height:14px}.carousel{position:relative;height:clamp(340px,36vw,540px);width:100%;max-width:1600px;margin:0 auto;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;outline-offset:-8px!important}.carousel.dragging{cursor:grabbing}.card{position:absolute;left:50%;top:64%;width:min(32vw,480px);aspect-ratio:16/9;padding:0;border:1px solid #ffffff50;background:#002FA7;color:white;overflow:hidden;transform-origin:center;will-change:transform;cursor:pointer;box-shadow:0 16px 40px #001a5a26}.card:focus-visible{outline-offset:-5px}.card[aria-current="true"]{border-color:#ffffffc0}.card img{width:100%;height:100%;object-fit:cover;pointer-events:none}.cover-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#ffffff06}.cover-placeholder .cover-number{font-size:clamp(40px,7vw,92px);font-weight:400;letter-spacing:-.06em;opacity:.85}.cover-placeholder small{margin-top:16px;font-size:9px;letter-spacing:3px;opacity:.5}.card-caption{position:absolute;bottom:16px;left:18px;font-size:10px;letter-spacing:1px;text-shadow:0 1px 5px #001945}.controls{display:flex;align-items:center;justify-content:center;gap:36px;margin:4px 0 22px}.controls button{width:44px;height:44px;border:1px solid #ffffff50;background:none;border-radius:50%;font-size:20px;cursor:pointer}.controls button:hover{background:#ffffff12}.controls button:disabled{opacity:.3;cursor:default}#counter{font-size:12px;letter-spacing:3px;font-variant-numeric:tabular-nums;min-width:85px}.hint{font-size:10px;letter-spacing:1px;line-height:1.8;opacity:.6;margin:0 20px 30px}.hint span{display:block}footer{display:flex;justify-content:space-between;padding:24px 40px;opacity:.55;letter-spacing:.7px}#empty{padding:80px 20px}@media(max-width:650px){.page-header{padding:24px}.page-header span{font-size:8px;letter-spacing:1px}.heading{padding-top:42px;min-height:180px}.carousel{height:310px}.card{width:52vw;top:61%}.cover-placeholder{padding-bottom:18px}.cover-placeholder .cover-number{font-size:34px}.cover-placeholder small{margin-top:6px;font-size:8px;letter-spacing:1px}.card-caption{font-size:8px;left:10px;bottom:10px}.controls{margin-top:8px}footer{padding:24px;font-size:8px}footer span{display:none}}@media(prefers-reduced-motion:reduce){h1{transition:none;animation:none!important}.card{will-change:auto}}
+:root { color-scheme: dark; --blue: #002FA7; }
+* { box-sizing: border-box; }
+html, body { width: 100%; max-width: 100%; overflow-x: clip; }
+body { margin: 0; min-height: 100svh; background: var(--blue); color: #fff; font-family: Arial, "Microsoft YaHei", sans-serif; display: flex; flex-direction: column; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+a:focus-visible, button:focus-visible, .carousel:focus-visible { outline: 2px solid white; outline-offset: 7px; }
+.page-header { display: flex; justify-content: space-between; align-items: center; padding: 28px 40px; }
+.page-header a { font-size: 22px; letter-spacing: -.7px; }
+.page-header span, .eyebrow, footer { font-size: 10px; letter-spacing: 2px; }
+.page-header span { opacity: .65; }
+main { flex: 1; min-width: 0; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 18px 0; }
+.heading { width: 100%; padding: 0 24px; margin-bottom: 20px; }
+.eyebrow { opacity: .65; margin: 0 0 12px; }
+h1 { font-size: clamp(24px, 2.4vw, 38px); font-weight: 400; letter-spacing: .04em; margin: 0; overflow-wrap: anywhere; }
+h1.changing { animation: title-enter .22s ease-out; }
+@keyframes title-enter { from { opacity: .35; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+#project-meta { font-size: 11px; opacity: .65; letter-spacing: 1px; margin: 12px 0 0; min-height: 14px; }
+.carousel { position: relative; flex: none; height: clamp(250px, 28svh, 320px); width: 100%; max-width: 1260px; margin: 0 auto; overflow: hidden; cursor: grab; touch-action: pan-y; user-select: none; outline-offset: -8px !important; }
+.carousel.dragging { cursor: grabbing; }
+.card { position: absolute; left: 50%; top: 60%; width: min(24vw, 360px); aspect-ratio: 16/9; padding: 0; border: 1px solid #ffffff50; background: #002FA7; color: white; overflow: hidden; transform-origin: center; will-change: transform; cursor: pointer; box-shadow: 0 12px 30px #001a5a20; }
+.card:focus-visible { outline-offset: -5px; }
+.card[aria-current="true"] { border-color: #ffffffc0; }
+.card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.cover-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #ffffff06; padding-bottom: 16px; }
+.cover-placeholder .cover-number { font-size: clamp(32px, 4vw, 64px); font-weight: 400; letter-spacing: -.06em; opacity: .85; }
+.cover-placeholder small { margin-top: 8px; font-size: 9px; letter-spacing: 2px; opacity: .5; }
+.card-caption { position: absolute; bottom: 12px; left: 14px; right: 14px; text-align: left; font-size: 9px; letter-spacing: .5px; text-shadow: 0 1px 5px #001945; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.controls { display: flex; align-items: center; justify-content: center; gap: 28px; margin: 20px 0 14px; }
+.controls button { width: 44px; height: 44px; border: 1px solid #ffffff50; background: none; border-radius: 50%; font-size: 20px; cursor: pointer; }
+.controls button:hover { background: #ffffff12; }
+.controls button:disabled { opacity: .3; cursor: default; }
+#counter { font-size: 11px; letter-spacing: 2px; font-variant-numeric: tabular-nums; min-width: 78px; }
+.hint { font-size: 10px; letter-spacing: 1px; line-height: 1.8; opacity: .6; margin: 0 20px; }
+.hint span { display: block; }
+footer { display: flex; justify-content: space-between; padding: 22px 40px; opacity: .55; letter-spacing: .7px; }
+#empty { padding: 60px 20px; }
+@media (max-width: 650px) {
+  .page-header { padding: 24px; }
+  .page-header span { font-size: 8px; letter-spacing: 1px; }
+  main { padding: 16px 0; }
+  .heading { margin-bottom: 16px; }
+  h1 { font-size: 25px; }
+  .carousel { height: clamp(150px, 25svh, 210px); }
+  .card { width: 30vw; }
+  .cover-placeholder { padding-bottom: 14px; }
+  .cover-placeholder .cover-number { font-size: clamp(18px, 5.5vw, 32px); }
+  .cover-placeholder small { margin-top: 3px; font-size: 6px; letter-spacing: .5px; }
+  .card-caption { font-size: 7px; left: 7px; right: 7px; bottom: 6px; }
+  .controls { margin-top: 12px; }
+  footer { padding: 20px 24px; font-size: 8px; }
+  footer span { display: none; }
+}
+@media (max-height: 650px) and (min-width: 651px) {
+  .page-header { padding-top: 16px; padding-bottom: 16px; }
+  main { padding: 10px 0; }
+  .heading { margin-bottom: 10px; }
+  .card { width: min(24vw, 48svh, 360px); top: 64%; }
+  .carousel { height: 34svh; }
+  .controls { margin-top: 12px; }
+  footer { padding-top: 12px; padding-bottom: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { h1 { animation: none !important; } .card { will-change: auto; } }

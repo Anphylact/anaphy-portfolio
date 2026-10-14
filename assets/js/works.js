@@ -24,7 +24,7 @@
   let target = position, velocity = 0, mode = 'idle', frame = 0, lastTime = 0;
   let drag = null, suppressClickUntil = 0, selected = -1, titleTimer = 0;
   let spacing = 300, radius = 800;
-  const arcStep = .38;
+  const arcStep = .22;
   let wheelTimer = 0;
   // Short collections need repeated visual instances to keep both sides continuous.
   const copies = n < 5 && n > 1 ? [-2, -1, 0, 1, 2] : [0];
@@ -103,16 +103,18 @@
       const i = Number(card.dataset.index), copy = Number(card.dataset.copy);
       const delta = distance(i) + copy * n, depth = Math.abs(delta);
       const theta = delta * arcStep;
-      const scale = 1 - Math.min(depth, 2.5) * .06;
+      const scale = 1 - Math.min(depth, 2.5) * .10;
       // A circle in screen coordinates: delta=0 is its lowest point.
       const x = radius * Math.sin(theta);
       const y = radius * (Math.cos(theta) - 1);
       const angle = -theta * 180 / Math.PI * .65;
-      const visible = Math.abs(theta) < 1.25;
+      // Keep three slots at rest; fade only outgoing cards beyond the side slots.
+      const opacity = Math.max(0, Math.min(1, (1.5 - depth) * 2));
+      const visible = opacity > 0;
       const active = current === i && copy === 0;
       card.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) rotate(${angle}deg) scale(${scale})`;
       card.style.zIndex = String(100 - Math.round(depth * 10));
-      card.style.opacity = '1';
+      card.style.opacity = String(opacity);
       card.style.visibility = visible ? 'visible' : 'hidden';
       card.tabIndex = active ? 0 : -1;
       card.setAttribute('aria-hidden', String(!visible));
@@ -219,7 +221,7 @@
     }, 150);
   }, { passive: false });
   function measure() {
-    spacing = parseFloat(getComputedStyle(cards[0]).width) * (stage.clientWidth <= 650 ? 1.04 : 1.16);
+    spacing = parseFloat(getComputedStyle(cards[0]).width) * 1.08;
     radius = spacing / Math.sin(arcStep);
     render();
   }
