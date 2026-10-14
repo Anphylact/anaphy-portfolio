@@ -1,6 +1,6 @@
 # 作品展示系统
 
-首页 `index.html` 与 `bubbles.js` 保持原样。新增页面不加载首页动画，也不依赖任何框架或构建工具。
+首页 `index.html` 与 `bubbles.js` 保持原样。作品页不加载首页动画。正式轮盘沿用已确认的 React Bits 原型；React 仅打包到作品页，首页和详情页不加载它。浏览已提交页面不需要安装依赖。
 
 ## 预览
 
@@ -16,7 +16,10 @@ python3 -m http.server 8000
 
 - `works.html`：弧形作品轮盘。
 - `project.html?id=placeholder-01`：通用详情模板。
-- `assets/css/works.css`、`assets/js/works.js`：轮盘样式与交互。
+- `assets/css/works.css`：与已确认原型相同的页面构图。
+- `assets/css/works-carousel.css`、`assets/js/works.js`：已打包的轮盘引擎与运行代码。
+- `assets/js/works-source.jsx`：读取作品数据、恢复选择、封面占位与详情跳转的源代码。
+- `assets/js/works-LICENSES.txt`：浏览器包的完整第三方许可。
 - `assets/css/project.css`、`assets/js/project.js`：详情页样式与逻辑。
 - `assets/js/projects-data.js`：所有作品数据。
 
@@ -43,7 +46,18 @@ python3 -m http.server 8000
 
 保持 `id` 唯一且稳定，已有详情链接和返回位置依赖它。增加作品时，在数组中新增同样结构的对象即可，轮盘数量及编号自动更新。调整数组顺序即可调整展示顺序。
 
-`cover` 或 `video` 留空时显示占位状态；封面加载失败会回退占位，视频加载失败会显示说明。年份等信息尚未准备好时可留空。
+`cover` 或 `video` 留空时显示占位状态；封面加载失败会回退编号占位，视频加载失败会显示说明。年份等信息尚未准备好时可留空。数据修改后刷新即可，不必重新打包。封面沿用已确认的灰度呈现。
+
+## 重新构建作品页
+
+只改作品数据或媒体文件无需构建。修改轮盘源代码后，在 `prototypes/3d-carousel/` 目录执行：
+
+```sh
+npm ci
+npm run build:works
+```
+
+组件源码和许可保留在该目录的 `src/vendor/`，正式页的浏览器运行只依赖 `assets/` 内已打包资源，不需要加载原型页面或测试封面。布局与空间参数保持已确认原型的配置。
 
 ## 交互
 

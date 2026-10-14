@@ -1,0 +1,1 @@
+{"name": "anaphy-carousel-visual-prototype", "private": true, "version": "0.0.0", "scripts": {"build": "node build.mjs", "build:works": "node build-works.mjs"}, "dependencies": {"react": "19.2.0", "react-dom": "19.2.0"}, "devDependencies": {"esbuild": "0.25.11"}}
