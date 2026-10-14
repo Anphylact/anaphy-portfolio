@@ -1,65 +1,15 @@
-:root { color-scheme: dark; --blue: #002FA7; --card-width: min(27vw, 34svh, 360px); }
+:root { color-scheme: dark; }
 * { box-sizing: border-box; }
-html, body { width: 100%; max-width: 100%; overflow-x: clip; }
-body { margin: 0; min-height: 100svh; color: white; background: var(--blue); font-family: Arial, "Microsoft YaHei", sans-serif; display: flex; flex-direction: column; }
-a { color: inherit; text-decoration: none; }
-header { display: flex; justify-content: space-between; align-items: center; padding: 26px 36px; }
-header a { font-size: 22px; letter-spacing: -.7px; }
-header span { font-size: 9px; letter-spacing: 1.8px; opacity: .65; }
-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 0; min-width: 0; }
-.heading { text-align: center; padding: 0 20px; }
-.heading p { font-size: 10px; letter-spacing: 2px; opacity: .6; margin: 0 0 14px; }
-h1 { margin: 0; font-size: clamp(24px, 2.4vw, 38px); font-weight: 400; }
-h1.entering { animation: title-in .24s ease-out; }
-@keyframes title-in { from { opacity: .3; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-.heading small { display: block; font-size: 10px; opacity: .5; margin-top: 14px; }
-.carousel { width: 100%; max-width: 1280px; height: clamp(220px, 38svh, 420px); position: relative; perspective: var(--perspective, 1000px); perspective-origin: 50% 48%; touch-action: pan-y; cursor: grab; user-select: none; }
-.carousel.dragging { cursor: grabbing; }
-.camera, .ring { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
-.camera { transform: translateZ(calc(-1 * var(--radius, 300px))) rotateX(-12deg); }
-.ring { will-change: transform; }
-.card { position: absolute; left: 50%; top: 50%; width: var(--card-width); aspect-ratio: 16 / 9; margin-left: calc(var(--card-width) / -2); margin-top: calc(var(--card-width) * -9 / 32); padding: 0; border: 0; background: transparent; color: white; font: inherit; cursor: pointer; transform-style: preserve-3d; pointer-events: auto; }
-.face { position: absolute; inset: 0; backface-visibility: hidden; background: #001f70; border: 1px solid #ffffff55; overflow: hidden; }
-.front { transform: translateZ(.5px); }
-.back { transform: rotateY(180deg) translateZ(.5px); }
-.face img { width: 100%; height: 100%; display: block; object-fit: cover; pointer-events: none; }
-.back img { filter: brightness(.72); }
-.face span { position: absolute; left: 10px; bottom: 9px; font-size: clamp(7px, .75vw, 10px); text-align: left; text-shadow: 0 1px 6px #000; letter-spacing: .5px; }
-.back span { font-size: 8px; opacity: .85; }
-.card[aria-current="true"] .front { border-color: #fff; }
-.controls { display: flex; align-items: center; gap: 28px; margin: 12px 0 16px; }
-button { color: white; }
-.controls button { font: inherit; font-size: 20px; width: 44px; height: 44px; border: 1px solid #ffffff50; background: none; border-radius: 50%; cursor: pointer; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: clip; background: #002FA7; color: white; font-family: Arial, "Microsoft YaHei", sans-serif; }
+main { width: 100%; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(14px, 3svh, 32px); padding: clamp(16px, 3svh, 32px) 0; }
+h1 { position: relative; z-index: 1; flex: none; font-size: clamp(23px, 2.3vw, 40px); font-weight: 400; text-align: center; margin: 0; padding: 0 20px; animation: title-enter .24s ease-out; }
+@keyframes title-enter { from { opacity: .3; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.installation { position: relative; z-index: 0; width: 98vw; height: min(70svh, 800px); min-height: 0; flex: 0 1 auto; }
+.circular-carousel__photo { filter: grayscale(1); }
+.controls { position: relative; z-index: 1; flex: none; display: flex; gap: 28px; align-items: center; }
+.controls button { width: 44px; height: 44px; border: 1px solid #ffffff60; border-radius: 50%; color: white; background: transparent; font-size: 20px; cursor: pointer; }
 .controls button:hover { background: #ffffff12; }
-#counter { min-width: 74px; text-align: center; font-size: 11px; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
-.hint, .selection { text-align: center; font-size: 10px; line-height: 1.8; opacity: .6; margin: 0 20px; }
-.selection { opacity: .4; margin-top: 16px; }
-footer { display: flex; justify-content: space-between; padding: 20px 36px; font-size: 9px; letter-spacing: .8px; opacity: .5; }
-a:focus-visible, button:focus-visible, .carousel:focus-visible { outline: 2px solid white; outline-offset: 5px; }
-.card:focus-visible { outline: none; }
-.card:focus-visible .front { outline: 2px solid white; outline-offset: -5px; }
-dialog { max-width: 520px; width: calc(100% - 40px); padding: 28px; border: 1px solid #ffffff70; background: var(--blue); color: white; }
-dialog::backdrop { background: #001139b0; }
-dialog h2 { font-size: 24px; font-weight: 400; }
-dialog p { font-size: 11px; line-height: 1.9; opacity: .7; }
-dialog img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
-#close { position: absolute; right: 12px; top: 8px; border: 0; background: none; font-size: 28px; cursor: pointer; }
-@media (max-width: 650px) {
-  :root { --card-width: min(32vw, 24svh, 160px); }
-  header { padding: 24px; }
-  header span { font-size: 7px; letter-spacing: 1px; }
-  h1 { font-size: 24px; }
-  .carousel { height: clamp(190px, 30svh, 270px); }
-  .face span { left: 5px; bottom: 5px; }
-  footer { padding: 20px 24px; font-size: 8px; }
-  footer span:last-child { display: none; }
-}
-@media (max-height: 600px) {
-  header { padding-top: 14px; padding-bottom: 14px; }
-  .heading p, .heading small { margin-top: 6px; margin-bottom: 6px; }
-  .carousel { height: 36svh; }
-  .selection { margin-top: 6px; }
-  .controls { margin-top: 0; margin-bottom: 8px; }
-  footer { padding-top: 12px; padding-bottom: 12px; }
-}
-@media (prefers-reduced-motion: reduce) { h1 { animation: none !important; } .ring { will-change: auto; } }
+.controls button:focus-visible { outline: 2px solid white; outline-offset: 5px; }
+#counter { font-size: 11px; min-width: 76px; text-align: center; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+@media (max-width: 650px) { .installation { position: relative; z-index: 0; width: 94vw; height: 32svh; } h1 { font-size: 23px; } }
+@media (prefers-reduced-motion: reduce) { h1 { animation: none; } }
