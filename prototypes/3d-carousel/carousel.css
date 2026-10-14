@@ -1,0 +1,15 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: clip; background: #002FA7; color: white; font-family: Arial, "Microsoft YaHei", sans-serif; }
+main { width: 100%; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(14px, 3svh, 32px); padding: clamp(16px, 3svh, 32px) 0; }
+h1 { position: relative; z-index: 1; flex: none; font-size: clamp(23px, 2.3vw, 40px); font-weight: 400; text-align: center; margin: 0; padding: 0 20px; animation: title-enter .24s ease-out; }
+@keyframes title-enter { from { opacity: .3; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.installation { position: relative; z-index: 0; width: 98vw; height: min(70svh, 800px); min-height: 0; flex: 0 1 auto; }
+.circular-carousel__photo { filter: grayscale(1); }
+.controls { position: relative; z-index: 1; flex: none; display: flex; gap: 28px; align-items: center; }
+.controls button { width: 44px; height: 44px; border: 1px solid #ffffff60; border-radius: 50%; color: white; background: transparent; font-size: 20px; cursor: pointer; }
+.controls button:hover { background: #ffffff12; }
+.controls button:focus-visible { outline: 2px solid white; outline-offset: 5px; }
+#counter { font-size: 11px; min-width: 76px; text-align: center; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+@media (max-width: 650px) { .installation { position: relative; z-index: 0; width: 94vw; height: 32svh; } h1 { font-size: 23px; } }
+@media (prefers-reduced-motion: reduce) { h1 { animation: none; } }
