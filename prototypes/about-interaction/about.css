@@ -49,3 +49,11 @@ button { font: inherit; color: white; }
 }
 @media (max-height: 650px) { .detail { font-size: 11px; line-height: 1.7; } .lead { margin-bottom: 14px; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } .identity { will-change: auto; } }
+
+/* New module diagrams only; the approved layout and EDITING styles stay unchanged. */
+.graph-label { font-family: Arial, "Microsoft YaHei", sans-serif; font-size: 9px; letter-spacing: 1px; }
+.graph-zh { font-size: 10px; letter-spacing: 1.5px; }
+@media (max-width: 650px) {
+  .graph-label { font-size: 7px; letter-spacing: .6px; }
+  .graph-zh { font-size: 9px; letter-spacing: 1px; }
+}
