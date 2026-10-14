@@ -1,0 +1,59 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: clip; }
+body { background: #002FA7; color: white; font-family: Arial, "Microsoft YaHei", sans-serif; }
+main { position: relative; width: 100%; height: 100svh; min-height: 0; overflow: hidden; }
+.masthead, footer { position: absolute; left: 4.5vw; right: 4.5vw; display: flex; justify-content: space-between; font-size: 9px; letter-spacing: 1.8px; opacity: .65; pointer-events: none; z-index: 3; }
+.masthead { top: 30px; }
+footer { bottom: 26px; font-size: 8px; letter-spacing: 1px; }
+.identity { position: absolute; left: 0; top: 0; transform-origin: 0 0; z-index: 2; will-change: transform; }
+h1 { font-size: clamp(52px, 7vw, 110px); font-weight: 400; line-height: 1.1; letter-spacing: .025em; margin: 0; }
+.identity p { margin: 0; }
+.latin { font-size: 12px; letter-spacing: 3px; margin-top: 18px !important; }
+.role { font-size: 12px; letter-spacing: 1px; margin-top: 24px !important; white-space: nowrap; }
+#drawing { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+button { font: inherit; color: white; }
+.module { position: absolute; left: 0; top: 0; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; transform-origin: center; z-index: 4; }
+.module .caption { position: absolute; left: 50%; top: calc(100% + 16px); transform: translateX(-50%); white-space: nowrap; font-size: 10px; letter-spacing: 1.5px; }
+.module .explore { position: absolute; left: 50%; top: calc(100% + 37px); transform: translate(-50%, 4px); white-space: nowrap; font-size: 8px; letter-spacing: 1.5px; opacity: 0; transition: opacity .2s, transform .2s; }
+.module:hover .explore, .module:focus-visible .explore { opacity: .75; transform: translate(-50%, 0); }
+.module:focus-visible { outline: 1px dashed white; outline-offset: 7px; border-radius: 50%; }
+.module[aria-disabled="true"] { cursor: default; }
+.editing-copy { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.editing-copy h2 { position: absolute; left: 15vw; top: 22svh; font-size: clamp(26px, 3.4vw, 54px); font-weight: 400; letter-spacing: .015em; margin: 0; }
+.description { position: absolute; left: 44vw; top: 30svh; width: min(39vw, 610px); }
+.lead { font-size: clamp(20px, 2vw, 32px); line-height: 1.6; margin: 0 0 28px; font-weight: 400; }
+.detail { font-size: clamp(12px, .95vw, 15px); line-height: 2; margin: 0; opacity: .8; max-width: 490px; }
+.close, .related { position: absolute; border: 0; border-bottom: 1px solid #ffffff60; background: none; padding: 9px 0; cursor: pointer; font-size: 10px; letter-spacing: 1px; z-index: 6; }
+.close { right: 4.5vw; top: 66px; }
+.related { right: 14vw; bottom: 11svh; }
+.close:hover, .related:hover { border-color: white; }
+.close:focus-visible, .related:focus-visible { outline: 2px solid white; outline-offset: 5px; }
+.feedback { position: absolute; right: 14vw; bottom: 6.5svh; margin: 0; font-size: 10px; opacity: .7; z-index: 6; }
+#timecode { font-family: Arial, sans-serif; font-size: 9px; letter-spacing: 1px; }
+@media (max-width: 650px) {
+  .masthead { left: 24px; right: 24px; top: 22px; font-size: 8px; }
+  .masthead span:last-child { display: none; }
+  footer { left: 24px; right: 24px; bottom: 20px; font-size: 7px; }
+  .role { font-size: 10px; letter-spacing: .2px; }
+  .latin { letter-spacing: 2px; }
+  .module .caption { font-size: 8px; letter-spacing: .7px; top: calc(100% + 12px); }
+  .module .explore { font-size: 7px; top: calc(100% + 29px); }
+  .editing-copy h2 { left: 9vw; top: 22svh; font-size: 28px; }
+  .description { left: 9vw; top: 32svh; width: 80vw; }
+  .lead { font-size: 21px; line-height: 1.6; margin-bottom: 20px; }
+  .detail { font-size: 11px; line-height: 1.9; }
+  .close { right: 24px; top: 67px; }
+  .related { right: 9vw; bottom: 11svh; font-size: 9px; }
+  .feedback { right: 9vw; bottom: 7svh; font-size: 8px; }
+}
+@media (max-height: 650px) { .detail { font-size: 11px; line-height: 1.7; } .lead { margin-bottom: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } .identity { will-change: auto; } }
+
+/* New module diagrams only; the approved layout and EDITING styles stay unchanged. */
+.graph-label { font-family: Arial, "Microsoft YaHei", sans-serif; font-size: 9px; letter-spacing: 1px; }
+.graph-zh { font-size: 10px; letter-spacing: 1.5px; }
+@media (max-width: 650px) {
+  .graph-label { font-size: 7px; letter-spacing: .6px; }
+  .graph-zh { font-size: 9px; letter-spacing: 1px; }
+}
