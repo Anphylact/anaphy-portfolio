@@ -180,6 +180,7 @@ const usePrefersReducedMotion = () => {
 
 const CircularCarousel = ({
   apiRef,
+  initialIndex = 0,
   items = DEFAULT_ITEMS,
   preset = 'cylinder',
   intro = 'rise',
@@ -262,15 +263,16 @@ const CircularCarousel = ({
   const cardRefs = useRef([]);
   const wakeRef = useRef(() => {});
   const measureRef = useRef(() => {});
-  const activeRef = useRef(0);
-  const [active, setActive] = useState(0);
+  const startIndex = clamp(Math.trunc(initialIndex) || 0, 0, count - 1);
+  const activeRef = useRef(startIndex);
+  const [active, setActive] = useState(startIndex);
   const [ready, setReady] = useState(false);
   const [dragging, setDragging] = useState(false);
   const readyRef = useRef(false);
   readyRef.current = ready;
 
   const stateRef = useRef({
-    angle: 0,
+    angle: -startIndex * step,
     velocity: 0,
     target: null,
     dir: 0,
