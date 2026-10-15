@@ -15,7 +15,9 @@
   const content = [
     ['剪辑不只是连接画面，<br>也是组织节奏与叙事。', '熟练使用 Premiere Pro，具备不同类型视频的剪辑经验，能够独立完成素材整理、粗剪、精剪及基础后期包装。', 'CUT / ARRANGE / REPEAT'],
     ['关注画面构图、<br>镜头语言与现场光线。', '具备独立摄影及现场拍摄经验，能够根据内容需求组织镜头，并兼顾后期剪辑所需的素材结构。', 'COMPOSE / OBSERVE / CAPTURE'],
-    ['从创意构思到最终呈现，<br>关注影像表达的整体性。', '具备影像项目的导演与现场协调经验，注重拍摄、表演和后期剪辑之间的衔接。', 'CONCEPT / PRODUCTION / POST']
+    ['从创意构思到最终呈现，<br>关注影像表达的整体性。', '具备影像项目的导演与现场协调经验，注重拍摄、表演和后期剪辑之间的衔接。', 'CONCEPT / PRODUCTION / POST'],
+    ['从创作到后期，<br>选择适合表达的工具。', '熟练使用，主要用于视频剪辑、素材管理、节奏调整和完整后期制作。', 'SELECT / MAKE / REFINE'],
+    ['', '', 'BACKGROUND / PRACTICE / CURIOSITY']
   ];
   function element(tag, parent, attributes = {}) {
     const node = document.createElementNS(NS, tag);
@@ -26,9 +28,9 @@
   const modules = names.map((name, index) => {
     const button = document.createElement('button'); button.type = 'button'; button.className = 'module'; button.dataset.index = index;
     button.innerHTML = `<span class="caption">${String(index + 1).padStart(2, '0')} / ${name}</span><span class="explore" aria-hidden="true">EXPLORE ↗</span>`;
-    button.setAttribute('aria-label', index > 2 ? `${name}，仅展示` : `展开 ${name}`);
-    if (index > 2) button.setAttribute('aria-disabled', 'true');
-    else { button.setAttribute('aria-expanded', 'false'); button.setAttribute('aria-controls', 'editing-copy'); button.addEventListener('click', () => animateTo(1, index)); }
+    button.setAttribute('aria-label', `展开 ${name}`);
+    button.setAttribute('aria-expanded', 'false'); button.setAttribute('aria-controls', 'editing-copy');
+    button.addEventListener('click', () => animateTo(1, index));
     button.addEventListener('pointerenter', () => { hovering = index; request(); });
     button.addEventListener('pointerleave', () => { hovering = -1; request(); });
     button.addEventListener('focus', () => { hovering = index; request(); });
@@ -40,6 +42,7 @@
     if (index === 2) { circle.id = 'directing-shape'; for (let n = 0; n < 3; n++) element('path', circle); }
     return { button, circle };
   });
+  const additions = window.createAboutAdditions({ root, svg, copy, request, reduced });
   const clips = [ [0, .16], [.19, .13], [.36, .21], [.60, .12], [.75, .18] ].map(([start, length], i) => {
     const rect = document.createElementNS(NS, 'rect'); rect.dataset.start = start; rect.dataset.length = length;
     if (i % 2) rect.setAttribute('stroke-dasharray', '3 4'); document.getElementById('clips').append(rect); return rect;
@@ -102,11 +105,18 @@
     filming.setAttribute('opacity', '0'); directing.setAttribute('opacity', '0');
     const strength = (1 - layout) * (reduced.matches ? 0 : 1);
     modules.forEach(({ button, circle }, i) => {
-      const from = origin[i], to = i === active ? origin[i] : i === 0 && active ? (mobile ? [.50,.91,.35] : [.20,.90,.42]) : active && i === 1 && mobile && H <= 650 ? [.90,.23,.35] : edge[i];
+      const from = origin[i];
+      let to = i === active ? origin[i] : i === 0 && active ? (mobile ? [.50,.91,.35] : [.20,.90,.42]) : active && i === 1 && mobile && H <= 650 ? [.90,.23,.35] : edge[i];
+      // Only the two new states need extra clearance from the footer / vertical axis.
+      if (active >= 3 && i === 0 && mobile && H <= 650) to = [.32,.87,.35];
+      if (active === 4 && i === 3 && mobile) to = [.055,.86,.35];
       const px = offset.x * (i % 2 ? -1 : 1) * strength, py = offset.y * (i % 2 ? 1 : -1) * strength;
       let cx = W * mix(from[0], to[0], layout) + px, cy = H * mix(from[1], to[1], layout) + py;
       let r = R * mix(from[2], to[2], layout) * (1 + hoverValues[i] * .045 * strength);
-      if (i === active) { cx = mix(cx, lineX, phase(progress, 0, .55)); cy = mix(cy, lineY, phase(progress, 0, .55)); }
+      if (i === active) {
+        const anchor = active === 4 ? additions.profileAnchor(W, H) : { x: lineX, y: lineY };
+        cx = mix(cx, anchor.x, phase(progress, 0, .55)); cy = mix(cy, anchor.y, phase(progress, 0, .55));
+      }
       button.style.width = button.style.height = `${r * 2}px`;
       button.style.transform = `translate(${cx - r}px, ${cy - r}px)`;
       button.style.opacity = String(i === active ? 1 - phase(progress, .18, .42) : mix(1, .22, layout));
@@ -116,6 +126,7 @@
         circle.setAttribute('opacity', i === active ? 1 : mix(1, .22, layout));
         if (i === 1) viewfinder(circle, cx, cy, r, active === 1 ? morph : 0, phase(progress,.65,1), mobile);
         else if (i === 2) relationship(circle, cx, cy, r, active === 2 ? morph : 0, phase(progress,.65,1), mobile, R);
+        else if (i === active && i >= 3) additions.renderShape({ index: i, cx, cy, r, morph, W, H, progress });
         else { circle.setAttribute('cx', cx); circle.setAttribute('cy', cy); circle.setAttribute('r', r); }
       }
       else {
@@ -157,12 +168,14 @@
     const playX = lineX - lineWidth / 2 + lineWidth * .43;
     document.getElementById('playhead').setAttribute('d', `M${playX-4},${lineY-47}L${playX+4},${lineY-47}L${playX},${lineY-41}Z M${playX},${lineY-41}L${playX},${lineY+25}`);
     const timecode = document.getElementById('timecode'); timecode.setAttribute('x', lineX - lineWidth / 2); timecode.setAttribute('y', lineY + 38);
+    additions.renderUI(active, progress, !!transition);
     root.dataset.progress = progress.toFixed(4);
   }
   function animateTo(next, index = active) {
     if (transition || next === progress) return;
     if (next) {
       active = index;
+      if (active >= 3) additions.prepare(active, modules[active].circle);
       document.getElementById('editing-title').textContent = `${String(active+1).padStart(2,'0')} / ${names[active]}`;
       copy.querySelector('.lead').innerHTML = content[active][0];
       copy.querySelector('.detail').textContent = content[active][1];
@@ -183,6 +196,7 @@
     copy.hidden = close.hidden = related.hidden = !progress;
     close.disabled = related.disabled = false;
     document.getElementById('footer-note').textContent = progress ? content[active][2] : 'SELECT A PRACTICE ↗';
+    if (!progress) additions.restore();
     if (progress) close.focus({ preventScroll: true }); else { modules[active].button.focus({ preventScroll: true }); active = 0; }
   }
   function tick(now) {
