@@ -96,10 +96,14 @@
     const mobile = W <= 650, R = mobile ? Math.min(W * .12, H * .055) : Math.min(W * .060, H * .095, 90);
     const origin = mobile ? [[.73,.40,1],[.77,.15,.65],[.73,.69,.87],[.27,.78,.65],[.20,.20,.48]] : [[.59,.31,1],[.84,.18,.65],[.85,.63,1.06],[.53,.78,.64],[.31,.16,.46]];
     const edge = mobile ? [[.73,.40,1],[.90,.15,.35],[.945,.54,.35],[.09,.86,.35],[.055,.54,.35]] : [[.59,.31,1],[.94,.18,.42],[.95,.53,.42],[.60,.90,.42],[.04,.53,.42]];
-    return { mobile, R, origin, edge };
+    // Overview-only composition. The approved origin/edge values remain the animation targets.
+    const overview = mobile
+      ? [[.68,.53,1.30],[.78,.31,.88],[.28,.67,1.15],[.72,.80,.87],[.24,.40,.70]]
+      : [[.56,.35,1.30],[.82,.23,.88],[.80,.65,1.34],[.47,.77,.87],[.25,.21,.66]];
+    return { mobile, R, origin, edge, overview };
   }
   function render() {
-    const { mobile, R, origin, edge } = positions();
+    const { mobile, R, origin, edge, overview } = positions();
     const layout = phase(progress, 0, .85), morph = phase(progress, .24, .90);
     const lineX = W * (mobile ? .5 : .52), lineY = H * (mobile ? .735 : .73), lineWidth = W * (mobile ? .82 : .68);
     filming.setAttribute('opacity', '0'); directing.setAttribute('opacity', '0');
@@ -111,8 +115,12 @@
       if (active >= 3 && i === 0 && mobile && H <= 650) to = [.32,.87,.35];
       if (active === 4 && i === 3 && mobile) to = [.055,.86,.35];
       const px = offset.x * (i % 2 ? -1 : 1) * strength, py = offset.y * (i % 2 ? 1 : -1) * strength;
-      let cx = W * mix(from[0], to[0], layout) + px, cy = H * mix(from[1], to[1], layout) + py;
-      let r = R * mix(from[2], to[2], layout) * (1 + hoverValues[i] * .045 * strength);
+      // Fade the new starting geometry out of the existing trajectory; at layout=1
+      // the old coordinates and radii are numerically unchanged for every module.
+      const rest = 1 - layout, start = overview[i];
+      let cx = W * mix(from[0], to[0], layout) + px + W * (start[0] - from[0]) * rest;
+      let cy = H * mix(from[1], to[1], layout) + py + H * (start[1] - from[1]) * rest;
+      let r = R * (mix(from[2], to[2], layout) + (start[2] - from[2]) * rest) * (1 + hoverValues[i] * .045 * strength);
       if (i === active) {
         const anchor = active === 4 ? additions.profileAnchor(W, H) : { x: lineX, y: lineY };
         cx = mix(cx, anchor.x, phase(progress, 0, .55)); cy = mix(cy, anchor.y, phase(progress, 0, .55));
@@ -146,7 +154,11 @@
     });
     const nameScale = mix(1, mobile ? .42 : .25, layout);
     const nameX = W * mix(mobile ? .09 : .10, mobile ? .07 : .045, layout);
-    const nameY = H * mix(mobile ? .47 : .46, mobile ? .085 : .073, layout);
+    const nameY = H * mix(mobile ? .10 : .47, mobile ? .085 : .073, layout);
+    root.style.setProperty('--overview-label-scale', mix(1.30, 1, layout));
+    identity.querySelector('h1').style.fontSize = `${Math.max(52, Math.min(110, W * .07)) * mix(.55, 1, layout)}px`;
+    identity.querySelector('.latin').style.setProperty('margin-top', `${mix(12, 18, layout)}px`, 'important');
+    identity.querySelector('.role').style.setProperty('margin-top', `${mix(14, 24, layout)}px`, 'important');
     identity.style.transform = `translate(${nameX}px, ${nameY}px) scale(${nameScale})`;
     identity.querySelector('.latin').style.fontSize = `${12 / nameScale}px`;
     identity.querySelector('.role').style.opacity = String(1 - phase(progress, 0, .45));
