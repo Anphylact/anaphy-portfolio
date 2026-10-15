@@ -1,0 +1,31 @@
+/* Every selector is scoped to the two additions; approved layouts are untouched. */
+#tool-matrix { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.tool-choice { position: absolute; left: 0; top: 0; border: 0; padding: 0; height: 44px; background: none; cursor: pointer; pointer-events: auto; white-space: nowrap; font-size: 11px; letter-spacing: 1.1px; text-align: left; }
+.tool-choice::after { content: ''; position: absolute; left: 0; right: 0; bottom: 8px; height: 1px; background: white; transform: scaleX(0); transform-origin: left; transition: transform .2s; }
+.tool-choice:hover::after, .tool-choice[aria-pressed="true"]::after { transform: scaleX(1); }
+.tool-choice:focus-visible, #resume-link:focus-visible { outline: 1px dashed white; outline-offset: 4px; }
+#about[data-extra="profile"] .description { display: none; }
+#profile-scroll { position: absolute; left: 36vw; top: 36svh; width: 48vw; height: 48svh; overflow: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: white transparent; z-index: 5; outline-offset: 5px; }
+#profile-scroll:focus-visible { outline: 1px dashed white; }
+.profile-track { position: relative; padding: 0 24px 30px 0; }
+.profile-track > section { position: relative; margin: 0 0 36px; }
+.profile-track > section:last-child { margin-bottom: 0; }
+.profile-track h3 { margin: 0 0 16px; font-size: 11px; font-weight: 400; letter-spacing: 1.5px; line-height: 1.8; }
+.profile-track h3 span { font-size: 10px; letter-spacing: .5px; opacity: .7; }
+.profile-track p { margin: 0; font-size: 14px; line-height: 2; }
+.profile-track .profile-note { margin-top: 9px; font-size: 11px; opacity: .65; }
+.profile-placeholder { opacity: .75; }
+#resume-link { display: inline-block; padding: 6px 0; color: white; font-size: 11px; letter-spacing: 1px; text-decoration: none; border-bottom: 1px solid white; }
+#resume-link[aria-disabled="true"] { opacity: .55; cursor: default; border-bottom-style: dashed; }
+@media (max-width: 650px) {
+  .tool-choice { font-size: 8px; letter-spacing: .5px; }
+  #profile-scroll { left: 19vw; top: 33svh; width: 71vw; height: 52svh; }
+  .profile-track { padding-right: 15px; padding-bottom: 24px; }
+  .profile-track > section { margin-bottom: 32px; }
+  .profile-track h3 { font-size: 9px; letter-spacing: .8px; margin-bottom: 12px; }
+  .profile-track h3 span { font-size: 9px; }
+  .profile-track p { font-size: 12px; }
+  .profile-track .profile-note { font-size: 10px; }
+}
+/* Isolate the morph's paint layer from the independent scroller and fixed labels. */
+#about[data-extra="profile"] #drawing { transform: translateZ(0); }
