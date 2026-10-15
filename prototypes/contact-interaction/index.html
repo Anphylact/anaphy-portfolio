@@ -1,14 +1,12 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#002FA7">
-  <meta name="description" content="GAO MINGYUAN · THE FINAL FRAME / 最后一帧。独立 CONTACT 交互原型。">
+  <meta name="description" content="GAO MINGYUAN · 最后一帧。点击对焦，查看邮箱、微信和个人简历。">
   <title>CONTACT / 联系 · GAO MINGYUAN</title>
   <link rel="stylesheet" href="contact.css">
-  <script src="contact-config.js" defer></script>
-  <script src="contact.js" defer></script>
+  <script src="contact-config.js" defer></script><script src="contact.js" defer></script>
 </head>
 <body>
 <div id="contact" class="contact-shell" data-state="standby">
@@ -17,47 +15,47 @@
     <div class="theme"><span lang="en">THE FINAL FRAME</span><span>最后一帧</span></div>
   </header>
   <main>
-    <div class="headline">
-      <h1 lang="en"><span>LET'S MAKE</span> <span>SOMETHING.</span></h1>
-      <p>一起创造点什么吧。</p>
-    </div>
-    <button id="viewfinder" class="viewfinder" type="button" aria-label="点击画面对焦，可重复尝试 / Click to focus" aria-describedby="focus-message">
+    <div class="headline"><h1 lang="en"><span>LET'S MAKE</span> <span>SOMETHING.</span></h1><p>一起创造点什么吧。</p></div>
+    <section id="viewfinder" class="viewfinder" aria-label="联系取景器 / Contact viewfinder">
       <svg class="corner corner-tl" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
       <svg class="corner corner-tr" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
       <svg class="corner corner-br" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
       <svg class="corner corner-bl" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
-      <span class="camera-ui camera-left">AF / 自动对焦</span>
-      <span id="camera-state" class="camera-ui camera-right">STANDBY / 待机</span>
-      <span class="focus-origin" aria-hidden="true"><span id="focus-mark" class="focus-mark"></span></span>
-      <span id="focus-message" class="focus-message" role="status" aria-live="polite" aria-atomic="true">
-        <span id="focus-en" lang="en">CLICK TO FOCUS.</span>
-        <span id="focus-zh">点击画面对焦</span>
-      </span>
-    </button>
-    <section class="contact-section" aria-label="联系方式 / Contact details">
-      <div class="contact-options">
-        <a id="email" class="contact-action" role="link" aria-disabled="true" aria-describedby="email-value">
-          <span class="action-en" lang="en">EMAIL</span><span class="action-zh">电子邮箱</span>
-          <span id="email-value" class="action-note">邮箱待接入</span>
-        </a>
-        <button id="copy-email" class="contact-action" type="button" disabled aria-describedby="copy-note">
-          <span class="action-en" lang="en">COPY EMAIL</span><span class="action-zh">复制邮箱</span>
-          <span id="copy-note" class="action-note">邮箱接入后启用</span>
-        </button>
-        <a id="resume" class="contact-action" role="link" aria-disabled="true" aria-describedby="resume-note">
-          <span class="action-en" lang="en">RESUME</span><span class="action-zh">个人简历</span>
-          <span id="resume-note" class="action-note">简历文件待接入</span>
-        </a>
+      <span class="camera-ui camera-left">AF / 自动对焦</span><span id="camera-state" class="camera-ui camera-right">STANDBY / 待机</span>
+      <div id="focus-mark" class="focus-mark" aria-hidden="true"></div>
+      <button id="focus-trigger" class="focus-trigger" type="button" aria-label="点击对焦，查看联系方式 / Click to focus and view contacts" aria-controls="contact-panel" aria-expanded="false"></button>
+      <div id="focus-message" class="focus-message" role="status" aria-live="polite" aria-atomic="true">
+        <span id="focus-en" lang="en">CLICK TO FOCUS.</span><span id="focus-zh">点击对焦，查看联系方式</span>
       </div>
-      <p id="copy-feedback" class="copy-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+      <button id="direct-view" class="text-control direct-view" type="button"><span lang="en">VIEW CONTACTS</span><span>直接查看联系方式</span></button>
+      <section id="contact-panel" class="contact-panel" aria-label="联系方式 / Contact details" tabindex="-1" hidden inert aria-hidden="true">
+        <div class="contact-grid">
+          <article class="contact-item" aria-labelledby="email-heading">
+            <h2 id="email-heading"><span lang="en">EMAIL</span><span>电子邮箱</span></h2>
+            <a id="email" class="contact-value" role="link" aria-disabled="true"><span id="email-value">邮箱待接入</span></a>
+            <div class="item-actions"><button id="copy-email" class="inline-action" type="button" disabled aria-label="复制邮箱 / Copy email"><span lang="en">COPY</span><span>/ 复制</span></button></div>
+          </article>
+          <article class="contact-item" aria-labelledby="wechat-heading">
+            <h2 id="wechat-heading"><span lang="en">WECHAT</span><span>微信</span></h2>
+            <p id="wechat-value" class="contact-value">微信号待接入</p>
+            <div class="item-actions"><button id="copy-wechat" class="inline-action" type="button" disabled aria-label="复制微信号 / Copy WeChat ID"><span lang="en">COPY</span><span>/ 复制</span></button><a id="wechat-qr" class="inline-action" hidden><span lang="en">QR</span><span>/ 查看二维码</span></a></div>
+          </article>
+          <article class="contact-item" aria-labelledby="resume-heading">
+            <h2 id="resume-heading"><span lang="en">RESUME</span><span>个人简历</span></h2>
+            <p id="resume-note" class="contact-value">PDF 简历待接入</p>
+            <div class="item-actions"><a id="resume-view" class="inline-action" role="link" aria-disabled="true"><span lang="en">VIEW</span><span>/ 查看</span></a><a id="resume-download" class="inline-action" role="link" aria-disabled="true"><span lang="en">SAVE</span><span>/ 下载</span></a></div>
+          </article>
+        </div>
+        <p id="copy-feedback" class="copy-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+      </section>
+      <div id="frame-controls" class="frame-controls" hidden>
+        <button id="back" class="text-control" type="button"><span lang="en">BACK TO FRAME</span><span>返回取景</span></button>
+        <button id="refocus" class="text-control" type="button"><span lang="en">REFOCUS</span><span>重新对焦</span></button>
+      </div>
     </section>
-    <noscript>启用 JavaScript 可体验对焦动画；联系方式不需要完成动画即可查看。</noscript>
+    <noscript>当前邮箱、微信与简历均待接入。启用 JavaScript 可体验对焦与联系方式展开。</noscript>
   </main>
-  <footer>
-    <span class="copyright">© 2026 GAO MINGYUAN</span>
-    <div class="end-credit"><span lang="en">THANK YOU FOR WATCHING.</span><span>感谢观看。</span></div>
-    <span class="footer-spacer" aria-hidden="true"></span>
-  </footer>
+  <footer><span class="copyright">© 2026 GAO MINGYUAN</span><div class="end-credit"><span lang="en">THANK YOU FOR WATCHING.</span><span>感谢观看。</span></div><span class="footer-spacer" aria-hidden="true"></span></footer>
 </div>
 </body>
 </html>
