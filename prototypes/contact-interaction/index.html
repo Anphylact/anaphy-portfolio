@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#002FA7">
+  <meta name="description" content="GAO MINGYUAN · THE FINAL FRAME / 最后一帧。独立 CONTACT 交互原型。">
+  <title>CONTACT / 联系 · GAO MINGYUAN</title>
+  <link rel="stylesheet" href="contact.css">
+  <script src="contact-config.js" defer></script>
+  <script src="contact.js" defer></script>
+</head>
+<body>
+<div id="contact" class="contact-shell" data-state="standby">
+  <header class="topbar">
+    <div class="signature"><span>GAO MINGYUAN</span><span class="page-label">CONTACT / 联系</span></div>
+    <div class="theme"><span lang="en">THE FINAL FRAME</span><span>最后一帧</span></div>
+  </header>
+  <main>
+    <div class="headline">
+      <h1 lang="en"><span>LET'S MAKE</span> <span>SOMETHING.</span></h1>
+      <p>一起创造点什么吧。</p>
+    </div>
+    <button id="viewfinder" class="viewfinder" type="button" aria-label="点击画面对焦，可重复尝试 / Click to focus" aria-describedby="focus-message">
+      <svg class="corner corner-tl" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
+      <svg class="corner corner-tr" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
+      <svg class="corner corner-br" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
+      <svg class="corner corner-bl" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
+      <span class="camera-ui camera-left">AF / 自动对焦</span>
+      <span id="camera-state" class="camera-ui camera-right">STANDBY / 待机</span>
+      <span class="focus-origin" aria-hidden="true"><span id="focus-mark" class="focus-mark"></span></span>
+      <span id="focus-message" class="focus-message" role="status" aria-live="polite" aria-atomic="true">
+        <span id="focus-en" lang="en">CLICK TO FOCUS.</span>
+        <span id="focus-zh">点击画面对焦</span>
+      </span>
+    </button>
+    <section class="contact-section" aria-label="联系方式 / Contact details">
+      <div class="contact-options">
+        <a id="email" class="contact-action" role="link" aria-disabled="true" aria-describedby="email-value">
+          <span class="action-en" lang="en">EMAIL</span><span class="action-zh">电子邮箱</span>
+          <span id="email-value" class="action-note">邮箱待接入</span>
+        </a>
+        <button id="copy-email" class="contact-action" type="button" disabled aria-describedby="copy-note">
+          <span class="action-en" lang="en">COPY EMAIL</span><span class="action-zh">复制邮箱</span>
+          <span id="copy-note" class="action-note">邮箱接入后启用</span>
+        </button>
+        <a id="resume" class="contact-action" role="link" aria-disabled="true" aria-describedby="resume-note">
+          <span class="action-en" lang="en">RESUME</span><span class="action-zh">个人简历</span>
+          <span id="resume-note" class="action-note">简历文件待接入</span>
+        </a>
+      </div>
+      <p id="copy-feedback" class="copy-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+    </section>
+    <noscript>启用 JavaScript 可体验对焦动画；联系方式不需要完成动画即可查看。</noscript>
+  </main>
+  <footer>
+    <span class="copyright">© 2026 GAO MINGYUAN</span>
+    <div class="end-credit"><span lang="en">THANK YOU FOR WATCHING.</span><span>感谢观看。</span></div>
+    <span class="footer-spacer" aria-hidden="true"></span>
+  </footer>
+</div>
+</body>
+</html>
