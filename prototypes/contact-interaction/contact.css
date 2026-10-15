@@ -25,7 +25,6 @@ h1 { font-size: clamp(34px, 4.2vw, 84px); line-height: 1.05; font-weight: 400; l
 .camera-ui { position: absolute; top: 13px; font-size: 12px; line-height: 1.5; letter-spacing: 1px; pointer-events: none; }
 .camera-left { left: 58px; }
 .camera-right { right: 58px; }
-.focus-mark { position: absolute; left: 8%; top: 100px; width: 84%; height: calc(100% - 182px); border: 1.2px solid white; pointer-events: none; opacity: 1; }
 .focus-trigger { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: none; padding: 0; cursor: crosshair; z-index: 2; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .focus-trigger:disabled { pointer-events: none; }
 .focus-content { position: absolute; inset: 0; pointer-events: none; }
@@ -58,8 +57,7 @@ a.contact-value[href]:hover { text-decoration: underline; text-underline-offset:
 .copy-feedback span { display: block; }
 .copy-feedback [lang='en'] { font-size: 11px; }
 .frame-controls .text-control span { white-space: nowrap; }
-#back { width: 118.453125px; }
-#refocus { width: 76.78125px; }
+#capture-control { width: 118.453125px; }
 .frame-controls { position: absolute; bottom: 13px; left: 12px; right: 12px; display: flex; gap: 32px; justify-content: center; z-index: 4; }
 footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; padding: 12px 4.5vw 24px; gap: 20px; }
 .copyright { font-size: 10px; letter-spacing: 1px; line-height: 1.5; }
@@ -85,7 +83,7 @@ footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; p
   #focus-zh { font-size: 14px; letter-spacing: .3px; }
   .text-control span:first-child { font-size: 10px; letter-spacing: .6px; }
   .text-control span:last-child { font-size: 13px; }
-  .focus-mark, .contact-panel { left: 16px; width: calc(100% - 32px); }
+  .contact-panel { left: 16px; width: calc(100% - 32px); }
   .contact-panel { padding: 12px 14px; gap: 4px; }
   .contact-grid { grid-template-columns: minmax(0,1fr); grid-template-rows: repeat(3,minmax(64px,1fr)); gap: 4px; align-items: stretch; }
   .contact-item { grid-template-columns: 76px minmax(0,1fr); grid-template-rows: auto 44px; grid-template-areas: 'heading value' 'heading actions'; gap: 0 10px; text-align: left; align-content: center; }
@@ -99,8 +97,7 @@ footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; p
   .inline-action span:last-child { font-size: 13px; }
   .copy-feedback { font-size: 12px; }
   .copy-feedback [lang='en'] { font-size: 10px; }
-  #back { width: 105.125px; }
-  #refocus { width: 69.09375px; }
+  #capture-control { width: 105.125px; }
   .frame-controls { gap: 20px; }
   footer { padding: 10px 20px 18px; display: flex; flex-direction: column; align-items: center; gap: 11px; }
   .end-credit { order: -1; gap: 4px; }
@@ -116,6 +113,6 @@ footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; p
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 
 /* Optical helpers overlay the fixed composition; no layout element is animated. */
-.autofocus { position: absolute; left: 50%; top: calc(50% + 9px); width: 112px; height: 84px; transform: translate(-50%, -50%); overflow: visible; pointer-events: none; z-index: 4; }
+.autofocus { position: absolute; left: 50%; top: calc(50% + 9px); width: 48px; height: 48px; transform: translate(-50%, -50%); overflow: visible; pointer-events: none; z-index: 4; }
 .autofocus path { fill: none; stroke: white; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
 .shutter-flash { position: absolute; inset: 0; background: white; opacity: 0; pointer-events: none; z-index: 5; }

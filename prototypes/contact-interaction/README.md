@@ -1,37 +1,35 @@
-# CONTACT · 固定画面的失焦 / 对焦原型
+# CONTACT · THE FINAL FRAME / 最后一帧
 
-交互预览：https://anaphy-contact-focus-reveal-preview.alightowlet66.chatgpt.site
+独立预览：https://anaphy-contact-focus-reveal-preview.alightowlet66.chatgpt.site
 
-只修改本目录。HOME、WORKS、ABOUT、PROJECT 未修改，未合并 PR。
+仅修改本目录；不整合或修改 HOME、WORKS、ABOUT、PROJECT，不自动合并 PR。
 
-## 固定构图与相机拍摄
+## 相机状态与交互
 
-已确认的最终构图保持不变。完整联系方式 DOM 从 HTML 加载起就存在，始终占据相同位置、透明度为 1。外侧四个角标、原矩形边框、顶部标题、IN FOCUS 双语标题和片尾始终清晰、固定。只有联系信息区域参与模糊对焦。
+- 初始：OUT OF FOCUS / 尚未对焦，右上 STANDBY / 待机。联系信息原位 blur(20px)，中央是清晰的细十字及紧邻的四角小框。主操作只有 CLICK TO FOCUS / 点击对焦。
+- 对焦：小框与十字整体轻微收紧，信息逐渐清晰，文案 FOCUSING... / 正在对焦…。所有内容坐标保持固定。
+- 锁定：小框白色线条略微加粗，文案 FOCUS LOCKED / 焦点已锁定，右上 LOCKED / 已锁定。
+- 快门：自动触发一次约 90ms、峰值 16% 的白色闪光，文案 CAPTURING... / 正在拍摄…。
+- 快门后：中央十字和小框完全消失，信息保持清晰。文案 IN FOCUS. LET'S CONNECT. / 已对焦，期待与你联系。，右上 FOCUSED / 已对焦。主操作只有 REFOCUS / 重新对焦，点击仅恢复未对焦状态，不自动再拍摄。
 
-点击取景区域后按一条约 1.5 秒的时间轴拍摄：
+拍摄约 1.3 秒。没有大矩形边框、新面板、信息位移或信息淡入淡出。外侧四个取景角标、顶部标题和片尾始终清晰固定。小框为 48×48px 绝对定位 SVG，四角实际轨迹约 33px 宽，十字约 7px；通过控制点及整体轻微缩放收紧，不采用十字模糊变化。辅助标记在快门结束时归零透明度。
 
-1. 细小白色十字先轻微收缩。
-2. 同一组四条 SVG 路径的控制点连续向外移动，形成四角对焦框，联系信息同时从 blur(20px) 降至 blur(0)。
-3. 约 0.96 秒完成锁定，白色线条稍微加粗，状态显示 LOCKED / 已锁定。
-4. 约 1.19 秒触发一次约 90ms、峰值 16% 不透明度的白色快门曝光；没有声音、霓虹或反复闪烁。
-5. 快门结束后辅助框轻轻退场，1.5 秒后进入清晰定格状态。对焦辅助图形与曝光层始终绝对定位且不接收点击，不改变原版排版。
+删除 VIEW NOW 和 BACK TO FRAME。单一按钮固定占位，状态文字不引起布局跳动。动画期间防重复触发；Escape 可取消并恢复未对焦。支持触屏、Tab、Enter / Space。减少动态效果下立即切换，不播放闪光。未来资料复制/邮件/简历接口不变，未配置资料保持明确的待接入状态及禁用操作。
 
-初始“直接查看”可跳过整个动画。减少动态效果设置下同样立即切换，不播放对焦或闪光。返回取景会平滑失焦；重新对焦先恢复失焦再重新拍摄。取景区重复点击不重启动画，Escape 可取消拍摄并返回失焦，返回过程不触发闪光。支持键盘 Tab、Enter / Space、触屏。资料区失焦时 inert，拍摄完成后恢复操作；联系方式本身不插入、不隐藏、不淡入、不位移。
+## 资料与本地运行
 
-本地可直接打开 index.html，或在本目录运行 `python3 -m http.server 8006 --bind 127.0.0.1`。
+contact-config.js 中 email、wechat、resumeUrl、wechatQrUrl 当前均为 null。仅接入真实资料，不创建虚假邮箱、微信号或文件。运行时可用 ContactPrototype.configure(...)；传 null 恢复占位。复制失败会提示手动复制。
 
-## 真实资料接口
-
-contact-config.js 保留 email、wechat、resumeUrl、wechatQrUrl，当前均为 null。提供真实邮箱、微信号和实际存在的 PDF/二维码路径后才启用对应操作；缺失资料明确标为待接入，无虚假链接。支持 `ContactPrototype.configure(...)`，传 null 恢复空配置。剪贴板失败提示手动复制。跨域 PDF 的 download 属性取决于服务器，查看器仍可保存。
+直接打开 index.html；或本目录运行 `python3 -m http.server 8006 --bind 127.0.0.1` 后访问 http://127.0.0.1:8006/ 。
 
 ## 验证与截图
 
-实际 Chromium 比较 1920×1080、1440×900、1366×768、390×844、320×568 的初始、动画中、完成状态元素位置与尺寸，并与修改前已确认的完成状态比较。检查十字收缩及变框的中间路径、锁定与快门阶段、辅助框最终退场、触摸、键盘、反向动画、重复操作、辅助跳过和减少动态效果。320×568 保留纵向滚动及资料区独立滚动，无横向溢出。未验证 Safari、Firefox 或真实手机硬件。
+Chromium 实际渲染并逐阶段截图：1920×1080、1440×900、1366×768、390×844、320×568。检查初始、对焦、锁定、快门和快门后文案、标记及模糊程度，断言标题、信息、外侧角标和片尾位置与上一版一致，检查单按钮、触摸、键盘、重新对焦恢复、取消及减少动态效果。小屏允许纵向滚动以保持可读，无横向溢出。未测试 Safari、Firefox 或真实手机硬件。
 
-- [桌面失焦](previews/initial-desktop.png)
-- [桌面清晰](previews/focused-desktop.png)
-- [手机失焦](previews/initial-mobile.png)
-- [手机清晰](previews/focused-mobile.png)
-
-- [对焦锁定](previews/locked-desktop.png)
-- [快门拍摄](previews/shutter-desktop.png)
+- [初始](previews/initial-desktop.png)
+- [对焦中](previews/focusing-desktop.png)
+- [锁定](previews/locked-desktop.png)
+- [快门](previews/shutter-desktop.png)
+- [拍摄后](previews/focused-desktop.png)
+- [手机初始](previews/initial-mobile.png)
+- [手机拍摄后](previews/focused-mobile.png)
