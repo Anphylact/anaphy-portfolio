@@ -1,21 +1,31 @@
 'use strict';
 (() => {
   const $ = id => document.getElementById(id);
-  const root=$('contact'), frame=$('viewfinder'), content=$('focus-content'), trigger=$('focus-trigger'), panel=$('contact-panel');
+  const root=$('contact'), frame=$('viewfinder'), autofocus=$('autofocus'), flash=$('shutter-flash'), trigger=$('focus-trigger'), panel=$('contact-panel');
   const back=$('back'), refocus=$('refocus'), feedback=$('copy-feedback');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   let playhead=0, goal=0, animation=null, raf=0, reopen=false;
   let contact={email:null,wechat:null,resumeUrl:null,wechatQrUrl:null}, copyEpoch=0, feedbackToken=0;
   const ease=x=>(1-Math.cos(Math.PI*x))/2;
   function render() {
-    // Focus changes optical clarity only. Geometry, opacity and DOM presence never animate.
-    content.style.filter=`blur(${20*(1-ease(playhead))}px)`;
+    // The composition stays fixed; only optical clarity and the auxiliary AF strokes change.
+    const phase=(a,b)=>ease(Math.max(0,Math.min(1,(playhead-a)/(b-a))));
+    panel.style.filter=`blur(${20*(1-phase(.12,.64))}px)`;
+    const shrink=1-.3*phase(0,.16), spread=phase(.16,.57);
+    const mix=(a,b)=>a+(b-a)*spread;
+    const d=`M ${mix(0,28)} ${mix(-7*shrink,-42)} L ${mix(0,42)} ${mix(0,-42)} L ${mix(7*shrink,42)} ${mix(0,-28)}`;
+    for(const path of autofocus.children)path.setAttribute('d',d);
+    autofocus.style.opacity=String(1-phase(.85,.96));
+    for(const path of autofocus.children)path.style.strokeWidth=String(1.2+.5*phase(.57,.64));
+    const exposure=goal===1&&animation&&playhead>.79&&playhead<.85;
+    flash.style.opacity=String(exposure ? .16*Math.sin(Math.PI*(playhead-.79)/.06):0);
     const focused=playhead===1&&goal===1&&!reopen;
-    root.dataset.state=focused?'focused':animation?'focusing':'standby';
+    const state=focused?'focused':!animation?'standby':goal===0?'defocusing':playhead<.64?'focusing':playhead<.79?'locked':playhead<.85?'shutter':'freezing';
+    root.dataset.state=state;
     root.dataset.progress=String(playhead);
     panel.inert=!focused;
     trigger.disabled=focused;
-    $('camera-state').textContent=focused?'FOCUSED / 已对焦':animation?'FOCUSING / 对焦中':'STANDBY / 待机';
+    $('camera-state').textContent=({focused:'FOCUSED / 已对焦',standby:'STANDBY / 待机',defocusing:'STANDBY / 待机',focusing:'FOCUSING / 对焦中',locked:'LOCKED / 已锁定',shutter:'CAPTURE / 拍摄',freezing:'FOCUSED / 已对焦'})[state];
     back.children[0].textContent=goal||focused?'BACK TO FRAME':'CLICK TO FOCUS';
     back.children[1].textContent=goal||focused?'返回取景':'点击对焦';
     refocus.children[0].textContent=focused?'REFOCUS':'VIEW NOW';
@@ -35,7 +45,7 @@
     if(immediate||reduced.matches){reopen=false;finish(again?1:next);return;}
     if(next===playhead){finish(next);return;}
     // Reversal starts from the current blur value; no geometry or content is replaced.
-    animation={from:playhead,to:next,start:performance.now(),duration:1000*Math.abs(next-playhead)};
+    animation={from:playhead,to:next,start:performance.now(),duration:(next?1500:650)*Math.abs(next-playhead)};
     frame.setAttribute('aria-busy','true');render();raf=requestAnimationFrame(tick);
   }
   function tick(now) {

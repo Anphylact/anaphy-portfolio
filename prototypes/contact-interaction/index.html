@@ -23,6 +23,10 @@
       <svg class="corner corner-bl" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
       <span class="camera-ui camera-left">AF / 自动对焦</span><span id="camera-state" class="camera-ui camera-right">STANDBY / 待机</span>
       <div id="focus-mark" class="focus-mark" aria-hidden="true"></div>
+      <svg id="autofocus" class="autofocus" viewBox="-50 -50 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path/><path transform="rotate(90)"/><path transform="rotate(180)"/><path transform="rotate(270)"/>
+      </svg>
+      <div id="shutter-flash" class="shutter-flash" aria-hidden="true"></div>
       <button id="focus-trigger" class="focus-trigger" type="button" aria-label="点击对焦，查看联系方式 / Click to focus and view contacts" aria-controls="contact-panel"></button>
       <div id="focus-content" class="focus-content">
       <div id="focus-message" class="focus-message" role="status" aria-live="polite" aria-atomic="true">
