@@ -23,12 +23,12 @@
       <svg class="corner corner-bl" viewBox="0 0 48 48" aria-hidden="true"><path d="M1 47V1H47" pathLength="1"/></svg>
       <span class="camera-ui camera-left">AF / 自动对焦</span><span id="camera-state" class="camera-ui camera-right">STANDBY / 待机</span>
       <div id="focus-mark" class="focus-mark" aria-hidden="true"></div>
-      <button id="focus-trigger" class="focus-trigger" type="button" aria-label="点击对焦，查看联系方式 / Click to focus and view contacts" aria-controls="contact-panel" aria-expanded="false"></button>
+      <button id="focus-trigger" class="focus-trigger" type="button" aria-label="点击对焦，查看联系方式 / Click to focus and view contacts" aria-controls="contact-panel"></button>
+      <div id="focus-content" class="focus-content">
       <div id="focus-message" class="focus-message" role="status" aria-live="polite" aria-atomic="true">
-        <span id="focus-en" lang="en">CLICK TO FOCUS.</span><span id="focus-zh">点击对焦，查看联系方式</span>
+        <span id="focus-en" lang="en">IN FOCUS. LET'S CONNECT.</span><span id="focus-zh">已对焦，期待与你联系。</span>
       </div>
-      <button id="direct-view" class="text-control direct-view" type="button"><span lang="en">VIEW CONTACTS</span><span>直接查看联系方式</span></button>
-      <section id="contact-panel" class="contact-panel" aria-label="联系方式 / Contact details" tabindex="-1" hidden inert aria-hidden="true">
+      <section id="contact-panel" class="contact-panel" aria-label="联系方式 / Contact details" tabindex="-1" inert>
         <div class="contact-grid">
           <article class="contact-item" aria-labelledby="email-heading">
             <h2 id="email-heading"><span lang="en">EMAIL</span><span>电子邮箱</span></h2>
@@ -48,12 +48,13 @@
         </div>
         <p id="copy-feedback" class="copy-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
       </section>
-      <div id="frame-controls" class="frame-controls" hidden>
-        <button id="back" class="text-control" type="button"><span lang="en">BACK TO FRAME</span><span>返回取景</span></button>
-        <button id="refocus" class="text-control" type="button"><span lang="en">REFOCUS</span><span>重新对焦</span></button>
+      </div>
+      <div id="frame-controls" class="frame-controls">
+        <button id="back" class="text-control" type="button"><span lang="en">CLICK TO FOCUS</span><span>点击对焦</span></button>
+        <button id="refocus" class="text-control" type="button"><span lang="en">VIEW NOW</span><span>直接查看</span></button>
       </div>
     </section>
-    <noscript>当前邮箱、微信与简历均待接入。启用 JavaScript 可体验对焦与联系方式展开。</noscript>
+    <noscript>当前邮箱、微信与简历均待接入。启用 JavaScript 可体验失焦与对焦切换。</noscript>
   </main>
   <footer><span class="copyright">© 2026 GAO MINGYUAN</span><div class="end-credit"><span lang="en">THANK YOU FOR WATCHING.</span><span>感谢观看。</span></div><span class="footer-spacer" aria-hidden="true"></span></footer>
 </div>

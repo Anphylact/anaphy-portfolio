@@ -1,99 +1,54 @@
 'use strict';
 (() => {
   const $ = id => document.getElementById(id);
-  const root=$('contact'), frame=$('viewfinder'), mark=$('focus-mark'), trigger=$('focus-trigger'), panel=$('contact-panel');
-  const direct=$('direct-view'), controls=$('frame-controls'), back=$('back'), refocus=$('refocus'), feedback=$('copy-feedback');
+  const root=$('contact'), frame=$('viewfinder'), content=$('focus-content'), trigger=$('focus-trigger'), panel=$('contact-panel');
+  const back=$('back'), refocus=$('refocus'), feedback=$('copy-feedback');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  const clamp=x=>Math.max(0,Math.min(1,x)), mix=(a,b,t)=>a+(b-a)*t;
-  const ease=x=>(1-Math.cos(Math.PI*clamp(x)))/2, phase=(p,a,b)=>ease((p-a)/(b-a));
-  let playhead=0, goal=0, rate=0, reopen=false, raf=0, last=0;
-  const position={x:0,y:0}, velocity={x:0,y:0}, target={x:0,y:0};
+  let playhead=0, goal=0, animation=null, raf=0, reopen=false;
   let contact={email:null,wechat:null,resumeUrl:null,wechatQrUrl:null}, copyEpoch=0, feedbackToken=0;
-  function labels(state) {
-    root.dataset.state=state;
-    const text={
-      standby:['STANDBY / 待机','CLICK TO FOCUS.','点击对焦，查看联系方式'],
-      opening:['FOCUSING / 对焦中','FINDING FOCUS.','正在对焦，展开联系方式'],
-      focused:['FOCUSED / 已对焦',"IN FOCUS. LET'S CONNECT.",'已对焦，期待与你联系。'],
-      closing:['RETURNING / 返回取景','BACK TO THE FRAME.','正在返回取景'],
-      refocusing:['REFOCUSING / 重新对焦','FINDING FOCUS.','重新对焦，期待与你联系']
-    }[state];
-    $('camera-state').textContent=text[0]; $('focus-en').textContent=text[1]; $('focus-zh').textContent=text[2];
-  }
+  const ease=x=>(1-Math.cos(Math.PI*x))/2;
   function render() {
-    const p=ease(playhead), expand=phase(p,.25,1), squeeze=mix(1,.60,phase(p,0,.25));
-    const w=frame.clientWidth, h=frame.clientHeight, mobile=innerWidth<=650;
-    const initialW=mobile?(innerHeight<=650?54:68):94, initialH=mobile?(innerHeight<=650?40:50):68;
-    const box={x:mobile?16:w*.08,y:100,w:mobile?w-32:w*.84,h:h-182};
-    const follow=1-phase(p,.08,.65);
-    const width=mix(initialW*squeeze,box.w,expand), height=mix(initialH*squeeze,box.h,expand);
-    const cx=mix(w/2,box.x+box.w/2,expand)+position.x*follow;
-    const cy=mix(h*.45,box.y+box.h/2,expand)+position.y*follow;
-    const x=cx-width/2, y=cy-height/2;
-    // One persistent, fully opaque outline is both the autofocus box and the contact enclosure.
-    Object.assign(mark.style,{left:`${x}px`,top:`${y}px`,width:`${width}px`,height:`${height}px`});
-    mark.style.setProperty('--cross-opacity',1-phase(p,.18,.55));
-    $('focus-message').style.top=`${mix(h*.45+54,45,phase(p,0,.25))}px`;
-    direct.style.top=`${h*.45+112}px`;
-    const reveal=phase(p,.48,.96), opened=playhead===1&&goal===1&&!reopen;
-    panel.hidden=p<=.48; panel.inert=!opened; panel.setAttribute('aria-hidden',String(!opened));
-    Object.assign(panel.style,{left:`${box.x}px`,top:`${box.y}px`,width:`${box.w}px`,height:`${box.h}px`,opacity:String(reveal),filter:`blur(${(1-reveal)*8}px)`,clipPath:`inset(${Math.max(0,y-box.y)}px ${Math.max(0,box.x+box.w-x-width)}px ${Math.max(0,box.y+box.h-y-height)}px ${Math.max(0,x-box.x)}px)`});
-    trigger.hidden=opened; trigger.disabled=playhead!==0||goal!==0;
-    trigger.setAttribute('aria-expanded',String(opened));
-    direct.hidden=playhead!==0||goal!==0;
-    controls.hidden=p<.005; controls.style.opacity=String(phase(p,.02,.25));
-    refocus.disabled=!opened;
-    root.dataset.progress=p.toFixed(4);
+    // Focus changes optical clarity only. Geometry, opacity and DOM presence never animate.
+    content.style.filter=`blur(${20*(1-ease(playhead))}px)`;
+    const focused=playhead===1&&goal===1&&!reopen;
+    root.dataset.state=focused?'focused':animation?'focusing':'standby';
+    root.dataset.progress=String(playhead);
+    panel.inert=!focused;
+    trigger.disabled=focused;
+    $('camera-state').textContent=focused?'FOCUSED / 已对焦':animation?'FOCUSING / 对焦中':'STANDBY / 待机';
+    back.children[0].textContent=goal||focused?'BACK TO FRAME':'CLICK TO FOCUS';
+    back.children[1].textContent=goal||focused?'返回取景':'点击对焦';
+    refocus.children[0].textContent=focused?'REFOCUS':'VIEW NOW';
+    refocus.children[1].textContent=focused?'重新对焦':'直接查看';
+    refocus.setAttribute('aria-label',focused?'重新对焦 / Refocus':'直接查看联系方式，跳过动画 / View contacts without animation');
   }
-  function request() { if (!raf&&!document.hidden) raf=requestAnimationFrame(tick); }
-  function settle(endpoint) {
-    playhead=goal=endpoint; rate=0; frame.removeAttribute('aria-busy');
-    if (endpoint===0&&reopen) { reopen=false; goal=1; labels('opening'); frame.setAttribute('aria-busy','true'); render(); return; }
-    labels(endpoint?'focused':'standby'); render();
-    if (endpoint) panel.focus({preventScroll:true}); else trigger.focus({preventScroll:true});
+  function finish(next) {
+    playhead=goal=next; animation=null; frame.removeAttribute('aria-busy');
+    if(!next&&reopen){reopen=false;go(1);return;}
+    render();
+    if(next)panel.focus({preventScroll:true});else trigger.focus({preventScroll:true});
   }
   function go(next,{immediate=false,again=false}={}) {
-    if (next===goal&&playhead!==goal&&!immediate&&reopen===again) return;
-    feedbackToken++; feedback.replaceChildren(); reopen=again;
-    target.x=target.y=0;
-    if (immediate||reduced.matches) { reopen=false; settle(again?1:next); return; }
-    if (next===playhead) { settle(next); return; }
-    goal=next; labels(again?'refocusing':next?'opening':'closing'); frame.setAttribute('aria-busy','true'); render(); request();
+    cancelAnimationFrame(raf);raf=0;reopen=again;
+    feedbackToken++;feedback.replaceChildren();
+    goal=next;
+    if(immediate||reduced.matches){reopen=false;finish(again?1:next);return;}
+    if(next===playhead){finish(next);return;}
+    // Reversal starts from the current blur value; no geometry or content is replaced.
+    animation={from:playhead,to:next,start:performance.now(),duration:1000*Math.abs(next-playhead)};
+    frame.setAttribute('aria-busy','true');render();raf=requestAnimationFrame(tick);
   }
   function tick(now) {
-    raf=0; const dt=last?Math.min((now-last)/1000,.05):1/60; last=now;
-    const omega=15, decay=Math.exp(-omega*dt);
-    for (const axis of ['x','y']) {
-      const d=position[axis]-target[axis], step=(velocity[axis]+omega*d)*dt;
-      position[axis]=target[axis]+(d+step)*decay; velocity[axis]=(velocity[axis]-omega*step)*decay;
-    }
-    if (playhead!==goal) {
-      const direction=goal>playhead?1:-1;
-      // Retain playback speed on reversal, braking gently before tracing the same path back.
-      rate=mix(rate,direction,1-Math.exp(-24*dt));
-      const next=clamp(playhead+rate*dt/1.10);
-      if ((direction>0&&next>=goal)||(direction<0&&next<=goal)) settle(goal); else playhead=next;
-    }
-    render();
-    if (playhead!==goal||['x','y'].some(a=>Math.abs(position[a]-target[a])>.01||Math.abs(velocity[a])>.02)) request(); else last=0;
+    raf=0;if(!animation)return;
+    const t=Math.min(1,(now-animation.start)/animation.duration);
+    playhead=animation.from+(animation.to-animation.from)*t;
+    if(t===1)finish(animation.to);else{render();raf=requestAnimationFrame(tick);}
   }
-  trigger.addEventListener('click',()=>go(1));
-  direct.addEventListener('click',()=>go(1,{immediate:true}));
-  back.addEventListener('click',()=>go(0));
-  refocus.addEventListener('click',()=>go(0,{again:true}));
+  trigger.addEventListener('click',()=>{if(!animation)go(1);});
+  back.addEventListener('click',()=>go(goal||playhead===1?0:1));
+  refocus.addEventListener('click',()=>playhead===1&&!animation?go(0,{again:true}):go(1,{immediate:true}));
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&(playhead||goal)){event.preventDefault();go(0);}});
-  frame.addEventListener('pointermove',event=>{
-    if(event.pointerType!=='mouse'||reduced.matches||playhead!==0||goal!==0)return;
-    const b=frame.getBoundingClientRect(); target.x=Math.max(-12,Math.min(12,((event.clientX-b.left)/b.width-.5)*24)); target.y=Math.max(-9,Math.min(9,((event.clientY-b.top)/b.height-.5)*18)); request();
-  });
-  frame.addEventListener('pointerleave',()=>{target.x=target.y=0;request();});
-  window.addEventListener('resize',render);
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;last=0;}else request();});
-  reduced.addEventListener('change',()=>{
-    if(!reduced.matches)return;
-    root.classList.remove('is-entering'); position.x=position.y=target.x=target.y=velocity.x=velocity.y=0;
-    if(playhead!==goal||reopen){const end=reopen?1:goal;reopen=false;settle(end);}else render();
-  });
+  reduced.addEventListener('change',()=>{if(reduced.matches&&animation){const end=reopen?1:goal;cancelAnimationFrame(raf);raf=0;reopen=false;finish(end);}});
   function emailValue(value) {
     if(value===null||value===undefined||value==='')return null;
     if(typeof value!=='string'||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()))throw new TypeError('请提供真实有效的邮箱地址');return value.trim();
@@ -133,6 +88,10 @@
     finally{if(epoch===copyEpoch)button.disabled=!contact[field];}
   });
   window.ContactPrototype=Object.freeze({configure});configure(window.CONTACT_CONFIG||{});
-  if(!reduced.matches){root.classList.add('is-entering');root.addEventListener('animationend',event=>{if(event.animationName==='draw-corner'&&event.target.closest('.corner-bl'))root.classList.remove('is-entering');});}
-  render();
+  function layout() {
+    // Preserve the approved final geometry, including its integer clientWidth rounding.
+    const w=frame.clientWidth,h=frame.clientHeight,mobile=innerWidth<=650;
+    for(const element of [$('focus-mark'),panel])Object.assign(element.style,{left:`${mobile?16:w*.08}px`,top:'100px',width:`${mobile?w-32:w*.84}px`,height:`${h-182}px`});
+  }
+  window.addEventListener('resize',layout);layout();render();
 })();
