@@ -1,0 +1,68 @@
+/* Shared navigation only. Approved page layouts and animation styles stay isolated. */
+html { background: #002FA7; color-scheme: dark; }
+html[data-site-arriving]::before { content: ''; position: fixed; inset: 0; background: #002FA7; z-index: 2147483645; pointer-events: none; }
+#site-transition { position: fixed; inset: 0; background: #002FA7; opacity: 0; z-index: 2147483646; pointer-events: none; }
+html[data-site-leaving] #site-transition { pointer-events: auto; }
+#site-chrome { position: fixed; inset: 0; z-index: 1000; pointer-events: none; color: white; font-family: Arial, 'Microsoft YaHei', sans-serif; }
+#site-chrome *, #site-quick *, #site-brand { box-sizing: border-box; }
+#site-chrome a, #site-brand, #site-quick a { color: white; text-decoration: none; cursor: pointer; pointer-events: auto; }
+#site-brand { background: transparent; border: 0; padding: 0; font: inherit; letter-spacing: inherit; text-align: left; border-radius: 0; }
+#site-brand.site-brand-new { position: fixed; top: 28px; left: 4.5vw; z-index: 1001; font: 11px Arial, sans-serif; letter-spacing: 1.8px; }
+#site-brand::after { content: ' +'; font-size: 12px; }
+#site-brand[aria-expanded='true']::after { content: ' −'; }
+#site-brand:focus-visible, #site-chrome a:focus-visible, #site-quick a:focus-visible { outline: 1px dashed white; outline-offset: 4px; }
+#site-rail { position: absolute; top: 50%; right: 16px; transform: translateY(-50%); display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
+#site-rail .site-chapter { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 4px; width: 112px; min-height: 48px; padding: 4px 32px 4px 0; opacity: .72; }
+#site-rail .site-en { font-size: 10px; letter-spacing: 1.2px; line-height: 1.2; }
+#site-rail .site-zh { font-size: 12px; line-height: 1.4; }
+#site-rail .site-chapter::after { content: ''; position: absolute; right: 0; top: 50%; width: 0; height: 2px; background: white; transition: width .25s; }
+#site-rail .site-chapter[aria-current='page'] { opacity: 1; }
+#site-rail .site-chapter[aria-current='page']::after { width: 24px; }
+#site-next { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 9px; min-height: 44px; }
+#site-next .site-next-circle { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: white; color: #002FA7; font: 23px Arial, sans-serif; }
+#site-next .site-next-label { display: flex; flex-direction: column; gap: 3px; }
+#site-next .site-en { font-size: 10px; letter-spacing: 1px; }
+#site-next .site-zh { font-size: 12px; line-height: 1.4; }
+html[data-site-page='contact'] #site-next { bottom: 92px; }
+#site-quick { display: block; position: fixed; top: 76px; left: 4.5vw; z-index: 1100; width: 238px; padding: 12px 0; background: #002FA7; border-top: 1px solid white; }
+#site-quick[hidden] { display: none; }
+#site-quick a { display: flex; gap: 16px; align-items: center; min-height: 46px; padding: 8px 12px; font: 12px Arial, 'Microsoft YaHei', sans-serif; letter-spacing: 1px; }
+#site-quick a:hover, #site-quick a[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; }
+@media (max-width: 650px) {
+  /* A narrow vertical rail preserves the original mobile artboards at full size. */
+  #site-rail { right: 4px; gap: 10px; }
+  #site-rail .site-chapter { writing-mode: vertical-rl; text-orientation: mixed; flex-direction: row; justify-content: flex-start; align-items: center; width: 27px; min-height: 68px; padding: 0; gap: 2px; }
+  #site-rail .site-en { font-size: 9px; letter-spacing: .8px; }
+  #site-rail .site-zh { font-size: 11px; line-height: 1.2; }
+  #site-rail .site-chapter::after { top: 0; right: -3px; width: 2px; height: 0; transition: height .25s; }
+  #site-rail .site-chapter[aria-current='page']::after { width: 2px; height: 36px; }
+  #site-next, html[data-site-page='contact'] #site-next { bottom: 54px; left: 12px; transform: none; gap: 7px; }
+  html[data-site-page='home'] #site-next { bottom: 95px; }
+  #site-next .site-next-circle { width: 32px; height: 32px; font-size: 21px; }
+  #site-next .site-en { font-size: 9px; }
+  #site-brand.site-brand-new { top: 24px; left: 24px; }
+  #site-quick { top: 68px; left: 24px; width: 224px; }
+}
+@media (prefers-reduced-motion: reduce) { #site-rail .site-chapter::after { transition: none; } }
+/* Match the pre-existing brand typography when converting it to a menu button. */
+.ui header > #site-brand { font-size: 22px; letter-spacing: -.7px; font-weight: 500; }
+.signature > #site-brand { font-size: 11px; letter-spacing: 1.8px; }
+@media (max-width: 650px) {
+  .ui header > #site-brand { font-size: 20px; }
+  .signature > #site-brand { font-size: 10px; letter-spacing: 1px; }
+}
+#site-brand { position: relative; }
+#site-brand::after { position: absolute; top: 0; right: -13px; }
+@media (max-width: 650px) {
+  #site-rail .site-zh { font-size: 12px; }
+  #site-rail .site-chapter::before { content: ''; position: absolute; inset: 0 -8px; }
+}
+@media (max-width: 380px) {
+  /* Only the new menu signature compacts; HOME's title/canvas keep their approved size. */
+  .ui header > #site-brand { font-size: 11px; letter-spacing: .2px; padding-right: 10px; white-space: nowrap; flex-shrink: 0; }
+  .ui #site-brand small { font-size: 7px; letter-spacing: .4px; }
+  .ui #site-brand::after { right: 0; }
+  .ui header > nav { flex-shrink: 0; white-space: nowrap; gap: 12px; }
+  .ui header > nav button { white-space: nowrap; }
+}
+#site-brand::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 44px; transform: translateY(-50%); }
