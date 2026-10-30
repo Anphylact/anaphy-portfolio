@@ -1,44 +1,38 @@
 # 高明媛 · GAO MINGYUAN Portfolio
 
-克莱因蓝 #002FA7 与白色视觉体系的个人作品集。本分支将已确认的 HOME、WORKS、ABOUT、CONTACT 接入统一导航，保留原有视觉与交互。
+克莱因蓝 #002FA7 与白色视觉体系。本分支在 PR #15 内继续整合已批准的四个页面，使用真实纵向轨道与固定导航，不重设计页面内部内容。
 
-## 打开
+## 预览
 
-在仓库根目录运行：
+https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=vertical-2
+
+使用当前 ChatGPT 账号访问；该独立预览不覆盖正式网站或旧原型。
+
+本地在仓库根目录运行：
 
 ```sh
 python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-同一设备访问 http://127.0.0.1:8000/index.html 。日常预览无需安装 npm 依赖。页面为静态 HTML；WORKS 已包含批准版浏览器 bundle。部署时应上传完整运行目录，不要只上传首页三个文件。
+访问 http://127.0.0.1:8000/index.html 。日常预览无需 npm；部署时上传完整运行目录，不能只上传首页。
 
-## 页面
+## 页面与操作
 
-- index.html：HOME，原有标题、气泡漂动、弹动、画圆及点破。
-- works.html：WORKS，已确认的 3D 轮盘、惯性、吸附和作品状态恢复。
-- project.html：原有作品详情和视频播放器。
-- about.html：复用批准版五圆环交互与内容。
-- contact.html：复用最新批准版对焦、锁定、快门和定格。
-- assets/css/site.css、assets/js/site.js：共享章节导航、快捷菜单和蓝色过渡。
+- index.html / works.html / about.html / contact.html：四个直接访问入口，共用同一个常驻轨道；浏览器地址、刷新和历史记录仍保留这些路径。
+- chapters/：实际批准版内容文档，保留各自 CSS 和脚本作用域。
+- project.html：原作品详情和视频播放器；返回时恢复选中作品。
+- assets/css/site.css、assets/js/site.js：纵向位移、吸附、单一固定指示横杠、双语导航及页面桥接。
 
-页面顺序为 HOME → WORKS → ABOUT → CONTACT → HOME。通过右侧章节栏、左上姓名快捷菜单或底部 NEXT / 下一页浏览。鼠标滚轮和触摸滑动保留给各页原有功能，不触发章节翻页。
+顺序 HOME → WORKS → ABOUT → CONTACT → HOME。NEXT 和允许区域的鼠标滚轮播放约 1 秒整页位移；右侧导航和姓名菜单直接定位目标，只有指示横杠平滑移动。向上滚轮可返回上一章。
 
-## 修改与审阅
+WORKS 轮盘和 ABOUT 展开模块优先处理自己的滚轮；PROFILE 独立滚动。手机保留组件手势，使用 NEXT 或章节名称翻章，避免误触。支持减少动态效果。
 
-[整合说明、批准版来源、测试结果与截图](INTEGRATION-GUIDE.md)
+[批准版来源、实施边界、实际测试与截图](INTEGRATION-GUIDE.md)
 
-[作品数据与构建说明](WORKS-GUIDE.md)
+[作品数据与现有构建说明](WORKS-GUIDE.md)
 
-日常作品内容只需编辑 assets/js/projects-data.js，当前数据仍为已明确标注的占位作品。CONTACT 真实资料接口位于 prototypes/contact-interaction/contact-config.js，未接入的邮箱、微信号和简历保留待接入状态。
+作品和联系方式仍为原有占位，不增加假作品、邮箱、微信号或简历文件。bubbles.js 和原轮盘组件代码保留原样，WORKS bundle 只增加详情页导航适配。
 
-独立整合预览（使用当前 ChatGPT 账号）：
-https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site
+气泡参考原始说明：https://tympanus.net/codrops/2026/10/06/yichen-xie-portfolio/
 
-该预览不覆盖正式网站或既有独立原型预览。开发分支通过 PR 审阅，不自动合并。
-
-## 许可与参考
-
-气泡效果参考 Yichen Xie 的技术说明，bubbles.js 为原有实现，整合不修改其代码：
-https://tympanus.net/codrops/2026/10/06/yichen-xie-portfolio/
-
-3D WORKS 沿用已批准的 React Bits 组件及既有适配，完整第三方许可保留在 assets/js/works-LICENSES.txt 与 prototypes/3d-carousel/ 中。
+原轮盘第三方许可继续保留在 assets/js/works-LICENSES.txt 与 prototypes/3d-carousel/。不自动合并 main。

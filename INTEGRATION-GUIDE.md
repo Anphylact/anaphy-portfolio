@@ -1,67 +1,86 @@
-# 全站整合 / Portfolio integration
+# 全站整合 / Portfolio integration · PR #15
 
-本分支只将已确认的页面接入统一导航，不合并其他 PR、不修改作品资料。所有新增导航均有中英双语。
+本轮继续更新同一分支 integrate-approved-portfolio 和同一 PR #15，不创建重复 PR，不合并 main。
 
-## 批准版来源
+预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=vertical-2
 
-| 页面 | 实际来源 | 版本 |
-| --- | --- | --- |
-| HOME | main 的 index.html、bubbles.js | 18850917177c418cf8e3ae9d37009365167c511e |
-| WORKS / PROJECT | 已合并的 PR #5，main 的正式页面、bundle 与数据 | 同上 |
-| ABOUT | PR #9，about-overview-balance 的 prototypes/about-interaction/ | c2930a96a2a304e0ad1d3260ec07fa4cb173938f |
-| CONTACT | PR #14，contact-focus-state-fix 的 prototypes/contact-interaction/ | 0693928d01040fdc73d13182c76481dfbd94336f |
+## 本轮导航方式
 
-ABOUT 与 CONTACT 的原 PR 尚未合并。本整合分支直接带入对应批准目录的完整快照；原目录中的 34 个文件与各自源分支逐字节一致。无需先合并旧原型 PR 才能审阅本分支。
+四个入口路径保持不变：index.html → works.html → about.html → contact.html → index.html。它们现在共用一个常驻外层文档、一条真实纵向轨道和一份固定导航。原有内容文档位于 chapters/home.html、works.html、about.html、contact.html，在同源 iframe 内保持独立样式和脚本作用域。
 
-bubbles.js、WORKS 的 JS/bundle/CSS、projects-data.js、PROJECT 的 JS/CSS 均保持 main 原样。index.html、works.html、project.html 只加入共享 CSS/JS 引用。新增 about.html、contact.html 引用原型目录中的既有样式和脚本，不复制或重写模块实现。左上署名转换为菜单触发按钮，ABOUT 的 CLOSE / 相关作品操作在正式入口补充中文；原型本身不改。
+- NEXT：轨道整体 translate3d，当前章节移出、相邻章节从下方进入，动画 1000ms，缓动 cubic-bezier(.22,.61,.36,1)。结束时准确停在一个完整视口位置。
+- 允许区域的鼠标滚轮：向下进入下一章，向上返回上一章。累计阈值和吸附后的短冷却阻止一次惯性滚动连续翻多章。
+- CONTACT → HOME 的 NEXT 同样向上移动：将原 HOME 槽位临时放到 CONTACT 下方，完成后无可见跳动地归位。向上从 HOME 返回 CONTACT 使用相同原理；不复制页面或重建 iframe。
+- 右侧章节名称、姓名菜单、ABOUT 相关作品：直接定位目标，不播放跨多个章节的长距离动画。
+- 页面位移不使用 opacity、页面快照或蓝色淡入淡出。中间时刻同时可见相接的两个真实页面，所有页面与轨道底色为 #002FA7。
+- 右侧仅有一个持久的 #site-indicator 元素，固定在轨道之外。横杠不替换、不淡出，以 420ms transform 过渡移到对应章节。手机仍使用水平横杠，窄幅竖排名称不挤压原画布。
+- URL 使用原来的四个 HTML 路径，history.pushState / popstate 支持直接访问、刷新、后退和前进；点击当前章节不增加重复历史记录。
 
-## 页面与导航
+减少动态效果下直接吸附，不播放轨道或指示条过渡，CONTACT 既有的无闪光处理保留。根页面和共享资源加入版本参数，避免沿用上一版淡入淡出脚本的缓存。
 
-入口顺序：index.html → works.html → about.html → contact.html → index.html。
+## 滚轮与触屏的优先级
 
-- 右侧固定四个章节名称，当前章节用白色长条及 aria-current 标识。手机采用窄幅竖向排版，保持主体画布的原尺寸，触摸命中范围向两侧扩展。
-- 左上 GAO MINGYUAN 展开快捷导航；支持触摸、Tab、上下方向键、Home / End、Escape。点击外部或焦点离开时关闭。
-- 底部白色圆形箭头为 NEXT / 下一页；CONTACT 的下一页回到 HOME。
-- assets/js/site.js 只处理导航链接和 ABOUT 原有的 about:related-works 事件。相关作品入口连接作品选集，不凭空添加分类或筛选数据。
-- 采用独立 HTML 页面，不引入新框架或路由库；已批准 WORKS 内既有 React bundle 原样保留。各页 CSS/脚本作用域继续分离。
+| 当前区域 | 行为 |
+| --- | --- |
+| HOME 普通画布区域的滚轮 | 切换相邻章节；泡泡拖动/弹动/点破保持原逻辑 |
+| WORKS 轮盘区域 | 滚轮和拖动优先交给轮盘，不翻章 |
+| WORKS 标题上方等非交互留白 | 允许滚轮翻章 |
+| ABOUT 初始页非控件留白 | 允许滚轮翻章 |
+| ABOUT 任意展开模块 | 不用滚轮翻章；PROFILE 在自身区域滚动，到边界也不串章 |
+| CONTACT 小屏有内容可滚动时 | 优先滚动该章节内容；到边界后的允许区域可用鼠标滚轮翻章，滚轮不触发对焦 |
+| 按钮、链接、输入区、固定导航 | 不将其滚轮用于翻章；Ctrl 滚轮和横向手势不用于翻章 |
+| 手机手指滑动 | 保留组件原有手势，不增加全局翻章手势；通过 NEXT 体验连续上滑或点击章节直达 |
 
-## 章节过渡与冲突隔离
+原始页面自身仍拥有触摸事件和滚动区域。外层只接收经过区域规则筛选的滚轮消息，不抢 WORKS 拖动、PROFILE 手势或 CONTACT 点击。
 
-共享蓝色遮幕分别渐出 450ms、渐入 450ms；两个文档之间始终保持 #002FA7。真实资源加载和首次脚本执行可能增加总耗时，0.9 秒是过渡动画本身的时长。静态预取只缓存下一章节的资源，不提前执行其交互。浏览器后退/前进恢复时会清除旧遮幕与导航锁，避免 bfcache 还原后无法点击。
+## 批准版与修改边界
 
-章节切换由明确的导航操作触发。共享层不注册 wheel、touchmove 或触屏翻章手势：WORKS 原来的滚轮、拖动、惯性和吸附继续由轮盘处理，PROFILE 继续在自身区域滚动，CONTACT 继续只由点击/键盘启动对焦。减少动态效果设置下章节切换直接完成，CONTACT 原有的无闪光处理保留。
+| 页面 | 批准版实际来源 |
+| --- | --- |
+| HOME | main 1885091 的首页和 bubbles.js |
+| WORKS / PROJECT | main 1885091，已合并 PR #5 |
+| ABOUT | PR #9 / about-overview-balance，c2930a9 |
+| CONTACT | PR #14 / contact-focus-state-fix，0693928 |
 
-WORKS 原有 selected URL 参数与 anaphy-selected 会话存储接口保持不变。详情返回、跨章节回到 WORKS、刷新均恢复原来的稳定作品 ID；没有改为容易错位的数组位置。
+上一轮整合提交为 7514c5c。本轮将其四个内容文档原样移入 chapters，仅补充 base 路径、章节标识和资源版本；内部 body 标记不变。bubbles.js、ABOUT/CONTACT 的 34 个原型文件、作品数据、视频详情脚本/样式、WORKS 视觉 CSS 和原轮盘组件源码保持原样。
 
-## 实际验证
+WORKS 源码仅在已有详情跳转处加入导航桥接，避免在子文档里打开详情；重新构建现有 bundle，未改变卡片尺寸、曲率、透视、滚轮、惯性或吸附参数。详情仍在原 project.html 中正常打开，返回 WORKS 后以稳定作品 ID 恢复位置。URL selected 与原有 sessionStorage 状态同步到外层，非首个作品、跨章节返回及刷新均验证保持。
 
-Chromium 154，桌面与触屏仿真；未测试 Safari / Firefox 或真实手机硬件。
+HOME 离开视口时通过既有暂停按钮暂停后台漂动，返回时只恢复由导航暂停的漂动。用户手动暂停不会被覆盖，核心气泡代码与已经绘制的泡泡不重建。其他章节也保留自身模块状态。
 
-- 1440×900、390×844、320×568：实际渲染四页面并截图，均无横向溢出或脚本错误；额外检查 1920×1080、1366×768 下的导航菜单与布局。
-- 五种视口比较正式 ABOUT / CONTACT 与批准原型的身份、圆环、标题、正文、取景角标及片尾位置；ABOUT 五个模块的当前可见展开 SVG 与正文均与原型一致。
-- 桌面 HOME → WORKS → ABOUT → CONTACT → HOME 整圈导航、姓名快捷菜单、Escape 和浏览器历史恢复通过。
-- WORKS 实际滚轮控制、拖动中实时变化、释放后的惯性和最终吸附通过，无章节跳转；原有左右键与按钮不被共享层拦截。
-- 用非首个作品 placeholder-04 验证：中央作品进详情、返回、离开章节再返回、刷新均保持 04；视频仍不自动播放。实际作品视频目前为空，未声称测试不存在的真实视频。
-- ABOUT 五个模块在桌面及两种手机尺寸打开/关闭；TOOLKIT 软件说明切换通过。390px 下 PROFILE 内容完整可见，无需滚动；320px 下真实触屏滑动使 PROFILE 独立滚动，页面 scrollY 保持 0。
-- CONTACT 普通滚轮、真实触屏滑动不启动对焦，点击后保留锁定、快门及定格，重新对焦恢复初始状态；减少动态效果通过。
-- 首页气泡按钮、重置及导航命中范围检查通过；窄屏新署名缩小以避开原有控件，主体标题与画布不缩放。
-- 实测预取后完整翻章（含文档加载、绘制及测试等待）约 0.98～1.48 秒；首次冷启动 WORKS 曾约 2.15 秒，不能将动画时长等同于所有设备上的总加载时间。
-- 语法、Git 差异及批准文件校验通过。临时服务、测试脚本、报告和 node_modules 均在提交范围之外。
+## 实际测试
 
-## 截图与预览
+测试环境：本地 HTTP + Chromium 154，触屏为浏览器仿真，不是真实手机硬件。未验证 Safari / Firefox。
 
-独立审阅站点（不覆盖正式网站）：
-https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site
+- 1920×1080、1440×900、1366×768、390×844、320×568：实际截图并检查 HOME → WORKS 的中间形态。旧页底边与新页顶边误差小于 0.1px，轨道透明度始终为 1，效果时长为 1000ms。端到端一次记录约 1.28 秒，包含章节就绪等待和绘制，不将动画时长等同于所有设备上的总加载时间。
+- 验证唯一指示条 DOM 身份不变、opacity 始终为 1、横向尺寸不变为竖线、切换期间存在真实 transform 中间值。
+- 点击 CONTACT 后轨道立即位于 -3 × 视口高度，没有轨道动画，也不经过中间章节；只有同一个指示条继续平滑移动。
+- NEXT 正向循环、向上循环、移动中点击导航中断、窗口变化后的吸附、浏览器后退/前进均通过。
+- 三个桌面尺寸测试 HOME 普通滚轮、WORKS 内部滚轮只切作品、WORKS 留白向上返回。轮盘视觉与行为沿用批准组件。
+- 两种手机尺寸使用真实 touchStart/touchMove/touchEnd 事件验证轮盘拖动、PROFILE 独立滚动、CONTACT 滑动不误对焦/翻章、NEXT 和菜单点击。
+- 五种尺寸对比 iframe 内 ABOUT / CONTACT 与批准原型：主体几何、iframe 的真实视口尺寸、ABOUT 五模块可见展开 SVG 和正文一致。
+- 验证作品 04 的详情返回、跨章节返回、刷新恢复，以及 CONTACT 拍摄/重新对焦、TOOLKIT 切换、五模块打开关闭、减少动态效果。
+- 验证同章节点击不堆叠历史、姓名菜单 Escape、HOME 手动暂停跨章节保留。
+- 在 /anaphy-portfolio/ 仓库子路径实测资源加载、作品 03 ↔ 04 的历史恢复、浏览器前进以及从详情页浏览器后退。恢复子文档时使用 replace 导航，避免插入额外历史或截断前进记录。
+- 语法、Git 差异、原始内容及资源路径检查通过。临时服务、测试脚本、报告和 node_modules 不提交。
 
-使用当前 ChatGPT 账号访问。主页面截图：
+## 截图
 
-| 页面 | 桌面 | 手机 |
+| 内容 | 桌面 | 手机 |
 | --- | --- | --- |
 | HOME | [截图](docs/integration/previews/index-desktop.png) | [截图](docs/integration/previews/index-mobile.png) |
 | WORKS | [截图](docs/integration/previews/works-desktop.png) | [截图](docs/integration/previews/works-mobile.png) |
 | ABOUT | [截图](docs/integration/previews/about-desktop.png) | [截图](docs/integration/previews/about-mobile.png) |
 | CONTACT | [截图](docs/integration/previews/contact-desktop.png) | [截图](docs/integration/previews/contact-mobile.png) |
+| NEXT 移动中 | [截图](docs/integration/previews/next-mid-desktop.png) | [截图](docs/integration/previews/next-mid-mobile.png) |
+| CONTACT 定格 | [截图](docs/integration/previews/contact-focused-desktop.png) | [截图](docs/integration/previews/contact-focused-mobile.png) |
 
-本地在仓库根目录运行 `python3 -m http.server 8000 --bind 127.0.0.1`，同一设备访问 http://127.0.0.1:8000/index.html 。这是本机地址，远程用户请使用上方完整预览网址。链接按站点基址解析，可用于 GitHub Pages 的仓库子路径。
+[同一指示条移动中](docs/integration/previews/indicator-motion-desktop.png) · [手机快捷导航](docs/integration/previews/menu-mobile.png)
 
-真实作品继续在 assets/js/projects-data.js 编辑；CONTACT 联系资料继续使用 prototypes/contact-interaction/contact-config.js；ABOUT 的 CV 接口继续保留。当前未接入的资料保持待接入状态，不新增假作品、邮箱或下载文件。
+为清楚截取中间形态，NEXT 中间截图将浏览器中正在运行的原动画暂停于 250ms；另有未暂停的实时时长测试。截图来自实际渲染，没有拼接两个页面。
+
+## 本地预览与后续修改
+
+在仓库根目录运行 `python3 -m http.server 8000 --bind 127.0.0.1`，访问 http://127.0.0.1:8000/index.html 。远程请使用上方完整交互预览。部署时保留 chapters/、assets/、prototypes/ 等完整运行目录；章节同源承载，不能只上传四个入口文件。
+
+修改页面内容时编辑 chapters/ 对应文档或既有模块脚本，不把旧页面内容放回轨道入口。作品仍编辑 assets/js/projects-data.js，CONTACT 资料仍在 prototypes/contact-interaction/contact-config.js；全部占位保持原样，没有新增真实资料或虚假下载链接。

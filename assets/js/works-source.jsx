@@ -59,7 +59,9 @@ function Works() {
     // The source component focuses side cards first; only an aligned front card opens.
     if (Math.abs(offset) > .1) return;
     persist(index);
-    location.href = `project.html?id=${encodeURIComponent(projects[index].id)}`;
+    const destination = `project.html?id=${encodeURIComponent(projects[index].id)}`;
+    if (window.PortfolioNavigation?.openProject) window.PortfolioNavigation.openProject(destination);
+    else location.href = destination;
   };
   if (!projects.length) return <>
     <h1>暂时还没有作品</h1>

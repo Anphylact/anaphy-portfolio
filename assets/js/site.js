@@ -1,124 +1,198 @@
 'use strict';
 (() => {
-  const root = document.documentElement;
-  const pages = [ ['home','index.html','HOME','首页'], ['works','works.html','WORKS','作品'], ['about','about.html','ABOUT','关于'], ['contact','contact.html','CONTACT','联系'] ];
-  const base = new URL('../../', document.currentScript.src);
-  const here = location.pathname.split('/').pop() || 'index.html';
-  const detail = here === 'project.html';
-  const current = detail ? pages[1] : pages.find(page => page[1] === here);
-  if (!current) return;
-  root.dataset.sitePage = detail ? 'project' : current[0];
-  root.dataset.siteArriving = 'true';
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let leaving = false, menu, brand, veil, outgoing, incoming;
-  const absolute = name => new URL(name, base).href;
-  function closeMenu(restore = false) {
-    if (!menu || menu.hidden) return;
-    menu.hidden = true; brand.setAttribute('aria-expanded', 'false');
-    if (restore) brand.focus({ preventScroll: true });
+  const root=document.documentElement, base=new URL('../../',document.currentScript.src);
+  const pages=[['home','index.html','HOME','首页'],['works','works.html','WORKS','作品'],['about','about.html','ABOUT','关于'],['contact','contact.html','CONTACT','联系']];
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  const absolute=name=>new URL(name,base).href;
+  const onReady=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
+  const chapter=root.dataset.chapter;
+  if(chapter){
+    if(parent===window){ location.replace(absolute(pages.find(p=>p[0]===chapter)[1])+location.search); return; }
+    bridge();return;
   }
-  async function go(destination) {
-    const url = new URL(destination, location.href);
-    if (url.origin !== location.origin || leaving) return;
-    if (url.href === location.href) { closeMenu(true); return; }
-    leaving = true; closeMenu(); root.dataset.siteLeaving = 'true';
-    if (!reduced.matches) {
-      incoming?.cancel();
-      outgoing = veil.animate([{ opacity: getComputedStyle(veil).opacity }, { opacity: 1 }], { duration: 450, easing: 'ease-in-out', fill: 'forwards' });
-      try { await outgoing.finished; } catch {}
+  if(location.pathname.endsWith('/project.html')){
+    onReady(()=>document.getElementById('back')?.setAttribute('aria-label','返回作品选集 / Back to works'));return;
+  }
+  root.classList.add('site-host');onReady(host);
+
+  function bridge(){
+    const token=new URLSearchParams(location.search).get('site-frame');
+    const send=(type,extra={})=>parent.postMessage({channel:'portfolio-chapters',type,token,...extra},location.origin);
+    let brand, hostPaused=false, active=false;
+    window.PortfolioNavigation=Object.freeze({openProject:href=>send('project',{href})});
+    // Keep the approved carousel's own URL/session persistence; mirror its stable ID to the host URL.
+    if(chapter==='works'){
+      const replace=history.replaceState.bind(history);
+      history.replaceState=(...args)=>{const result=replace(...args);send('selection',{id:new URLSearchParams(location.search).get('selected')});return result;};
     }
-    location.assign(url.href);
-  }
-  function navigationLink(page) {
-    const a = document.createElement('a'); a.href = absolute(page[1]); a.className = 'site-chapter';
-    a.innerHTML = `<span class="site-en" lang="en">${page[2]}</span><span class="site-zh">${page[3]}</span>`;
-    a.setAttribute('aria-label', `${page[2]} / ${page[3]}`);
-    if (page === current) a.setAttribute('aria-current','page');
-    return a;
-  }
-  function mountChrome() {
-    const chrome = document.createElement('aside'); chrome.id = 'site-chrome'; chrome.setAttribute('aria-label','章节导航 / Chapter navigation');
-    const rail = document.createElement('nav'); rail.id = 'site-rail'; rail.setAttribute('aria-label','章节 / Chapters');
-    pages.forEach(page => rail.append(navigationLink(page))); chrome.append(rail);
-    const next = pages[(pages.indexOf(current)+1)%pages.length];
-    const nextLink = document.createElement('a'); nextLink.id = 'site-next'; nextLink.href = absolute(next[1]);
-    nextLink.setAttribute('aria-label',`下一页：${next[3]} / Next: ${next[2]}`);
-    nextLink.innerHTML = '<span class="site-next-circle" aria-hidden="true">↓</span><span class="site-next-label"><span class="site-en" lang="en">NEXT</span><span class="site-zh">下一页</span></span>';
-    chrome.append(nextLink); document.body.append(chrome);
-    const existing = document.querySelector('.name, .masthead > span:first-child, .signature > span:first-child');
-    brand = document.createElement('button'); brand.type = 'button'; brand.id = 'site-brand';
-    if (existing) {
-      brand.className = existing.className;
-      brand.innerHTML = existing.innerHTML;
-      if (current[0] === 'home') brand.firstChild.textContent = 'GAO MINGYUAN';
-      existing.replaceWith(brand);
-    } else { brand.textContent = 'GAO MINGYUAN'; brand.className = 'site-brand-new'; chrome.append(brand); }
-    brand.setAttribute('aria-label','GAO MINGYUAN · 快捷导航 / Quick navigation');
-    brand.setAttribute('aria-expanded','false'); brand.setAttribute('aria-controls','site-quick');
-    menu = document.createElement('nav'); menu.id = 'site-quick'; menu.hidden = true; menu.setAttribute('aria-label','快捷导航 / Quick navigation');
-    pages.forEach(page => menu.append(navigationLink(page))); document.body.append(menu);
-    brand.addEventListener('click', () => { const open = menu.hidden; menu.hidden = !open; brand.setAttribute('aria-expanded',String(open)); if (open) menu.querySelector('a').focus({preventScroll:true}); });
-    document.addEventListener('pointerdown', event => { if (!menu.contains(event.target) && !brand.contains(event.target)) closeMenu(); });
-    document.addEventListener('focusin', event => { if (!menu.contains(event.target) && !brand.contains(event.target)) closeMenu(); });
-    document.addEventListener('keydown', event => {
-      if (menu.hidden) return;
-      if (event.key === 'Escape') { event.preventDefault(); event.stopImmediatePropagation(); closeMenu(true); }
-      else if (['ArrowDown','ArrowUp','Home','End'].includes(event.key)) {
-        event.preventDefault(); const links = [...menu.children], index = links.indexOf(document.activeElement);
-        const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? 3 : (index + (event.key === 'ArrowDown' ? 1 : -1) + 4)%4;
-        links[nextIndex].focus();
+    window.addEventListener('message',event=>{
+      if(event.source!==parent||event.origin!==location.origin||event.data?.channel!=='portfolio-host')return;
+      const data=event.data;
+      if(data.type==='active'){
+        active=!!data.active;
+        if(chapter==='home'){
+          const motion=document.getElementById('motion');
+          if(!active&&motion?.getAttribute('aria-pressed')==='true'){hostPaused=true;motion.click();}
+          else if(active&&hostPaused){hostPaused=false;if(motion?.getAttribute('aria-pressed')==='false'&&!reduced.matches)motion.click();}
+        }
+      }else if(data.type==='menu')brand?.setAttribute('aria-expanded',String(!!data.open));
+      else if(data.type==='focus-brand')brand?.focus({preventScroll:true});
+    });
+    onReady(()=>{
+      const existing=document.querySelector('.name, .masthead > span:first-child, .signature > span:first-child');
+      brand=document.createElement('button');brand.type='button';brand.id='site-brand';
+      if(existing){brand.className=existing.className;brand.innerHTML=existing.innerHTML;if(chapter==='home')brand.firstChild.textContent='GAO MINGYUAN';existing.replaceWith(brand);}
+      else{brand.textContent='GAO MINGYUAN';brand.className='site-brand-new';document.body.append(brand);}
+      brand.setAttribute('aria-label','GAO MINGYUAN · 快捷导航 / Quick navigation');brand.setAttribute('aria-expanded','false');
+      brand.addEventListener('click',()=>send('menu'));
+      document.addEventListener('pointerdown',event=>{if(!brand.contains(event.target))send('dismiss-menu');});
+      document.addEventListener('click',event=>{
+        const a=event.target.closest('a[href]');
+        if(!a||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||a.hasAttribute('download')||(a.target&&a.target!=='_self'))return;
+        const url=new URL(a.href),index=pages.findIndex(p=>url.href.split('?')[0]===absolute(p[1]));
+        if(index>=0){event.preventDefault();send('jump',{index,selected:url.searchParams.get('selected')});}
+      });
+      document.addEventListener('about:related-works',()=>{const feedback=document.getElementById('feedback');if(feedback)feedback.textContent='正在前往作品选集…';send('jump',{index:1});});
+      if(chapter==='about'){
+        document.getElementById('close').textContent='× CLOSE / 关闭';
+        document.getElementById('related').textContent='↗ VIEW RELATED WORKS / 查看相关作品';
       }
-    }, true);
-  }
-  async function enter() {
-    // Head-time blue cover prevents unstyled/white frames between independent documents.
-    veil.style.opacity = '1'; delete root.dataset.siteArriving;
-    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    if (leaving) return;
-    if (!reduced.matches) {
-      incoming = veil.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450, easing: 'ease-in-out', fill: 'forwards' });
-      try { await incoming.finished; } catch {}
-    }
-    veil.style.opacity = '0'; incoming?.cancel();
-  }
-  function start() {
-    veil = document.createElement('div'); veil.id = 'site-transition'; veil.setAttribute('aria-hidden','true'); document.body.append(veil);
-    if (!detail) mountChrome();
-    document.addEventListener('click', event => {
-      const a = event.target.closest('a[href]');
-      if (!a || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || a.hasAttribute('download') || (a.target && a.target !== '_self')) return;
-      const url = new URL(a.href);
-      if (url.origin !== location.origin || ![...pages.map(p=>p[1]),'project.html'].some(name => url.pathname === new URL(name,base).pathname)) return;
-      event.preventDefault(); void go(url.href);
+      document.addEventListener('wheel',event=>{
+        if(!active||event.defaultPrevented||event.ctrlKey||Math.abs(event.deltaX)>Math.abs(event.deltaY)||!event.deltaY)return;
+        if(event.target.closest('.circular-carousel, #profile-scroll, button:not(#focus-trigger), a, input, textarea, select, [contenteditable="true"]'))return;
+        if(chapter==='about'&&document.getElementById('about').dataset.state!=='overview')return;
+        const direction=Math.sign(event.deltaY);
+        for(let node=event.target;node instanceof HTMLElement;node=node.parentElement){
+          const style=getComputedStyle(node);
+          if(/auto|scroll/.test(style.overflowY)&&node.scrollHeight>node.clientHeight+1&&((direction>0&&node.scrollTop+node.clientHeight<node.scrollHeight-1)||(direction<0&&node.scrollTop>0)))return;
+        }
+        const scroll=document.scrollingElement;
+        if(scroll.scrollHeight>innerHeight+1&&((direction>0&&scroll.scrollTop+innerHeight<scroll.scrollHeight-1)||(direction<0&&scroll.scrollTop>0)))return;
+        event.preventDefault();send('wheel',{delta:event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1)});
+      },{passive:false});
+      requestAnimationFrame(()=>requestAnimationFrame(()=>send('ready',{id:chapter==='works'?new URLSearchParams(location.search).get('selected'):null})));
     });
-    // The approved ABOUT emits this integration hook without changing its morph logic.
-    document.addEventListener('about:related-works', () => {
-      const feedback = document.getElementById('feedback'); if (feedback) feedback.textContent = '正在前往作品选集…';
-      void go(absolute('works.html'));
-    });
-    if (detail) document.getElementById('back')?.setAttribute('aria-label','返回作品选集 / Back to works');
-    if (current[0] === 'about') {
-      document.getElementById('close').textContent = '× CLOSE / 关闭';
-      document.getElementById('related').textContent = '↗ VIEW RELATED WORKS / 查看相关作品';
-    }
-    // Warm only the following chapter's static files; never execute its interaction code here.
-    const warm = () => {
-      const resources = {
-        home: ['works.html','assets/js/works.js','assets/js/projects-data.js','assets/css/works.css','assets/css/works-carousel.css'],
-        works: ['about.html','prototypes/about-interaction/about.js','prototypes/about-interaction/toolkit-profile.js','prototypes/about-interaction/about.css','prototypes/about-interaction/toolkit-profile.css'],
-        about: ['contact.html','prototypes/contact-interaction/contact.js','prototypes/contact-interaction/contact-config.js','prototypes/contact-interaction/contact.css'],
-        contact: ['index.html','bubbles.js']
-      };
-      for (const path of resources[current[0]]) { const link=document.createElement('link'); link.rel='prefetch'; link.href=absolute(path); document.head.append(link); }
-    };
-    if (!detail) { if ('requestIdleCallback' in window) requestIdleCallback(warm,{timeout:1500}); else setTimeout(warm,300); }
-    void enter();
   }
-  document.addEventListener('DOMContentLoaded', start, { once: true });
-  // A page restored from bfcache must not retain the outgoing opaque curtain or input lock.
-  window.addEventListener('pageshow', event => {
-    if (!event.persisted || !veil) return;
-    leaving = false; delete root.dataset.siteLeaving; outgoing?.cancel(); incoming?.cancel(); closeMenu(); void enter();
-  });
-  reduced.addEventListener('change', () => { if (reduced.matches) { incoming?.cancel(); outgoing?.finish(); } });
+
+  function host(){
+    const viewport=document.getElementById('site-viewport'),track=document.getElementById('site-track');
+    if(!viewport||!track)return;
+    let current=Math.max(0,pages.findIndex(p=>location.pathname.endsWith('/'+p[1]))), animation=null, epoch=0, moving=false;
+    let wheelSum=0,lastWheel=0,wheelDirection=0,lockUntil=0;
+    const slots=pages.map((page,index)=>{
+      const element=document.createElement('section');element.className='site-slot';element.dataset.chapter=page[0];element.style.top=`${index*100}%`;
+      const frame=document.createElement('iframe');frame.title=`${page[2]} / ${page[3]}`;frame.name=`portfolio-${page[0]}`;
+      element.append(frame);track.append(element);return{element,frame,ready:false,token:'',version:0,selected:null,resolve:null,promise:null};
+    });
+    const chrome=document.createElement('aside');chrome.id='site-chrome';chrome.setAttribute('aria-label','章节导航 / Chapter navigation');
+    const rail=document.createElement('nav');rail.id='site-rail';rail.setAttribute('aria-label','章节 / Chapters');
+    const menu=document.createElement('nav');menu.id='site-quick';menu.hidden=true;menu.setAttribute('aria-label','快捷导航 / Quick navigation');
+    const links=pages.map((page,index)=>{
+      const make=()=>{const a=document.createElement('a');a.href=absolute(page[1]);a.className='site-chapter';a.dataset.index=index;a.setAttribute('aria-label',`${page[2]} / ${page[3]}`);a.innerHTML=`<span class="site-en" lang="en">${page[2]}</span><span class="site-zh">${page[3]}</span>`;return a;};
+      const a=make();rail.append(a);menu.append(make());return a;
+    });
+    // Exactly one persistent indicator node. It is never replaced or faded.
+    const indicator=document.createElement('div');indicator.id='site-indicator';indicator.setAttribute('aria-hidden','true');rail.append(indicator);chrome.append(rail);
+    const next=document.createElement('a');next.id='site-next';next.innerHTML='<span class="site-next-circle" aria-hidden="true">↓</span><span class="site-next-label"><span class="site-en" lang="en">NEXT</span><span class="site-zh">下一页</span></span>';chrome.append(next);
+    const status=document.createElement('p');status.id='site-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+    document.body.append(chrome,menu,status);
+    const height=()=>viewport.clientHeight;
+    const transform=y=>`translate3d(0,${y}px,0)`;
+    const send=(slot,type,extra={})=>slot.frame.contentWindow?.postMessage({channel:'portfolio-host',type,...extra},location.origin);
+    function closeMenu(restore=false){if(menu.hidden)return;menu.hidden=true;slots.forEach(s=>send(s,'menu',{open:false}));if(restore)send(slots[current],'focus-brand');}
+    function placeIndicator(instant=false){
+      const r=rail.getBoundingClientRect(),a=links[current].getBoundingClientRect();
+      const y=innerWidth<=650?a.bottom-r.top-4:a.top-r.top+a.height/2-1;
+      if(instant)indicator.style.transition='none';
+      indicator.style.transform=`translateY(${y}px)`;
+      if(instant)requestAnimationFrame(()=>indicator.style.removeProperty('transition'));
+    }
+    function chromeState(instant=false){
+      root.dataset.sitePage=pages[current][0];root.dataset.siteReady=String(slots[current].ready);document.title=`${pages[current][2]} / ${pages[current][3]} · GAO MINGYUAN`;
+      links.forEach((a,i)=>{for(const link of[a,menu.children[i]]){if(i===current)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}});
+      const target=pages[(current+1)%4];next.href=absolute(target[1]);next.setAttribute('aria-label',`下一页：${target[3]} / Next: ${target[2]}`);placeIndicator(instant);
+    }
+    function route(replace=false){
+      const url=new URL(absolute(pages[current][1]));if(current===1&&slots[1].selected)url.searchParams.set('selected',slots[1].selected);
+      history[replace?'replaceState':'pushState']({chapter:pages[current][0]},'',url);chromeState();
+    }
+    function activate(){slots.forEach((s,i)=>{s.frame.inert=moving||i!==current;s.element.setAttribute('aria-hidden',String(i!==current));send(s,'active',{active:i===current});});}
+    function normalize(){slots.forEach((s,i)=>s.element.style.top=`${i*100}%`);track.style.transform=transform(-current*height());}
+    function cancel(){epoch++;animation?.cancel();animation=null;moving=false;delete root.dataset.siteMoving;normalize();activate();next.removeAttribute('aria-disabled');}
+    function load(index,selected){
+      const s=slots[index];if(s.ready&&(!selected||selected===s.selected))return Promise.resolve(true);if(s.promise&&(!selected||selected===s.selected))return s.promise;
+      s.resolve?.(false);clearTimeout(s.timeout);s.ready=false;s.token=`${index}-${++s.version}`;if(selected)s.selected=selected;
+      s.promise=new Promise(resolve=>s.resolve=resolve);
+      s.timeout=setTimeout(()=>{s.resolve?.(false);s.promise=null;if(current===index)status.textContent='章节未能加载，请点击章节重试 / Unable to load, select the chapter to retry';},15000);
+      const url=new URL(`chapters/${pages[index][0]}.html`,base);url.searchParams.set('site-frame',s.token);if(index===1&&s.selected)url.searchParams.set('selected',s.selected);
+      if(s.version>1){
+        // Replace the child entry: a historic selected-ID restore must not truncate host forward history.
+        try{s.frame.contentWindow.location.replace(url.href);}catch{s.frame.src=url.href;}
+      }else s.frame.src=url.href;
+      return s.promise;
+    }
+    function jump(index,{selected=null,push=true}={}){
+      closeMenu();if(index===current&&!moving&&slots[index].ready&&(!selected||selected===slots[index].selected))return;cancel();current=index;normalize();void load(index,selected);activate();chromeState();status.textContent='';if(push)route();lockUntil=performance.now()+550;wheelSum=0;
+    }
+    async function slide(direction){
+      if(moving)return;closeMenu();const from=current,to=(from+direction+4)%4,version=++epoch;
+      moving=true;root.dataset.siteMoving='true';next.setAttribute('aria-disabled','true');slots.forEach(s=>s.frame.inert=true);
+      const ready=await load(to);if(version!==epoch)return;
+      if(!ready){cancel();status.textContent='章节未能加载，请重试 / Chapter unavailable, please retry';return;}
+      const h=height(),virtual=from+direction;
+      if(virtual!==to)slots[to].element.style.top=`${virtual*100}%`;
+      send(slots[to],'active',{active:true});current=to;route();
+      if(!reduced.matches){
+        animation=track.animate([{transform:transform(-from*h)},{transform:transform(-virtual*h)}],{duration:1000,easing:'cubic-bezier(.22,.61,.36,1)',fill:'forwards'});
+        try{await animation.finished;}catch{return;}
+      }
+      if(version!==epoch)return;
+      track.style.transform=transform(-to*height());animation?.cancel();animation=null;
+      slots.forEach((s,i)=>s.element.style.top=`${i*100}%`);moving=false;delete root.dataset.siteMoving;next.removeAttribute('aria-disabled');activate();lockUntil=performance.now()+550;
+    }
+    function wheel(delta){
+      const now=performance.now();if(moving||now<lockUntil||!Number.isFinite(delta))return;
+      const direction=Math.sign(delta);if(!direction)return;
+      if(now-lastWheel>200||direction!==wheelDirection)wheelSum=0;
+      lastWheel=now;wheelDirection=direction;wheelSum+=Math.abs(delta);
+      if(wheelSum>=100){wheelSum=0;void slide(direction);}
+    }
+    window.addEventListener('message',event=>{
+      if(event.origin!==location.origin||event.data?.channel!=='portfolio-chapters')return;
+      const index=slots.findIndex(s=>s.frame.contentWindow===event.source);if(index<0)return;
+      const data=event.data,s=slots[index];if(data.token!==s.token)return;
+      if(data.type==='ready'){
+        clearTimeout(s.timeout);s.ready=true;if(typeof data.id==='string')s.selected=data.id;s.resolve?.(true);send(s,'active',{active:index===current});
+        if(index===current){status.textContent='';root.dataset.siteReady='true';if(index===1)route(true);}
+      }else if(data.type==='selection'&&typeof data.id==='string'&&data.id.length<=200){s.selected=data.id;if(current===1)route(true);}
+      else if(index===current){
+        if(data.type==='wheel')wheel(data.delta);
+        else if(data.type==='jump'&&Number.isInteger(data.index)&&data.index>=0&&data.index<4)jump(data.index,{selected:data.selected});
+        else if(data.type==='menu'){const open=menu.hidden;menu.hidden=!open;send(s,'menu',{open});if(open)menu.children[current].focus({preventScroll:true});}
+        else if(data.type==='dismiss-menu')closeMenu();
+        else if(data.type==='project'&&typeof data.href==='string'){
+          const url=new URL(data.href,base);if(url.origin===location.origin&&url.pathname===new URL('project.html',base).pathname)location.assign(url.href);
+        }
+      }
+    });
+    document.addEventListener('click',event=>{
+      const a=event.target.closest('a[href]');if(!a||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+      if(a===next){event.preventDefault();void slide(1);}
+      else if(a.closest('#site-rail, #site-quick')){event.preventDefault();jump(Number(a.dataset.index));}
+    });
+    document.addEventListener('keydown',event=>{
+      if(menu.hidden)return;
+      if(event.key==='Escape'){event.preventDefault();closeMenu(true);}
+      else if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)){event.preventDefault();const at=[...menu.children].indexOf(document.activeElement);const to=event.key==='Home'?0:event.key==='End'?3:(at+(event.key==='ArrowDown'?1:-1)+4)%4;menu.children[to].focus();}
+    });
+    document.addEventListener('pointerdown',event=>{if(!menu.contains(event.target))closeMenu();});
+    document.addEventListener('wheel',event=>{if(event.ctrlKey||Math.abs(event.deltaX)>Math.abs(event.deltaY)||event.target.closest('#site-chrome, #site-quick'))return;event.preventDefault();wheel(event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?height():1));},{passive:false});
+    window.addEventListener('popstate',()=>{const index=pages.findIndex(p=>location.pathname.endsWith('/'+p[1]));if(index>=0)jump(index,{selected:new URLSearchParams(location.search).get('selected'),push:false});});
+    window.addEventListener('resize',()=>{cancel();placeIndicator(true);});
+    reduced.addEventListener('change',()=>{if(reduced.matches&&animation)animation.finish();});
+    if('scrollRestoration'in history)history.scrollRestoration='manual';
+    const selected=new URLSearchParams(location.search).get('selected');if(selected)slots[1].selected=selected;
+    normalize();chromeState(true);route(true);activate();
+    void load(current,selected);pages.forEach((_,i)=>{if(i!==current)void load(i,i===1?selected:null);});
+  }
 })();
