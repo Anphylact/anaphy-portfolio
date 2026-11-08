@@ -9,6 +9,7 @@
   const mix = (a, b, t) => a + (b - a) * t;
   const ease = t => (1 - Math.cos(Math.PI * clamp(t))) / 2;
   const phase = (p, start, end) => ease((p - start) / (end - start));
+  let chapterVisible=parent===window||!document.documentElement.dataset.chapter, inactiveAt=performance.now();
   let progress = 0, destination = 0, transition = null, raf = 0, last = 0, W = innerWidth, H = innerHeight;
   let pointer = { x: 0, y: 0 }, offset = { x: 0, y: 0 }, hovering = -1, hoverValues = [0, 0, 0, 0, 0];
   let active = 0, camera = null, aim = { x: 0, y: 0 }, aimOffset = { x: 0, y: 0 };
@@ -212,7 +213,7 @@
     if (progress) close.focus({ preventScroll: true }); else { modules[active].button.focus({ preventScroll: true }); active = 0; }
   }
   function tick(now) {
-    raf = 0; const dt = last ? Math.min((now - last) / 1000, .05) : 1 / 60; last = now;
+    raf = 0; if(!chapterVisible||document.hidden){last=0;return;} const dt = last ? Math.min((now - last) / 1000, .05) : 1 / 60; last = now;
     if (transition) {
       const t = clamp((now - transition.start) / transition.duration);
       progress = mix(transition.from, transition.to, ease(t));
@@ -225,7 +226,7 @@
     render();
     if (transition || Math.abs(aimOffset.x-aim.x) > .01 || Math.abs(aimOffset.y-aim.y) > .01 || Math.abs(offset.x - pointer.x) > .01 || Math.abs(offset.y - pointer.y) > .01 || hoverValues.some((v, i) => Math.abs(v - (hovering === i ? 1 : 0)) > .001)) request(); else last = 0;
   }
-  function request() { if (!raf) raf = requestAnimationFrame(tick); }
+  function request() { if (!raf&&chapterVisible&&!document.hidden) raf = requestAnimationFrame(tick); }
   window.addEventListener('pointermove', event => {
     if (active === 1 && progress === 1 && !transition && !reduced.matches && event.pointerType === 'mouse' && camera) {
       const x = (event.clientX-camera.cx)/(camera.width/2), y = (event.clientY-camera.cy)/(camera.height/2);
@@ -240,5 +241,11 @@
   close.addEventListener('click', () => animateTo(0));
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && progress === 1 && !transition) animateTo(0); });
   related.addEventListener('click', () => { feedback.textContent = '作品链接将在正式接入时启用'; related.setAttribute('aria-pressed', 'true'); root.dispatchEvent(new CustomEvent('about:related-works', { bubbles: true, detail: { module: names[active].toLowerCase(), index: active } })); });
+  window.PortfolioAbout=Object.freeze({setActive(value){
+    value=!!value;if(value===chapterVisible)return;
+    if(!value){inactiveAt=performance.now();cancelAnimationFrame(raf);raf=0;last=0;}
+    else{if(transition)transition.start+=performance.now()-inactiveAt;last=0;}
+    chapterVisible=value;if(value)request();
+  }});
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`); timeline.setAttribute('opacity', '0'); render();
 })();

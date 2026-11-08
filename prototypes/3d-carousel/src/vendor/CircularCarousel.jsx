@@ -520,7 +520,7 @@ const CircularCarousel = ({
         const tau = 0.18 + s.momentum * 1.5;
         state.velocity += (cruise - state.velocity) * (1 - Math.exp(-dt / tau));
         state.angle += state.velocity * dt;
-        if (cruise === 0 && s.snap && Math.abs(state.velocity) < SETTLE_SPEED) {
+        if (cruise === 0 && s.snap && Math.abs(state.velocity) < SETTLE_SPEED && Math.abs(nearest(state.angle) - state.angle) > 0.004) {
           state.target = nearest(state.angle);
         }
         busy = busy || cruise !== 0 || Math.abs(state.velocity) > 0.01 || state.target !== null;
@@ -537,7 +537,7 @@ const CircularCarousel = ({
         state.stepAt = 0;
       }
 
-      if (now < state.holdUntil) busy = true;
+      if (s.autoplay !== 'off' && now < state.holdUntil) busy = true;
 
       const ease = 1 - Math.exp(-dt / 0.35);
       const aimYaw = state.pointer.inside ? state.pointer.x * s.parallax * 9 : 0;
@@ -720,8 +720,9 @@ const CircularCarousel = ({
     apiRef.current = { focusIndex, stepBy,
       setSuspended: value => {
         const state = stateRef.current;
+        if(state.suspended===!!value)return;
         state.suspended = !!value;
-        if (value) { clearTimeout(state.wheelTimer); state.velocity = 0; state.target = null; }
+        if (value) { clearTimeout(state.wheelTimer); state.velocity = 0; state.target = null; state.press = null; if(state.drag){state.drag=false;setDragging(false);} }
         state.last = 0;
         wakeRef.current();
       }, readState: () => ({ angle: stateRef.current.angle, target: stateRef.current.target, fit: stateRef.current.fit, suspended: stateRef.current.suspended }) };

@@ -4,6 +4,9 @@
   const root=$('contact'), frame=$('viewfinder'), autofocus=$('autofocus'), flash=$('shutter-flash'), trigger=$('focus-trigger'), panel=$('contact-panel');
   const control=$('capture-control'), feedback=$('copy-feedback');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  let chapterVisible=parent===window||!document.documentElement.dataset.chapter,inactiveAt=performance.now();
+  const corners=[...$('af-corners').children];
+  const text=(node,value)=>{if(node.textContent!==value)node.textContent=value;};
   let playhead=0, goal=0, animation=null, raf=0;
   let contact={email:null,wechat:null,resumeUrl:null,wechatQrUrl:null}, copyEpoch=0, feedbackToken=0;
   const ease=x=>(1-Math.cos(Math.PI*x))/2;
@@ -21,11 +24,13 @@
     // Refocus resets clarity monotonically; it does not replay a shutter backwards.
     const reset=animation?ease((animation.from-playhead)/(animation.from-animation.to||1)):1;
     const blur=goal===0&&animation?animation.fromBlur+(20-animation.fromBlur)*reset:goal===0?20:sample(blurStops,playhead);
-    panel.style.filter=`blur(${blur}px)`;
+    const filter=blur===0?'none':`blur(${blur.toFixed(3)}px)`;
+    if(panel.style.filter!==filter)panel.style.filter=filter;
     // A permanent cross and nearby corner strokes form one compact AF reticle.
     const tightening=phase(0,.18)*(1-phase(.25,.43))+.65*phase(.46,.64)*(1-phase(.72,.78));
     const inset=34-7*tightening, arm=12;
-    for(const path of $('af-corners').children)path.setAttribute('d',`M ${inset-arm} ${-inset} L ${inset} ${-inset} L ${inset} ${-inset+arm}`);
+    const corner=`M ${inset-arm} ${-inset} L ${inset} ${-inset} L ${inset} ${-inset+arm}`;
+    for(const path of corners)if(path.getAttribute('d')!==corner)path.setAttribute('d',corner);
     autofocus.style.opacity=String(1-phase(.79,.85));
     autofocus.style.transform=`translate(-50%, -50%) scale(${1-.08*tightening})`;
     const weight=1.2+.6*phase(.72,.77);
@@ -36,16 +41,17 @@
     const state=focused?'focused':!animation?'standby':goal===0?'defocusing':playhead<.72?'focusing':playhead<.79?'locked':'shutter';
     root.dataset.state=state;
     root.dataset.progress=String(playhead);
-    panel.inert=!focused;
-    trigger.disabled=focused||!!animation;
-    $('camera-state').textContent=({focused:'FOCUSED / 已对焦',standby:'STANDBY / 待机',defocusing:'STANDBY / 待机',focusing:'FOCUSING / 对焦中',locked:'LOCKED / 已锁定',shutter:'CAPTURE / 拍摄'})[state];
+    if(panel.inert===focused)panel.inert=!focused;
+    if(trigger.disabled!==(focused||!!animation))trigger.disabled=focused||!!animation;
+    text($('camera-state'),({focused:'FOCUSED / 已对焦',standby:'STANDBY / 待机',defocusing:'STANDBY / 待机',focusing:'FOCUSING / 对焦中',locked:'LOCKED / 已锁定',shutter:'CAPTURE / 拍摄'})[state]);
     const message=focused?["IN FOCUS. LET'S CONNECT.",'已对焦，期待与你联系。']:!animation||goal===0?['OUT OF FOCUS','尚未对焦']:state==='locked'?['FOCUS LOCKED','焦点已锁定']:state==='shutter'?['CAPTURING...','正在拍摄…']:['FOCUSING...','正在对焦…'];
     if($('focus-en').textContent!==message[0])$('focus-en').textContent=message[0];
     if($('focus-zh').textContent!==message[1])$('focus-zh').textContent=message[1];
-    control.children[0].textContent=focused?'REFOCUS':'CLICK TO FOCUS';
-    control.children[1].textContent=focused?'重新对焦':'点击对焦';
-    control.disabled=!!animation;
-    control.setAttribute('aria-label',focused?'重新对焦，恢复尚未对焦状态 / Refocus':'点击对焦 / Click to focus');
+    text(control.children[0],focused?'REFOCUS':'CLICK TO FOCUS');
+    text(control.children[1],focused?'重新对焦':'点击对焦');
+    if(control.disabled!==!!animation)control.disabled=!!animation;
+    const label=focused?'重新对焦，恢复尚未对焦状态 / Refocus':'点击对焦 / Click to focus';
+    if(control.getAttribute('aria-label')!==label)control.setAttribute('aria-label',label);
 
   }
   function finish(next) {
@@ -56,19 +62,19 @@
   function go(next) {
     cancelAnimationFrame(raf);raf=0;
     feedbackToken++;feedback.replaceChildren();
-    const fromBlur=parseFloat(panel.style.filter.match(/[\d.]+/)?.[0]||'20');
+    const fromBlur=panel.style.filter==='none'?0:parseFloat(panel.style.filter.match(/[\d.]+/)?.[0]||'20');
     goal=next;
     if(reduced.matches){finish(next);return;}
     if(next===playhead){finish(next);return;}
     // Reversal starts from the current blur value; no geometry or content is replaced.
     animation={from:playhead,to:next,fromBlur,start:performance.now(),duration:(next?1800:650)*Math.abs(next-playhead)};
-    frame.setAttribute('aria-busy','true');render();raf=requestAnimationFrame(tick);
+    frame.setAttribute('aria-busy','true');render();if(chapterVisible&&!document.hidden)raf=requestAnimationFrame(tick);
   }
   function tick(now) {
-    raf=0;if(!animation)return;
+    raf=0;if(!animation||!chapterVisible||document.hidden)return;
     const t=Math.min(1,(now-animation.start)/animation.duration);
     playhead=animation.from+(animation.to-animation.from)*t;
-    if(t===1||(animation.to===1&&playhead>=.85))finish(animation.to);else{render();raf=requestAnimationFrame(tick);}
+    if(t===1||(animation.to===1&&playhead>=.85))finish(animation.to);else{render();if(chapterVisible&&!document.hidden)raf=requestAnimationFrame(tick);}
   }
   trigger.addEventListener('click',()=>{if(!animation)go(1);});
   control.addEventListener('click',()=>{if(!animation)go(playhead===1?0:1);});
@@ -112,6 +118,12 @@
     catch{if(epoch===copyEpoch&&ticket===feedbackToken)showFeedback('PLEASE COPY MANUALLY.','未能自动复制，请选中上方信息手动复制。');}
     finally{if(epoch===copyEpoch)button.disabled=!contact[field];}
   });
+  window.PortfolioContact=Object.freeze({setActive(value){
+    value=!!value;if(value===chapterVisible)return;
+    if(!value){inactiveAt=performance.now();cancelAnimationFrame(raf);raf=0;}
+    else if(animation)animation.start+=performance.now()-inactiveAt;
+    chapterVisible=value;if(value&&animation&&!raf)raf=requestAnimationFrame(tick);
+  }});
   window.ContactPrototype=Object.freeze({configure});configure(window.CONTACT_CONFIG||{});
   function layout() {
     // Preserve the approved final geometry, including its integer clientWidth rounding.

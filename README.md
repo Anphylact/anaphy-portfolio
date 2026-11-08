@@ -4,7 +4,7 @@
 
 ## 预览
 
-https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=shared-project-4
+https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=runtime-5
 
 使用当前 ChatGPT 账号访问；该独立预览不覆盖正式网站或旧原型。
 
@@ -23,15 +23,17 @@ python3 -m http.server 8000 --bind 127.0.0.1
 - project.html：原作品详情和视频播放器；返回时恢复选中作品。
 - assets/css/site.css、assets/js/site.js：纵向位移、吸附、单一固定指示横杠、双语导航及页面桥接。
 
-顺序 HOME → WORKS → ABOUT → CONTACT → HOME。NEXT 和允许区域的鼠标滚轮播放约 1 秒整页位移；右侧导航和姓名菜单直接定位目标，只有指示横杠平滑移动。向上滚轮可返回上一章。
+顺序 HOME → WORKS → ABOUT → CONTACT → HOME。NEXT 和允许区域的鼠标滚轮播放约 1 秒整页位移；CONTACT 的按钮显示 BACK TO HOME / 返回首页，使用一次连续过渡回到 HOME；右侧导航和姓名菜单直接定位目标，只有指示横杠平滑移动。向上滚轮可返回上一章。
 
 WORKS 轮盘和 ABOUT 展开模块优先处理自己的滚轮；PROFILE 独立滚动。手机保留组件手势，使用 NEXT 或章节名称翻章，避免误触。支持减少动态效果。
 
 [批准版来源、实施边界、实际测试与截图](INTEGRATION-GUIDE.md)
 
+[本轮性能记录与复现](docs/integration/performance/RUNTIME-5.md)
+
 [作品数据与现有构建说明](WORKS-GUIDE.md)
 
-作品和联系方式仍为原有占位，不增加假作品、邮箱、微信号或简历文件。bubbles.js 和原轮盘组件代码保留原样，WORKS bundle 只增加详情页导航适配。
+作品和联系方式仍为原有占位，不增加假作品、邮箱、微信号或简历文件。保留已确认的页面布局和动画图形。运行层按需加载章节、隐藏时暂停，轮盘停稳后不再空转；软件 WebGL 单独降低绘制负载，正常硬件保持原画质与节奏。
 
 气泡参考原始说明：https://tympanus.net/codrops/2026/10/06/yichen-xie-portfolio/
 

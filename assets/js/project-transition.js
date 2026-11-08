@@ -11,9 +11,11 @@
     return { left, top, width: Math.max(...boxes.map(r => r.right)) - left, height: Math.max(...boxes.map(r => r.bottom)) - top };
   };
   function detail() {
-    if (!embedded) return;
+    const back=document.getElementById('back');
+    if (!embedded||!back||back.dataset.portfolioCloseBound==='true') return;
+    back.dataset.portfolioCloseBound='true';
     const send = () => parent.postMessage({ channel: 'portfolio-detail', type: 'close' }, location.origin);
-    document.getElementById('back').addEventListener('click', event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); send(); } });
+    back.addEventListener('click', event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); send(); } });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && !document.fullscreenElement) { event.preventDefault(); send(); } });
   }
   function create({ base, works, prepare, lock, unlock, closeMenu, error }) {
@@ -22,6 +24,7 @@
     const styles = new Promise(resolve => { const timer = setTimeout(() => resolve(false), 3000); css.onload = () => { clearTimeout(timer); styleReady = true; resolve(true); }; css.onerror = () => { clearTimeout(timer); resolve(false); }; });
     document.head.append(css);
     let state = 'closed', layer = null, frame = null, clone = null, animations = [], restore = [], source = null;
+    const owner=crypto.randomUUID?.()||String(Date.now()+Math.random());
     let operation = 0, motion = 0, id = null, returnURL = null, historyClosing = false, closeAfter = null, cancelLoad = null;
     const active = () => state !== 'closed';
     function setState(value) { state = value; if (value === 'closed') delete root.dataset.siteProject; else root.dataset.siteProject = value; }
@@ -102,7 +105,7 @@
       const url = new URL(href, base), nextId = url.searchParams.get('id');
       if (active()) {
         if (state === 'closing' && nextId === id) { ++operation; closeAfter = null; historyClosing = false; void drive(true); }
-        else if (nextId !== id) void close(() => { if (location.pathname.endsWith('/project.html')) void open(href, { push }); });
+        else if (nextId !== id) void close(() => { if (/\/project(?:\.html)?\/?$/.test(location.pathname)) void open(href, { push }); });
         return;
       }
       const version = ++operation; id = nextId;
@@ -122,10 +125,14 @@
           cancelLoad = () => { clearTimeout(timer); reject(Error('detail cancelled')); };
           frame.onload = () => { clearTimeout(timer); cancelLoad = null; resolve(); }; frame.onerror = () => { clearTimeout(timer); cancelLoad = null; reject(Error('detail unavailable')); };
         });
-        url.searchParams.set('site-detail', '1'); frame.src = url.href; await loaded;
+        url.searchParams.set('site-detail', 'runtime-5'); frame.src = url.href; await loaded;
         if (version !== operation) return;
         if (!frame.contentDocument.querySelector('.video-frame')) throw Error('detail unavailable');
-        if (push) { const route = new URL(href, base); history.pushState({ chapter: 'works', portfolioDetail: true, id }, '', route); }
+        if (push) {
+          // Always establish the actual WORKS return entry before adding the detail route.
+          history.replaceState({chapter:'works'},'',returnURL);
+          const route = new URL(href, base); history.pushState({ chapter: 'works', portfolioDetail: true, detailOwner:owner, id }, '', route);
+        }
         document.title = frame.contentDocument.title;
         build(); await drive(true);
       } catch (e) { if (version === operation) { ++motion; cleanup(); error(); } }
@@ -144,8 +151,12 @@
     function requestClose() {
       if (state !== 'open' || historyClosing) return;
       historyClosing = true;
-      if (history.state?.portfolioDetail) history.back();
-      else { history.replaceState({ chapter: 'works' }, '', returnURL); void close(); }
+      const entries=window.navigation?.entries(),at=window.navigation?.currentEntry?.index;
+      const previousURL=entries&&at>0?entries[at-1]?.url:null;
+      const previous=previousURL?new URL(previousURL):null;
+      const knownList=history.state?.detailOwner===owner&&(!previous||/\/works(?:\.html)?\/?$/.test(previous.pathname));
+      if(knownList)history.back();
+      else { history.replaceState({ chapter: 'works' }, '', returnURL); void close(()=>window.dispatchEvent(new PopStateEvent('popstate',{state:history.state}))); }
     }
     function exitTo(after) { if (!active()) { after(); return; } history.replaceState({ chapter: 'works' }, '', returnURL); void close(after); }
     window.addEventListener('message', event => { if (event.origin === location.origin && event.source === frame?.contentWindow && event.data?.channel === 'portfolio-detail' && event.data.type === 'close') requestClose(); });
@@ -157,4 +168,6 @@
     return Object.freeze({ active, open, close, exitTo });
   }
   window.PortfolioProjectTransition = Object.freeze({ create, detail });
+  // Bind the embedded close independently of the chapter router, once per anchor.
+  if(embedded){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',detail,{once:true});else detail();}
 })();

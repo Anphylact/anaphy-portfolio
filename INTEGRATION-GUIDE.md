@@ -2,7 +2,25 @@
 
 本轮继续更新同一分支 integrate-approved-portfolio 和同一 PR #15，不创建重复 PR，不合并 main。
 
-预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=shared-project-4
+预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=runtime-5
+
+## 本轮：返回路径与性能（runtime-5）
+
+- 兼容 `.html` 和无后缀 URL。已在本地模拟静态托管重定向复现 `/project` 不识别、旧箭头保留、`/works` 被误判 HOME 的问题；修复后走同一 WORKS 轮盘收回动画。此为受控复现，没有声称已抓取线上托管 HTTP 头。
+- `project.html` 从 HTML 层就提供统一右上角白色 SVG X；关闭链接明确指向 WORKS + 作品 ID。嵌入详情仍通过父层执行原 800ms 反向动画；历史条目带本次实例标记并校验返回路径，无法验证时显式回 WORKS。直接详情、未知作品或部分加载时也不盲目返回浏览器历史中的 HOME。
+- CONTACT 底部为 BACK TO HOME / 返回首页，仍水平居中并考虑安全区；使用原封闭章节轨道的一步、约 1 秒返回，不穿过中间两章。唯一章节指示条保持并移动。
+- 当前章节按需加载，访问过的实例保留；隐藏章节使用 visibility + inert 和显式运行生命周期停止 rAF/定时器。页面位移时冻结离开章节，保留其画面，只启动进入章节；will-change 只在章节位移期间启用。
+- 修复轮盘停稳后不断设置相同吸附目标的空转；原弹簧、卡片尺寸、透视和拖动算法保留。清理隐藏时未结束的拖动状态。
+- CONTACT 保留原信息区 blur 范围、二次寻焦、快门与几何，仅减少相同文案、属性、SVG 路径的重复写入。ABOUT 只增加隐藏暂停/恢复时钟，不改变路径、布局或动画时长。
+- HOME 保留原 shader、气泡几何和互动公式。正常硬件仍采用原分辨率上限和绘制节奏；仅检测到软件 WebGL 时把背缓冲限制约 36 万像素，空闲最多 12 次/秒，交互阶段最多 24 次/秒，为输入留出主线程时间；不是取消气泡效果。用户手动暂停状态保留。
+
+**实测**：Chromium 154，本地 HTTP 普通路径 + `.html→无后缀` 重定向环境，1920×1080、1440×900、1366×768、390×844、320×568。按 HOME→WORKS→非首部作品→详情→X 返回→再次打开/浏览器后退→ABOUT 模块/菜单关闭→CONTACT→返回 HOME 验收。轮盘恢复选中 ID/角度，关闭后滚轮/拖动继续可用，外层 timeOrigin 未变。手机用真实触屏事件验证轮盘、PROFILE、关闭和返回；隐藏中途动画停止、返回续播，HOME 手动暂停保持；原共享过渡的起点/终点误差仍 <0.1px。
+
+[性能方法、数值及限制](docs/integration/performance/RUNTIME-5.md) · [实际采样 JSON](docs/integration/performance/runtime-5-samples.json)。没有可靠的真实手机 FPS 或 GPU 显存数据，不作此类声明；未测试 Safari/Firefox，也没有真实作品视频可验证。
+
+截图：[桌面 X](docs/integration/previews/runtime-5/detail-desktop.png) · [手机 X](docs/integration/previews/runtime-5/detail-mobile.png) · [桌面返回首页](docs/integration/previews/runtime-5/contact-desktop.png) · [手机返回首页](docs/integration/previews/runtime-5/contact-mobile.png) · [320px](docs/integration/previews/runtime-5/contact-short-mobile.png)。
+
+以下为历史轮次记录，文件保护清单与测试结论仅对应当轮；当前运行优化以本节为准。
 
 ## WORKS 共享封面展开与统一关闭（shared-project-4）
 

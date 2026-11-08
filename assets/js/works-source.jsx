@@ -58,6 +58,7 @@ function Works() {
       getIndex: () => savedIndex()
     };
     window.PortfolioWorks = handle;
+    window.dispatchEvent(new Event('portfolio:works-ready'));
     return () => { if (window.PortfolioWorks === handle) delete window.PortfolioWorks; };
   }, []);
   const change = index => { setSelected(index); persist(index); };

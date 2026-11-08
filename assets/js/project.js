@@ -5,6 +5,8 @@
   const index = projects.findIndex(project => project.id === id);
   const project = projects[index];
   const back = document.getElementById('back');
+  // A direct or partially loaded detail always falls back to WORKS, never browser-history HOME.
+  if(id)back.href=`works.html?selected=${encodeURIComponent(id)}`;
   const placeholder = document.getElementById('placeholder');
   const video = document.getElementById('video');
   const note = document.getElementById('video-note');
