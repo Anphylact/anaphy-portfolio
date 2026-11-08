@@ -274,6 +274,7 @@ const CircularCarousel = ({
   const stateRef = useRef({
     angle: -startIndex * step,
     velocity: 0,
+    suspended: false,
     target: null,
     dir: 0,
     press: null,
@@ -481,6 +482,7 @@ const CircularCarousel = ({
     };
 
     const advance = (s, dt, now) => {
+      if (state.suspended) return false;
       if (!state.introDone && readyRef.current) {
         if (!state.intro) {
           if (s.intro === 'none') state.introDone = true;
@@ -648,7 +650,7 @@ const CircularCarousel = ({
 
     const onWheel = event => {
       const s = settingsRef.current;
-      if (!s.draggable) return;
+      if (!s.draggable || state.suspended) return;
       const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
       if (!delta || event.ctrlKey || state.drag) return;
       event.preventDefault();
@@ -715,7 +717,14 @@ const CircularCarousel = ({
 
   useEffect(() => {
     if (!apiRef) return;
-    apiRef.current = { focusIndex, stepBy, readState: () => ({ angle: stateRef.current.angle, target: stateRef.current.target, fit: stateRef.current.fit }) };
+    apiRef.current = { focusIndex, stepBy,
+      setSuspended: value => {
+        const state = stateRef.current;
+        state.suspended = !!value;
+        if (value) { clearTimeout(state.wheelTimer); state.velocity = 0; state.target = null; }
+        state.last = 0;
+        wakeRef.current();
+      }, readState: () => ({ angle: stateRef.current.angle, target: stateRef.current.target, fit: stateRef.current.fit, suspended: stateRef.current.suspended }) };
     return () => { apiRef.current = null; };
   }, [apiRef, focusIndex, stepBy]);
 

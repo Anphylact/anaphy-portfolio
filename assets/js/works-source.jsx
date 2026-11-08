@@ -50,6 +50,16 @@ function Works() {
     });
     return () => { cancelled = true; images.forEach(image => { image.onerror = null; }); };
   }, []);
+  useEffect(() => {
+    // Narrow integration hook: preserve the actual ring, including its angle and parallax.
+    const handle = {
+      suspend: value => { if (!api.current) return false; api.current.setSuspended(value); return true; },
+      readState: () => api.current?.readState(),
+      getIndex: () => savedIndex()
+    };
+    window.PortfolioWorks = handle;
+    return () => { if (window.PortfolioWorks === handle) delete window.PortfolioWorks; };
+  }, []);
   const change = index => { setSelected(index); persist(index); };
   const openProject = (_, index) => {
     const state = api.current?.readState();
