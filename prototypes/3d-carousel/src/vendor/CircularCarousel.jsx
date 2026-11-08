@@ -720,6 +720,12 @@ const CircularCarousel = ({
   useEffect(() => {
     if (!apiRef) return;
     apiRef.current = { focusIndex, stepBy,
+      selectIndex: index => {
+        const state=stateRef.current,s=settingsRef.current;
+        const target=-index*s.step;
+        state.angle=target+360*Math.round((state.angle-target)/360);
+        state.target=null;state.velocity=0;state.last=0;wakeRef.current();
+      },
       setSuspended: value => {
         const state = stateRef.current;
         if(state.suspended===!!value)return;

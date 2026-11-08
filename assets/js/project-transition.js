@@ -18,26 +18,27 @@
     back.addEventListener('click', event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); send(); } });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && !document.fullscreenElement) { event.preventDefault(); send(); } });
   }
-  function create({ base, works, prepare, lock, unlock, error }) {
+  function create({ base, works, prepare, lock, unlock, select, error }) {
     const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = new URL('assets/css/works-carousel.css', base);
     let styleReady = false;
     const styles = new Promise(resolve => { const timer = setTimeout(() => resolve(false), 3000); css.onload = () => { clearTimeout(timer); styleReady = true; resolve(true); }; css.onerror = () => { clearTimeout(timer); resolve(false); }; });
     document.head.append(css);
     let state = 'closed', layer = null, frame = null, clone = null, animations = [], restore = [], source = null;
     const owner=crypto.randomUUID?.()||String(Date.now()+Math.random());
+    let frameReady = null;
     let operation = 0, motion = 0, id = null, returnURL = null, historyClosing = false, closeAfter = null, cancelLoad = null;
     const active = () => state !== 'closed';
     function setState(value) { state = value; if (value === 'closed') delete root.dataset.siteProject; else root.dataset.siteProject = value; }
     function clearVisual() { animations.forEach(a => a.cancel()); animations = []; restore.forEach(fn => fn()); restore = []; clone?.remove(); clone = null; }
     function cleanup() {
-      cancelLoad?.(); cancelLoad = null; clearVisual(); frame?.contentDocument?.querySelector('video')?.pause(); layer?.remove(); frame = layer = null;
+      cancelLoad?.(); cancelLoad = null; clearVisual(); frame?.contentWindow?.PortfolioProject?.release(); if(layer)layer.hidden=true;
       works().contentWindow?.PortfolioWorks?.suspend(false); setState('closed'); historyClosing = false; unlock();
     }
     function recordStyle(node, key, value) { const before = node.style[key]; node.style[key] = value; restore.push(() => node.style[key] = before); }
     function animate(node, frames, options = {}) {
       const a = node.animate(frames, { duration, easing, fill: 'both', ...options }); a.pause(); a.currentTime = 0; animations.push(a); return a;
     }
-    function revealNodes(doc) { return [doc.querySelector('header'), doc.querySelector('.information'), doc.querySelector('.video-note')].filter(Boolean); }
+    function revealNodes(doc) { return [doc.querySelector('header'), doc.querySelector('.information'), doc.querySelector('.video-note'), doc.querySelector('.project-navigation')].filter(Boolean); }
     function targetRect(ensureVisible) {
       const box = frame.contentDocument.querySelector('.video-frame');
       // The approved stacked mobile layout may put the video below the fold.
@@ -50,11 +51,18 @@
       source = carousel?.querySelector(`[data-cc-index="${win.PortfolioWorks.getIndex()}"]`);
       if (!source || !styleReady || !Element.prototype.animate || reduced.matches) return false;
       const r = rect(carousel), index = Number(source.dataset.ccIndex), count = carousel.querySelectorAll('.circular-carousel__card').length;
-      clone = carousel.cloneNode(true); clone.id = 'site-project-cover'; clone.removeAttribute('tabindex'); clone.removeAttribute('role'); clone.setAttribute('aria-hidden', 'true'); clone.inert = true;
+      // Clone only the selected card and its 3D ancestor chain, not all five covers.
+      clone = carousel.cloneNode(false);
+      let ancestor=clone;
+      for(const selector of ['.circular-carousel__view','.circular-carousel__stage','.circular-carousel__camera','.circular-carousel__ring']){
+        const part=carousel.querySelector(selector).cloneNode(false);ancestor.append(part);ancestor=part;
+      }
+      ancestor.append(source.cloneNode(true)); clone.id = 'site-project-cover'; clone.removeAttribute('tabindex'); clone.removeAttribute('role'); clone.setAttribute('aria-hidden', 'true'); clone.inert = true;
       Object.assign(clone.style, { position: 'fixed', left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, overflow: 'visible', pointerEvents: 'none', transformOrigin: '0 0', zIndex: '900', color: 'white' });
       clone.querySelectorAll('.circular-carousel__card').forEach(card => { if (Number(card.dataset.ccIndex) !== index) card.remove(); });
       clone.querySelectorAll('.circular-carousel__caption, .circular-carousel__live').forEach(node => node.remove());
-      clone.querySelectorAll('img').forEach(img => { img.style.filter = win.getComputedStyle(source.querySelector('img')).filter; img.decoding = 'sync'; });
+      const imageFilter=win.getComputedStyle(source.querySelector('img')).filter;
+      clone.querySelectorAll('img').forEach(img => { img.style.filter=imageFilter; img.decoding='async'; });
       document.body.append(clone);
       const camera = clone.querySelector('.circular-carousel__camera'), ring = clone.querySelector('.circular-carousel__ring'), card = clone.querySelector('.circular-carousel__card');
       // Equivalent full turns are removed before interpolation, so a fifth-card opening never spins a full turn.
@@ -101,11 +109,37 @@
       if (open) { setState('open'); layer.style.background = '#002FA7'; frame.contentDocument.documentElement.dataset.projectVisible = ''; clearVisual(); frame.inert = false; unlock(); frame.contentDocument.getElementById('back').focus({ preventScroll: true }); }
       return true;
     }
+    function ensureFrame(url) {
+      if(frameReady)return frameReady;
+      layer=document.createElement('section');layer.id='site-project-layer';layer.setAttribute('aria-label','作品详情 / Project details');layer.style.visibility='hidden';
+      frame=document.createElement('iframe');frame.name='portfolio-project';frame.title='作品详情 / Project details';frame.inert=true;layer.append(frame);document.body.append(layer);
+      frameReady=new Promise((resolve,reject)=>{
+        const timer=setTimeout(()=>reject(Error('detail unavailable')),15000);
+        cancelLoad=()=>{clearTimeout(timer);reject(Error('detail cancelled'));};
+        frame.onload=()=>{clearTimeout(timer);cancelLoad=null;if(frame.contentWindow?.PortfolioProject)resolve();else reject(Error('detail unavailable'));};
+        frame.onerror=()=>{clearTimeout(timer);cancelLoad=null;reject(Error('detail unavailable'));};
+      }).catch(e=>{layer?.remove();frame=layer=null;frameReady=null;throw e;});
+      const target=new URL(url);target.searchParams.set('site-detail','project-7');frame.src=target.href;
+      return frameReady;
+    }
+    function warm() {
+      if(state!=='closed'||frameReady)return;
+      // Warm only the document/CSS shell after WORKS is ready. No project ID, poster or video.
+      const url=new URL('project.html',base);
+      void ensureFrame(url).then(()=>{
+        if(state!=='closed')return;
+        frame.contentDocument.querySelector('.video-frame').getBoundingClientRect();
+        layer.hidden=true;layer.style.visibility='';
+      }).catch(()=>{});
+    }
     async function open(href, { push = true } = {}) {
       const url = new URL(href, base), nextId = url.searchParams.get('id');
       if (active()) {
         if (state === 'closing' && nextId === id) { ++operation; closeAfter = null; historyClosing = false; void drive(true); }
-        else if (nextId !== id) void close(() => { if (/\/project(?:\.html)?\/?$/.test(location.pathname)) void open(href, { push }); });
+        else if (nextId !== id) {
+          if(state==='open'||state==='switching')void switchTo(nextId,{direction:1,historyRoute:false});
+          else void close(()=>{if(/\/project(?:\.html)?\/?$/.test(location.pathname))void open(href,{push});});
+        }
         return;
       }
       const version = ++operation; id = nextId;
@@ -118,14 +152,11 @@
         const win = works().contentWindow;
         const started = performance.now();
         while (!win.PortfolioWorks?.suspend(true)) { if (performance.now() - started > 3000) throw Error('carousel unavailable'); await new Promise(resolve => setTimeout(resolve, 30)); if (version !== operation) return; }
-        layer = document.createElement('section'); layer.id = 'site-project-layer'; layer.setAttribute('aria-label', '作品详情 / Project details');
-        frame = document.createElement('iframe'); frame.name = 'portfolio-project'; frame.title = '作品详情 / Project details'; frame.inert = true; layer.append(frame); document.body.append(layer);
-        const loaded = new Promise((resolve, reject) => {
-          const timer = setTimeout(() => reject(Error('detail unavailable')), 15000);
-          cancelLoad = () => { clearTimeout(timer); reject(Error('detail cancelled')); };
-          frame.onload = () => { clearTimeout(timer); cancelLoad = null; resolve(); }; frame.onerror = () => { clearTimeout(timer); cancelLoad = null; reject(Error('detail unavailable')); };
-        });
-        url.searchParams.set('site-detail', 'runtime-5'); frame.src = url.href; await loaded;
+        await ensureFrame(url);
+        if(version!==operation)return;
+        delete frame.contentDocument.documentElement.dataset.projectVisible;
+        await frame.contentWindow.PortfolioProject.show(id);
+        frame.contentWindow.scrollTo(0,0);layer.hidden=false;layer.style.visibility='';
         if (version !== operation) return;
         if (!frame.contentDocument.querySelector('.video-frame')) throw Error('detail unavailable');
         if (push) {
@@ -144,9 +175,28 @@
       ++operation; historyClosing = false;
       if (state === 'loading') { ++motion; const done = closeAfter; closeAfter = null; cleanup(); done?.(); return; }
       frame.contentDocument.querySelector('video')?.pause();
-      if (state === 'open') { build(false); animations.forEach(a => a.currentTime = duration); }
+      if (state === 'switching') await frame.contentWindow.PortfolioProject.show(id);
+      if (state === 'open'||state === 'switching') { build(false); animations.forEach(a => a.currentTime = duration); }
       if (!await drive(false)) return;
       const done = closeAfter; closeAfter = null; cleanup(); done?.(); works().contentDocument?.querySelector('.circular-carousel')?.focus({ preventScroll: true });
+    }
+    async function switchTo(nextId,{direction=1,historyRoute=true}={}) {
+      if(!frame?.contentWindow?.PortfolioProject||!['open','switching'].includes(state))return;
+      const data=frame.contentWindow.PORTFOLIO_PROJECTS||[];
+      if(!data.some(project=>project.id===nextId))return;
+      if(historyRoute&&state==='switching')return;
+      const focus=frame.contentDocument.activeElement;
+      const version=++operation;id=nextId;setState('switching');lock();frame.inert=true;
+      returnURL=new URL('works.html',base);returnURL.searchParams.set('selected',id);
+      select(id); // The retained, suspended ring updates once, behind the detail.
+      if(historyRoute){
+        const route=new URL('project.html',base);route.searchParams.set('id',id);
+        history.replaceState({chapter:'works',portfolioDetail:true,detailOwner:owner,id},'',route);
+      }
+      await frame.contentWindow.PortfolioProject.show(id,{animate:true,direction});
+      if(version!==operation)return;
+      document.title=frame.contentDocument.title;setState('open');frame.inert=false;unlock();
+      if(historyRoute&&focus?.isConnected)focus.focus({preventScroll:true});
     }
     function requestClose() {
       if (state !== 'open' || historyClosing) return;
@@ -159,13 +209,14 @@
       else { history.replaceState({ chapter: 'works' }, '', returnURL); void close(()=>window.dispatchEvent(new PopStateEvent('popstate',{state:history.state}))); }
     }
     function exitTo(after) { if (!active()) { after(); return; } history.replaceState({ chapter: 'works' }, '', returnURL); void close(after); }
-    window.addEventListener('message', event => { if (event.origin === location.origin && event.source === frame?.contentWindow && event.data?.channel === 'portfolio-detail' && event.data.type === 'close') requestClose(); });
+    window.addEventListener('message', event => { if (event.origin === location.origin && event.source === frame?.contentWindow && event.data?.channel === 'portfolio-detail' && event.data.type === 'close') requestClose();
+      else if(event.origin===location.origin&&event.source===frame?.contentWindow&&event.data?.channel==='portfolio-detail'&&event.data.type==='select')void switchTo(event.data.id,{direction:event.data.direction===-1?-1:1}); });
     window.addEventListener('resize', () => {
       if (!active()) return;
       animations.forEach(a => { if (a.playState === 'running') a.finish(); });
     });
     reduced.addEventListener('change', () => { if (reduced.matches) animations.forEach(a => { if (a.playState === 'running') a.finish(); }); });
-    return Object.freeze({ active, open, close, exitTo });
+    return Object.freeze({ active, open, close, exitTo, warm, selected:()=>id });
   }
   window.PortfolioProjectTransition = Object.freeze({ create, detail });
   // Bind the embedded close independently of the chapter router, once per anchor.

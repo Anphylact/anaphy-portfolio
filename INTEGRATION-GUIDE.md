@@ -2,9 +2,17 @@
 
 本轮继续更新同一分支 integrate-approved-portfolio 和同一 PR #15，不创建重复 PR，不合并 main。
 
-预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=details-6
+预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=project-7
 
-## 本轮：六项细节优化（details-6）
+## 本轮：详情内切换与展开性能（project-7）
+
+详情新增上一部/下一部与编号，360ms轻微横移/淡入，使用同一数据、详情文档与播放器；关闭返回最后浏览的作品。详情内换片使用replaceState，浏览器后退关闭、前进恢复该作品。
+
+WORKS空闲预热无作品ID的详情外壳；后续复用单一iframe，只复制当前封面。视频仅主动播放时请求，换片和关闭释放源。原轮盘几何与800ms展开动画保留。桌面重复打开响应中位数62.3→21.6ms，手机视口68.4→21.3ms；桌面仍有长帧，缓存会增加固定内存占用，十轮堆也有小幅增长，不声称已消除所有卡顿或泄漏。
+
+[完整诊断、数据、方法和限制](docs/integration/performance/PROJECT-7.md) · [基线](docs/integration/performance/project-7-before.json) · [更新](docs/integration/performance/project-7-after.json) · [逐轮内存](docs/integration/performance/project-7-memory.json)。
+
+## 历史：六项细节优化（details-6）
 
 1. NEXT 改为两个白色小 V 折角，移除圆环；保留双语文字、至少 112×48 点击区域与 viewport 水平居中。悬停仅轻移 3px。
 2. 桌面 WORKS 控件固定在底部 104px，给 NEXT 留出至少 28px 空隙；手机布局不变。

@@ -85,10 +85,11 @@ body.site-project header > span { margin-left: auto; }
 }
 /* A retained project document and one moving 3D cover; chapter artboards are untouched. */
 #site-project-layer { position: fixed; inset: 0; z-index: 800; background: transparent; }
+#site-project-layer[hidden] { display: none; }
 #site-project-layer iframe { display: block; width: 100%; height: 100%; border: 0; background: transparent; }
 html[data-project-embedded], html[data-project-embedded] body { background: transparent; }
-html[data-project-embedded] header, html[data-project-embedded] .information, html[data-project-embedded] .video-frame, html[data-project-embedded] .video-note { opacity: 0; }
-html[data-project-visible] header, html[data-project-visible] .information, html[data-project-visible] .video-frame, html[data-project-visible] .video-note { opacity: 1; }
+html[data-project-embedded] header, html[data-project-embedded] .information, html[data-project-embedded] .video-frame, html[data-project-embedded] .video-note, html[data-project-embedded] .project-navigation { opacity: 0; }
+html[data-project-visible] header, html[data-project-visible] .information, html[data-project-visible] .video-frame, html[data-project-visible] .video-note, html[data-project-visible] .project-navigation { opacity: 1; }
 html[data-site-project] #site-next { visibility: hidden; }
 #site-project-cover { contain: layout style; }
 #site-project-cover .circular-carousel__stage { opacity: 1; transition: none; }

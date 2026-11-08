@@ -57,7 +57,12 @@ function Works() {
     const handle = {
       suspend: value => { if (!api.current) return false; api.current.setSuspended(value); return true; },
       readState: () => api.current?.readState(),
-      getIndex: () => savedIndex()
+      getIndex: () => savedIndex(),
+      select: id => {
+        const index=projects.findIndex(project=>project.id===id);
+        if(index<0||!api.current)return false;
+        api.current.selectIndex(index);setSelected(index);persist(index);return true;
+      }
     };
     window.PortfolioWorks = handle;
     window.dispatchEvent(new Event('portfolio:works-ready'));

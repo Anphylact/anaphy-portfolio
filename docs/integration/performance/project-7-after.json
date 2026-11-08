@@ -1,0 +1,596 @@
+[
+  {
+    "width": 1440,
+    "runs": [
+      {
+        "click": 1789.800000000745,
+        "states": [
+          {
+            "state": "loading",
+            "time": 35.79999999701977
+          },
+          {
+            "state": "opening",
+            "time": 53.599999997764826
+          },
+          {
+            "state": "open",
+            "time": 938.3999999985099
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 938.3999999985099,
+        "metrics": {
+          "taskMs": 108.65400000000001,
+          "layoutMs": 3.0799999999999996,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 2,
+        "maxFrame": 66.70000000000005
+      },
+      {
+        "click": 3910.599999997765,
+        "states": [
+          {
+            "state": "loading",
+            "time": 11.800000000745058
+          },
+          {
+            "state": "opening",
+            "time": 21.600000001490116
+          },
+          {
+            "state": "open",
+            "time": 895.5
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 895.5,
+        "metrics": {
+          "taskMs": 83.06800000000003,
+          "layoutMs": 2.4129999999999994,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 50
+      },
+      {
+        "click": 5989.300000000745,
+        "states": [
+          {
+            "state": "loading",
+            "time": 20.399999998509884
+          },
+          {
+            "state": "opening",
+            "time": 29.099999997764826
+          },
+          {
+            "state": "open",
+            "time": 900.3999999985099
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 900.3999999985099,
+        "metrics": {
+          "taskMs": 104.65699999999994,
+          "layoutMs": 2.3249999999999997,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 1,
+        "maxFrame": 50.099999999999454
+      },
+      {
+        "click": 8032.300000000745,
+        "states": [
+          {
+            "state": "loading",
+            "time": 7.099999997764826
+          },
+          {
+            "state": "opening",
+            "time": 15.099999997764826
+          },
+          {
+            "state": "open",
+            "time": 874.0999999977648
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 874.0999999977648,
+        "metrics": {
+          "taskMs": 99.39500000000001,
+          "layoutMs": 1.8810000000000007,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 1,
+        "maxFrame": 50.100000000000364
+      },
+      {
+        "click": 10030.599999997765,
+        "states": [
+          {
+            "state": "loading",
+            "time": 7.800000000745058
+          },
+          {
+            "state": "opening",
+            "time": 18
+          },
+          {
+            "state": "open",
+            "time": 893
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 893,
+        "metrics": {
+          "taskMs": 95.21099999999993,
+          "layoutMs": 2.5340000000000016,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 1,
+        "maxFrame": 50.100000000000364
+      },
+      {
+        "click": 12069,
+        "states": [
+          {
+            "state": "loading",
+            "time": 19.899999998509884
+          },
+          {
+            "state": "opening",
+            "time": 30.5
+          },
+          {
+            "state": "open",
+            "time": 886.5
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 886.5,
+        "metrics": {
+          "taskMs": 84.38400000000001,
+          "layoutMs": 2.173999999999999,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 1,
+        "maxFrame": 66.70000000000073
+      },
+      {
+        "click": 14085,
+        "states": [
+          {
+            "state": "loading",
+            "time": 19.899999998509884
+          },
+          {
+            "state": "opening",
+            "time": 26.899999998509884
+          },
+          {
+            "state": "open",
+            "time": 889.5999999977648
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 889.5999999977648,
+        "metrics": {
+          "taskMs": 81.23999999999998,
+          "layoutMs": 1.899999999999999,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 2,
+        "maxFrame": 66.60000000000036
+      },
+      {
+        "click": 16114.599999997765,
+        "states": [
+          {
+            "state": "loading",
+            "time": 9.300000000745058
+          },
+          {
+            "state": "opening",
+            "time": 18
+          },
+          {
+            "state": "open",
+            "time": 907
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 907,
+        "metrics": {
+          "taskMs": 110.99400000000004,
+          "layoutMs": 2.0649999999999973,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 1,
+        "maxFrame": 83.29999999999927
+      },
+      {
+        "click": 18157.699999999255,
+        "states": [
+          {
+            "state": "loading",
+            "time": 13.5
+          },
+          {
+            "state": "opening",
+            "time": 22.600000001490116
+          },
+          {
+            "state": "open",
+            "time": 897.6999999992549
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 897.6999999992549,
+        "metrics": {
+          "taskMs": 74.04499999999992,
+          "layoutMs": 1.5639999999999994,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 1,
+        "maxFrame": 50.099999999998545
+      },
+      {
+        "click": 20197.800000000745,
+        "states": [
+          {
+            "state": "loading",
+            "time": 10.199999999254942
+          },
+          {
+            "state": "opening",
+            "time": 20.899999998509884
+          },
+          {
+            "state": "open",
+            "time": 923.5999999977648
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 923.5999999977648,
+        "metrics": {
+          "taskMs": 96.09299999999999,
+          "layoutMs": 2.5330000000000004,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 2,
+        "maxFrame": 66.70000000000073
+      }
+    ],
+    "memoryStart": {
+      "documents": 11,
+      "nodes": 771,
+      "jsEventListeners": 393
+    },
+    "memoryEnd": {
+      "documents": 11,
+      "nodes": 781,
+      "jsEventListeners": 406
+    },
+    "heapStart": 5967644,
+    "heapEnd": 7058356
+  },
+  {
+    "width": 390,
+    "runs": [
+      {
+        "click": 1583,
+        "states": [
+          {
+            "state": "loading",
+            "time": 14.699999999254942
+          },
+          {
+            "state": "opening",
+            "time": 28.399999998509884
+          },
+          {
+            "state": "open",
+            "time": 883.6999999992549
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 883.6999999992549,
+        "metrics": {
+          "taskMs": 99.79599999999999,
+          "layoutMs": 3.1069999999999998,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 33.299999999999955
+      },
+      {
+        "click": 3571.800000000745,
+        "states": [
+          {
+            "state": "loading",
+            "time": 20.899999998509884
+          },
+          {
+            "state": "opening",
+            "time": 34.69999999925494
+          },
+          {
+            "state": "open",
+            "time": 854.3000000007451
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 854.3000000007451,
+        "metrics": {
+          "taskMs": 98.46499999999997,
+          "layoutMs": 3.5440000000000005,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 16.799999999999727
+      },
+      {
+        "click": 5534.300000000745,
+        "states": [
+          {
+            "state": "loading",
+            "time": 10.399999998509884
+          },
+          {
+            "state": "opening",
+            "time": 23.099999997764826
+          },
+          {
+            "state": "open",
+            "time": 857.3999999985099
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 857.3999999985099,
+        "metrics": {
+          "taskMs": 93.16600000000003,
+          "layoutMs": 2.568000000000001,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 33.29999999999927
+      },
+      {
+        "click": 7480.5,
+        "states": [
+          {
+            "state": "loading",
+            "time": 10.600000001490116
+          },
+          {
+            "state": "opening",
+            "time": 19.100000001490116
+          },
+          {
+            "state": "open",
+            "time": 862.3000000007451
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 862.3000000007451,
+        "metrics": {
+          "taskMs": 76.99000000000001,
+          "layoutMs": 1.6290000000000002,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 16.800000000000182
+      },
+      {
+        "click": 9421.699999999255,
+        "states": [
+          {
+            "state": "loading",
+            "time": 20
+          },
+          {
+            "state": "opening",
+            "time": 36.100000001490116
+          },
+          {
+            "state": "open",
+            "time": 870
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 870,
+        "metrics": {
+          "taskMs": 97.67999999999999,
+          "layoutMs": 3.5460000000000007,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 16.80000000000109
+      },
+      {
+        "click": 11369,
+        "states": [
+          {
+            "state": "loading",
+            "time": 5.5
+          },
+          {
+            "state": "opening",
+            "time": 12
+          },
+          {
+            "state": "open",
+            "time": 857.1000000014901
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 857.1000000014901,
+        "metrics": {
+          "taskMs": 82.32299999999992,
+          "layoutMs": 1.9319999999999997,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 16.80000000000109
+      },
+      {
+        "click": 13457.800000000745,
+        "states": [
+          {
+            "state": "loading",
+            "time": 19.599999997764826
+          },
+          {
+            "state": "opening",
+            "time": 31.699999999254942
+          },
+          {
+            "state": "open",
+            "time": 867.5
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 867.5,
+        "metrics": {
+          "taskMs": 87.97100000000002,
+          "layoutMs": 2.374000000000001,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 16.80000000000109
+      },
+      {
+        "click": 15382.89999999851,
+        "states": [
+          {
+            "state": "loading",
+            "time": 8
+          },
+          {
+            "state": "opening",
+            "time": 16.5
+          },
+          {
+            "state": "open",
+            "time": 842.7000000029802
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 842.9000000022352,
+        "metrics": {
+          "taskMs": 77.67499999999994,
+          "layoutMs": 2.159999999999999,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 16.80000000000109
+      },
+      {
+        "click": 17298.89999999851,
+        "states": [
+          {
+            "state": "loading",
+            "time": 9.900000002235174
+          },
+          {
+            "state": "opening",
+            "time": 21.300000000745058
+          },
+          {
+            "state": "open",
+            "time": 859.4000000022352
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 859.4000000022352,
+        "metrics": {
+          "taskMs": 91.90699999999995,
+          "layoutMs": 2.4550000000000023,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 16.799999999999272
+      },
+      {
+        "click": 19212,
+        "states": [
+          {
+            "state": "loading",
+            "time": 13
+          },
+          {
+            "state": "opening",
+            "time": 21.100000001490116
+          },
+          {
+            "state": "open",
+            "time": 863.1000000014901
+          }
+        ],
+        "cloneNodes": 77,
+        "done": true,
+        "total": 863.1000000014901,
+        "metrics": {
+          "taskMs": 97.51999999999983,
+          "layoutMs": 2.0720000000000045,
+          "layouts": 7
+        },
+        "longTasks": [],
+        "longFrames": 0,
+        "maxFrame": 16.799999999999272
+      }
+    ],
+    "memoryStart": {
+      "documents": 11,
+      "nodes": 779,
+      "jsEventListeners": 393
+    },
+    "memoryEnd": {
+      "documents": 11,
+      "nodes": 789,
+      "jsEventListeners": 406
+    },
+    "heapStart": 5911300,
+    "heapEnd": 7060728
+  }
+]

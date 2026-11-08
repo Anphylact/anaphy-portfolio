@@ -114,6 +114,7 @@
       prepare:async id=>{cancel();current=1;normalize();const ready=await load(1,id);if(!ready)throw Error('works unavailable');chromeState();activate();},
       lock:()=>{slots.forEach(s=>s.frame.inert=true);chrome.inert=true;},
       unlock:()=>{chrome.inert=false;activate();},
+      select:id=>{slots[1].selected=id;slots[1].frame.contentWindow?.PortfolioWorks?.select(id);},
       error:()=>{status.textContent='作品详情未能加载，请重新选择 / Unable to load project, please try again';route(true);}
     });
     const height=()=>viewport.clientHeight;
@@ -143,7 +144,7 @@
     function normalize(){slots.forEach((s,i)=>s.element.style.top=`${i*100}%`);track.style.transform=transform(-current*height());}
     function cancel(){epoch++;animation?.cancel();animation=null;moving=false;delete root.dataset.siteMoving;delete root.dataset.siteRewinding;chrome.inert=false;normalize();activate();next.removeAttribute('aria-disabled');}
     function load(index,selected){
-      const s=slots[index];if(s.ready&&(!selected||selected===s.selected))return Promise.resolve(true);if(s.promise&&(!selected||selected===s.selected))return s.promise;
+      const s=slots[index];if(s.ready&&index===1&&selected&&selected!==s.selected&&s.frame.contentWindow?.PortfolioWorks?.select(selected)){s.selected=selected;return Promise.resolve(true);}if(s.ready&&(!selected||selected===s.selected))return Promise.resolve(true);if(s.promise&&(!selected||selected===s.selected))return s.promise;
       s.resolve?.(false);clearTimeout(s.timeout);s.ready=false;s.token=`${index}-${++s.version}`;if(selected)s.selected=selected;
       s.promise=new Promise(resolve=>s.resolve=resolve);
       s.timeout=setTimeout(()=>{s.resolve?.(false);s.promise=null;if(current===index)status.textContent='章节未能加载，请点击章节重试 / Unable to load, select the chapter to retry';},15000);
@@ -208,7 +209,7 @@
       const index=slots.findIndex(s=>s.frame.contentWindow===event.source);if(index<0)return;
       const data=event.data,s=slots[index];if(data.token!==s.token)return;
       if(data.type==='ready'){
-        clearTimeout(s.timeout);s.ready=true;if(typeof data.id==='string')s.selected=data.id;s.resolve?.(true);send(s,'active',{active:index===current&&!moving&&!detail.active()&&!document.hidden});
+        clearTimeout(s.timeout);s.ready=true;if(index===1){const idle=window.requestIdleCallback||((fn)=>setTimeout(fn,100));idle(()=>detail.warm());}if(typeof data.id==='string')s.selected=data.id;s.resolve?.(true);send(s,'active',{active:index===current&&!moving&&!detail.active()&&!document.hidden});
         if(index===current){status.textContent='';root.dataset.siteReady='true';if(index===1)route(true);}
       }else if(data.type==='selection'&&typeof data.id==='string'&&data.id.length<=200){s.selected=data.id;if(current===1)route(true);}
       else if(index===current){
@@ -229,7 +230,7 @@
     window.addEventListener('popstate',()=>{
       if(isProject(location.pathname)){void detail.open(location.href,{push:false});return;}
       const index=pageIndex(location.pathname);
-      if(index>=0){const options={selected:new URLSearchParams(location.search).get('selected'),push:false};if(detail.active())void detail.close(()=>{if(pageIndex(location.pathname)===index)jump(index,options);});else jump(index,options);}
+      if(index>=0){const options={selected:detail.active()&&index===1?detail.selected():new URLSearchParams(location.search).get('selected'),push:false};if(detail.active())void detail.close(()=>{if(pageIndex(location.pathname)===index){jump(index,options);if(index===1)route(true);}});else jump(index,options);}
     });
     window.addEventListener('resize',()=>{cancel();placeIndicator(true);});
     reduced.addEventListener('change',()=>{if(reduced.matches&&animation)animation.finish();});

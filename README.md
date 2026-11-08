@@ -4,7 +4,7 @@
 
 ## 预览
 
-https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=details-6
+https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=project-7
 
 使用当前 ChatGPT 账号访问；该独立预览不覆盖正式网站或旧原型。
 
@@ -20,7 +20,7 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 - index.html / works.html / about.html / contact.html：四个直接访问入口，共用同一个常驻轨道；浏览器地址、刷新和历史记录仍保留这些路径。
 - chapters/：实际批准版内容文档，保留各自 CSS 和脚本作用域。
-- project.html：原作品详情和视频播放器；返回时恢复选中作品。
+- project.html：作品详情内可循环切换上一部/下一部；关闭恢复最后浏览的作品。视频仅点击播放时加载，换片/关闭释放源。
 - assets/css/site.css、assets/js/site.js：纵向位移、吸附、单一固定指示横杠、双语导航及页面桥接。
 
 NEXT 使用双层白色小折角；左上角只保留品牌文字，不再有加号或重复菜单。桌面轮盘统一缩小至原视觉尺寸的 90%，手机尺寸不变。
@@ -31,7 +31,7 @@ WORKS 轮盘和 ABOUT 展开模块优先处理自己的滚轮；PROFILE 独立�
 
 [批准版来源、实施边界、实际测试与截图](INTEGRATION-GUIDE.md)
 
-[此前性能记录与复现](docs/integration/performance/RUNTIME-5.md)
+[最新详情性能诊断与测量](docs/integration/performance/PROJECT-7.md)
 
 [作品数据与现有构建说明](WORKS-GUIDE.md)
 
