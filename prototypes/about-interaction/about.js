@@ -103,6 +103,58 @@
       : [[.56,.35,1.30],[.82,.23,.88],[.80,.65,1.34],[.47,.77,.87],[.25,.21,.66]];
     return { mobile, R, origin, edge, overview };
   }
+  let mobileName = null;
+  const nameParts = ['h1', '.latin', '.role'];
+  function legacyIdentity(node, mobile, layout) {
+    const nameScale = mix(1, mobile ? .42 : .25, layout);
+    const nameX = W * mix(mobile ? .09 : .10, mobile ? .07 : .045, layout);
+    const nameY = H * mix(mobile ? .10 : .47, mobile ? .085 : .073, layout);
+    node.querySelector('h1').style.fontSize = `${Math.max(52, Math.min(110, W * .07)) * mix(.55, 1, layout)}px`;
+    node.querySelector('.latin').style.setProperty('margin-top', `${mix(12, 18, layout)}px`, 'important');
+    node.querySelector('.role').style.setProperty('margin-top', `${mix(14, 24, layout)}px`, 'important');
+    node.style.transform = `translate(${nameX}px, ${nameY}px) scale(${nameScale})`;
+    node.querySelector('.latin').style.fontSize = `${12 / nameScale}px`;
+  }
+  function textBox(node) {
+    const range=document.createRange();range.selectNodeContents(node);
+    const r=range.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};
+  }
+  function clearMobileIdentity() {
+    if(!mobileName)return;
+    for(const key of ['width','height'])identity.style.removeProperty(key);
+    for(const selector of nameParts){const node=identity.querySelector(selector);for(const key of ['position','left','top','width','white-space','line-height','transform','transform-origin','letter-spacing','font-size','margin-top'])node.style.removeProperty(key);}
+    mobileName=null;
+  }
+  function measureMobileIdentity() {
+    const probe=identity.cloneNode(true);probe.removeAttribute('id');probe.removeAttribute('style');
+    for(const selector of nameParts)probe.querySelector(selector).removeAttribute('style');
+    probe.style.visibility='hidden';probe.style.pointerEvents='none';root.append(probe);
+    const poses=[0,1].map(value=>{legacyIdentity(probe,true,value);return nameParts.map(selector=>textBox(probe.querySelector(selector)));});
+    probe.remove();
+    Object.assign(identity.style,{width:'0px',height:'0px',transform:'none'});
+    const nodes=nameParts.map(selector=>identity.querySelector(selector));
+    nodes.forEach((node,i)=>{
+      Object.assign(node.style,{position:'absolute',left:'0px',top:'0px',width:'max-content',whiteSpace:'nowrap',lineHeight:i?'normal':'1.1',fontSize:(i===0?52:i===1?12:10)+'px',transform:'none',transformOrigin:'0 0'});
+      node.style.setProperty('margin-top','0px','important');
+    });
+    nodes[1].style.letterSpacing='2px';
+    mobileName={W,H,nodes,poses,base:nodes.map(textBox),letters:nodes[1].textContent.length};
+  }
+  function renderMobileIdentity(value) {
+    if(!mobileName||mobileName.W!==W||mobileName.H!==H)measureMobileIdentity();
+    const cache=mobileName,x=W*mix(.09,.07,value),y=H*mix(.10,.085,value);
+    identity.style.transform=`translate(${x}px,${y}px)`;
+    cache.nodes.forEach((node,i)=>{
+      const from=cache.poses[0][i],to=cache.poses[1][i],base=cache.base[i];
+      const width=mix(from.width,to.width,value),height=mix(from.height,to.height,value);
+      let intrinsicWidth=base.width;
+      if(i===1){const spacing=mix(2,.84,value);node.style.letterSpacing=spacing+'px';intrinsicWidth+=cache.letters*(spacing-2);}
+      const sx=width/intrinsicWidth,sy=height/base.height;
+      const dx=mix(from.x-W*.09,to.x-W*.07,value)-base.x*sx;
+      const dy=mix(from.y-H*.10,to.y-H*.085,value)-base.y*sy;
+      node.style.transform=`translate(${dx}px,${dy}px) scale(${sx},${sy})`;
+    });
+  }
   function render() {
     const { mobile, R, origin, edge, overview } = positions();
     const layout = phase(progress, 0, .85), morph = phase(progress, .24, .90);
@@ -153,15 +205,8 @@
         // The very same path is the closed ring, opening arc, and final timeline baseline.
       }
     });
-    const nameScale = mix(1, mobile ? .42 : .25, layout);
-    const nameX = W * mix(mobile ? .09 : .10, mobile ? .07 : .045, layout);
-    const nameY = H * mix(mobile ? .10 : .47, mobile ? .085 : .073, layout);
     root.style.setProperty('--overview-label-scale', mix(1.30, 1, layout));
-    identity.querySelector('h1').style.fontSize = `${Math.max(52, Math.min(110, W * .07)) * mix(.55, 1, layout)}px`;
-    identity.querySelector('.latin').style.setProperty('margin-top', `${mix(12, 18, layout)}px`, 'important');
-    identity.querySelector('.role').style.setProperty('margin-top', `${mix(14, 24, layout)}px`, 'important');
-    identity.style.transform = `translate(${nameX}px, ${nameY}px) scale(${nameScale})`;
-    identity.querySelector('.latin').style.fontSize = `${12 / nameScale}px`;
+    if(mobile)renderMobileIdentity(layout);else{clearMobileIdentity();legacyIdentity(identity,false,layout);}
     identity.querySelector('.role').style.opacity = String(1 - phase(progress, 0, .45));
     identity.querySelector('.role').style.visibility = progress > .8 ? 'hidden' : 'visible';
     const textProgress = phase(progress, .40, .94);

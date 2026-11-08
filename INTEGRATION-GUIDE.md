@@ -2,9 +2,28 @@
 
 本轮继续更新同一分支 integrate-approved-portfolio 和同一 PR #15，不创建重复 PR，不合并 main。
 
-预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=runtime-5
+预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=details-6
 
-## 本轮：返回路径与性能（runtime-5）
+## 本轮：六项细节优化（details-6）
+
+1. NEXT 改为两个白色小 V 折角，移除圆环；保留双语文字、至少 112×48 点击区域与 viewport 水平居中。悬停仅轻移 3px。
+2. 桌面 WORKS 控件固定在底部 104px，给 NEXT 留出至少 28px 空隙；手机布局不变。
+3. CONTACT 返回首页沿现有四章轨道从 -3H 向 0 回卷，约 1000ms，快速起步、柔和减速；实际经过 ABOUT、WORKS。回卷期间冻结章节循环、锁定输入，不新增 HOME。首次从 CONTACT 直达时仅为未绘制的 HOME 预绘一帧，不修改气泡视觉公式。
+4. 桌面轮盘在场景适配层统一乘 0.9，封面、圆环半径、投影一起缩小；移动端仍为 1，原拖动/惯性/吸附参数保留。
+5. 删除加号、快捷菜单 DOM、事件、消息与 CSS；保留非交互品牌文字与右侧四章导航、唯一滑动指示条。
+6. 手机 ABOUT 姓名固定字号、行高和定位方式，测量原起终点后以同一个进度连续 translate/scale；避免旧实现中文先变大再缩小。正反向均约 822ms，五模块路径与整体 1100ms 节奏不变。
+
+**浏览器验收**：Chromium，桌面 1920×1080、1440×900、1366×768、1280×720，手机视口 320、375、390、430px。桌面中央封面宽度为基线约 90%，390px 保持 100%；控件与 NEXT 热区分离且按钮居中、可点击。四种手机宽度分别打开/关闭全部五模块，名字字号在动画内保持不变，原起终点误差 <0.2px，反向恢复误差 <0.1px。
+
+在 1440×900、390×844、320×568 从 CONTACT 冷启动点击返回，暂停浏览器原轨道动画逐段验证 ABOUT、WORKS、HOME 的顺序；仅四个真实章节，HOME 始终 top:0，重复点击/滚轮不新增历史或打断动画；中途各章节采样 rAF 增量最多 1（没有持续动画循环）。保持同一个指示条。作品详情三个尺寸实际点击展开/收回，共享封面起终点误差 <0.1px。
+
+本轮未重新采集完整 FPS 或长任务对比，不能把此前 runtime-5 数值当成本轮测量。手机是 Chromium 触屏仿真，未声称真实手机或 Safari 测试。
+
+截图：[桌面 WORKS](docs/integration/previews/details-6/works-1366.png) · [手机 ABOUT 初始](docs/integration/previews/details-6/about-start-390.png) · [手机 ABOUT 展开](docs/integration/previews/details-6/about-open-390.png) · [回卷经过 ABOUT](docs/integration/previews/details-6/rewind-about-1440.png) · [回卷经过 WORKS](docs/integration/previews/details-6/rewind-works-1440.png)。
+
+以下为历史轮次记录，旧菜单、圆形 NEXT 与 CONTACT 一步循环描述仅对应当轮，已被本轮替代。
+
+## 历史：返回路径与性能（runtime-5）
 
 - 兼容 `.html` 和无后缀 URL。已在本地模拟静态托管重定向复现 `/project` 不识别、旧箭头保留、`/works` 被误判 HOME 的问题；修复后走同一 WORKS 轮盘收回动画。此为受控复现，没有声称已抓取线上托管 HTTP 头。
 - `project.html` 从 HTML 层就提供统一右上角白色 SVG X；关闭链接明确指向 WORKS + 作品 ID。嵌入详情仍通过父层执行原 800ms 反向动画；历史条目带本次实例标记并校验返回路径，无法验证时显式回 WORKS。直接详情、未知作品或部分加载时也不盲目返回浏览器历史中的 HOME。

@@ -26,7 +26,7 @@
   function bridge(){
     const token=new URLSearchParams(location.search).get('site-frame');
     const send=(type,extra={})=>parent.postMessage({channel:'portfolio-chapters',type,token,...extra},location.origin);
-    let brand, hostPaused=false, active=false, ready=false;
+    let hostPaused=false, active=false, ready=false;
     const announce=()=>send('ready',{id:chapter==='works'?new URLSearchParams(location.search).get('selected'):null});
     window.PortfolioNavigation=Object.freeze({openProject:href=>send('project',{href})});
     // Keep the approved carousel's own URL/session persistence; mirror its stable ID to the host URL.
@@ -53,17 +53,13 @@
       if(data.type==='connect'){if(ready)announce();}
       else if(data.type==='active'){
         active=!!data.active;applyActivity();
-      }else if(data.type==='menu')brand?.setAttribute('aria-expanded',String(!!data.open));
-      else if(data.type==='focus-brand')brand?.focus({preventScroll:true});
+      }
     });
     onReady(()=>{
       const existing=document.querySelector('.name, .masthead > span:first-child, .signature > span:first-child');
-      brand=document.createElement('button');brand.type='button';brand.id='site-brand';
-      if(existing){brand.className=existing.className;brand.innerHTML=existing.innerHTML;if(chapter==='home')brand.firstChild.textContent='GAO MINGYUAN';existing.replaceWith(brand);}
+      const brand=existing||document.createElement('span');brand.id='site-brand';
+      if(existing){if(chapter==='home')brand.firstChild.textContent='GAO MINGYUAN';}
       else{brand.textContent='GAO MINGYUAN';brand.className='site-brand-new';document.body.append(brand);}
-      brand.setAttribute('aria-label','GAO MINGYUAN · 快捷导航 / Quick navigation');brand.setAttribute('aria-expanded','false');
-      brand.addEventListener('click',()=>send('menu'));
-      document.addEventListener('pointerdown',event=>{if(!brand.contains(event.target))send('dismiss-menu');});
       document.addEventListener('click',event=>{
         const a=event.target.closest('a[href]');
         if(!a||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||a.hasAttribute('download')||(a.target&&a.target!=='_self'))return;
@@ -105,29 +101,24 @@
     });
     const chrome=document.createElement('aside');chrome.id='site-chrome';chrome.setAttribute('aria-label','章节导航 / Chapter navigation');
     const rail=document.createElement('nav');rail.id='site-rail';rail.setAttribute('aria-label','章节 / Chapters');
-    const menu=document.createElement('nav');menu.id='site-quick';menu.hidden=true;menu.setAttribute('aria-label','快捷导航 / Quick navigation');
-    const menuClose=document.createElement('button');menuClose.type='button';menuClose.id='site-quick-close';closeControl(menuClose,'关闭快捷导航 / Close quick navigation');
     const links=pages.map((page,index)=>{
       const make=()=>{const a=document.createElement('a');a.href=absolute(page[1]);a.className='site-chapter';a.dataset.index=index;a.setAttribute('aria-label',`${page[2]} / ${page[3]}`);a.innerHTML=`<span class="site-en" lang="en">${page[2]}</span><span class="site-zh">${page[3]}</span>`;return a;};
-      const a=make();rail.append(a);menu.append(make());return a;
+      const a=make();rail.append(a);return a;
     });
-    menu.append(menuClose);
-    menuClose.addEventListener('click',()=>closeMenu(true));
     // Exactly one persistent indicator node. It is never replaced or faded.
     const indicator=document.createElement('div');indicator.id='site-indicator';indicator.setAttribute('aria-hidden','true');rail.append(indicator);chrome.append(rail);
-    const next=document.createElement('button');next.type='button';next.id='site-next';next.innerHTML='<span class="site-next-circle" aria-hidden="true">↓</span><span class="site-next-label"><span class="site-en" lang="en">NEXT</span><span class="site-zh">下一页</span></span>';chrome.append(next);
+    const next=document.createElement('button');next.type='button';next.id='site-next';next.innerHTML='<svg class="site-next-icon" viewBox="0 0 24 28" fill="none" aria-hidden="true"><path d="M5 5L12 11L19 5 M5 15L12 21L19 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="site-next-label"><span class="site-en" lang="en">NEXT</span><span class="site-zh">下一页</span></span>';chrome.append(next);
     const status=document.createElement('p');status.id='site-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
-    document.body.append(chrome,menu,status);
+    document.body.append(chrome,status);
     const detail=window.PortfolioProjectTransition.create({base,root,works:()=>slots[1].frame,
       prepare:async id=>{cancel();current=1;normalize();const ready=await load(1,id);if(!ready)throw Error('works unavailable');chromeState();activate();},
       lock:()=>{slots.forEach(s=>s.frame.inert=true);chrome.inert=true;},
-      unlock:()=>{chrome.inert=false;activate();},closeMenu,
+      unlock:()=>{chrome.inert=false;activate();},
       error:()=>{status.textContent='作品详情未能加载，请重新选择 / Unable to load project, please try again';route(true);}
     });
     const height=()=>viewport.clientHeight;
     const transform=y=>`translate3d(0,${y}px,0)`;
     const send=(slot,type,extra={})=>slot.frame.contentWindow?.postMessage({channel:'portfolio-host',type,...extra},location.origin);
-    function closeMenu(restore=false){if(menu.hidden)return;menu.hidden=true;slots.forEach(s=>send(s,'menu',{open:false}));if(restore)send(slots[current],'focus-brand');}
     function placeIndicator(instant=false){
       const r=rail.getBoundingClientRect(),a=links[current].getBoundingClientRect();
       const y=innerWidth<=650?a.bottom-r.top-4:a.top-r.top+a.height/2-1;
@@ -137,7 +128,7 @@
     }
     function chromeState(instant=false){
       root.dataset.sitePage=pages[current][0];root.dataset.siteReady=String(slots[current].ready);document.title=`${pages[current][2]} / ${pages[current][3]} · GAO MINGYUAN`;
-      links.forEach((a,i)=>{for(const link of[a,menu.children[i]]){if(i===current)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}});
+      links.forEach((a,i)=>{for(const link of[a]){if(i===current)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}});
       const target=pages[(current+1)%4],last=current===3;next.dataset.next=target[0];
       next.querySelector('.site-next-label .site-en').textContent=last?'BACK TO HOME':'NEXT';
       next.querySelector('.site-next-label .site-zh').textContent=last?'返回首页':'下一页';
@@ -150,7 +141,7 @@
     }
     function activate(){slots.forEach((s,i)=>{const visible=i===current;s.frame.inert=moving||detail.active()||!visible;s.element.style.visibility=visible?'visible':'hidden';s.element.setAttribute('aria-hidden',String(!visible));send(s,'active',{active:visible&&!detail.active()&&!document.hidden});});}
     function normalize(){slots.forEach((s,i)=>s.element.style.top=`${i*100}%`);track.style.transform=transform(-current*height());}
-    function cancel(){epoch++;animation?.cancel();animation=null;moving=false;delete root.dataset.siteMoving;normalize();activate();next.removeAttribute('aria-disabled');}
+    function cancel(){epoch++;animation?.cancel();animation=null;moving=false;delete root.dataset.siteMoving;delete root.dataset.siteRewinding;chrome.inert=false;normalize();activate();next.removeAttribute('aria-disabled');}
     function load(index,selected){
       const s=slots[index];if(s.ready&&(!selected||selected===s.selected))return Promise.resolve(true);if(s.promise&&(!selected||selected===s.selected))return s.promise;
       s.resolve?.(false);clearTimeout(s.timeout);s.ready=false;s.token=`${index}-${++s.version}`;if(selected)s.selected=selected;
@@ -165,10 +156,11 @@
     }
     function jump(index,{selected=null,push=true}={}){
       if(detail.active()){detail.exitTo(()=>jump(index,{selected,push}));return;}
-      closeMenu();if(index===current&&!moving&&slots[index].ready&&(!selected||selected===slots[index].selected)){chromeState();return;}cancel();current=index;normalize();void load(index,selected);activate();chromeState();status.textContent='';if(push)route();lockUntil=performance.now()+550;wheelSum=0;
+      if(index===current&&!moving&&slots[index].ready&&(!selected||selected===slots[index].selected)){chromeState();return;}cancel();current=index;normalize();void load(index,selected);activate();chromeState();status.textContent='';if(push)route();lockUntil=performance.now()+550;wheelSum=0;
     }
     async function slide(direction){
-      if(moving||detail.active())return;closeMenu();const from=current,to=(from+direction+4)%4,version=++epoch;
+      if(current===3&&direction===1)return rewindHome();
+      if(moving||detail.active())return;const from=current,to=(from+direction+4)%4,version=++epoch;
       moving=true;root.dataset.siteMoving='true';next.setAttribute('aria-disabled','true');slots.forEach(s=>s.frame.inert=true);send(slots[from],'active',{active:false});slots[to].element.style.visibility='visible';
       const ready=await load(to);if(version!==epoch)return;
       if(!ready){cancel();status.textContent='章节未能加载，请重试 / Chapter unavailable, please retry';return;}
@@ -182,6 +174,27 @@
       if(version!==epoch)return;
       track.style.transform=transform(-to*height());animation?.cancel();animation=null;
       slots.forEach((s,i)=>s.element.style.top=`${i*100}%`);moving=false;delete root.dataset.siteMoving;next.removeAttribute('aria-disabled');activate();lockUntil=performance.now()+550;
+    }
+    async function rewindHome(){
+      if(moving||detail.active())return;
+      const version=++epoch;moving=true;root.dataset.siteMoving='true';root.dataset.siteRewinding='true';chrome.inert=true;
+      next.setAttribute('aria-disabled','true');status.textContent='';
+      slots.forEach(s=>{s.frame.inert=true;send(s,'active',{active:false});});
+      const ready=await Promise.all([0,1,2].map(i=>load(i)));
+      if(version!==epoch)return;
+      if(ready.some(value=>!value)){cancel();status.textContent='章节未能加载，请重试 / Chapters unavailable, please retry';return;}
+      // The actual existing documents pass the viewport, with their own animation clocks frozen.
+      slots[0].frame.contentWindow?.PortfolioHome?.prime();
+      slots.forEach(s=>s.element.style.visibility='visible');
+      const h=height();current=0;route();
+      if(!reduced.matches&&track.animate){
+        animation=track.animate([{transform:transform(-3*h)},{transform:transform(0)}],{duration:1000,easing:'cubic-bezier(.16,.72,.24,1)',fill:'forwards'});
+        try{await animation.finished;}catch{return;}
+      }
+      if(version!==epoch)return;
+      track.style.transform=transform(0);animation?.cancel();animation=null;moving=false;
+      delete root.dataset.siteMoving;delete root.dataset.siteRewinding;chrome.inert=false;next.removeAttribute('aria-disabled');
+      normalize();activate();wheelSum=0;lockUntil=performance.now()+550;
     }
     function wheel(delta){
       const now=performance.now();if(moving||detail.active()||now<lockUntil||!Number.isFinite(delta))return;
@@ -201,8 +214,6 @@
       else if(index===current){
         if(data.type==='wheel')wheel(data.delta);
         else if(data.type==='jump'&&Number.isInteger(data.index)&&data.index>=0&&data.index<4)jump(data.index,{selected:data.selected});
-        else if(data.type==='menu'){const open=menu.hidden;menu.hidden=!open;send(s,'menu',{open});if(open)menu.children[current].focus({preventScroll:true});}
-        else if(data.type==='dismiss-menu')closeMenu();
         else if(data.type==='project'&&typeof data.href==='string'){
           const url=new URL(data.href,base);if(url.origin===location.origin&&isProject(url.pathname))void detail.open(url.href);
         }
@@ -212,15 +223,9 @@
     next.addEventListener('click',()=>void slide(1));
     document.addEventListener('click',event=>{
       const a=event.target.closest('a[href]');if(!a||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
-      if(a.closest('#site-rail, #site-quick')){event.preventDefault();jump(Number(a.dataset.index));}
+      if(a.closest('#site-rail')){event.preventDefault();jump(Number(a.dataset.index));}
     });
-    document.addEventListener('keydown',event=>{
-      if(menu.hidden)return;
-      if(event.key==='Escape'){event.preventDefault();closeMenu(true);}
-      else if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)){event.preventDefault();const items=[...menu.querySelectorAll('a')],at=items.indexOf(document.activeElement);const to=event.key==='Home'?0:event.key==='End'?3:(at+(event.key==='ArrowDown'?1:-1)+4)%4;items[to].focus();}
-    });
-    document.addEventListener('pointerdown',event=>{if(!menu.contains(event.target))closeMenu();});
-    document.addEventListener('wheel',event=>{if(event.ctrlKey||Math.abs(event.deltaX)>Math.abs(event.deltaY)||event.target.closest('#site-chrome, #site-quick'))return;event.preventDefault();wheel(event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?height():1));},{passive:false});
+    document.addEventListener('wheel',event=>{if(event.ctrlKey||Math.abs(event.deltaX)>Math.abs(event.deltaY)||event.target.closest('#site-chrome'))return;event.preventDefault();wheel(event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?height():1));},{passive:false});
     window.addEventListener('popstate',()=>{
       if(isProject(location.pathname)){void detail.open(location.href,{push:false});return;}
       const index=pageIndex(location.pathname);

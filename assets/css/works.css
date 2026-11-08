@@ -13,3 +13,9 @@ h1 { position: relative; z-index: 1; flex: none; font-size: clamp(23px, 2.3vw, 4
 #counter { font-size: 11px; min-width: 76px; text-align: center; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
 @media (max-width: 650px) { .installation { position: relative; z-index: 0; width: 94vw; height: 32svh; } h1 { font-size: 23px; } }
 @media (prefers-reduced-motion: reduce) { h1 { animation: none; } }
+
+@media (min-width: 651px) {
+  /* Reserve distinct viewport bands for carousel controls and the chapter NEXT control. */
+  main { position: relative; padding-bottom: 148px; }
+  .controls { position: absolute; left: 50%; bottom: 104px; transform: translateX(-50%); }
+}

@@ -18,7 +18,7 @@
     back.addEventListener('click', event => { if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); send(); } });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && !document.fullscreenElement) { event.preventDefault(); send(); } });
   }
-  function create({ base, works, prepare, lock, unlock, closeMenu, error }) {
+  function create({ base, works, prepare, lock, unlock, error }) {
     const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = new URL('assets/css/works-carousel.css', base);
     let styleReady = false;
     const styles = new Promise(resolve => { const timer = setTimeout(() => resolve(false), 3000); css.onload = () => { clearTimeout(timer); styleReady = true; resolve(true); }; css.onerror = () => { clearTimeout(timer); resolve(false); }; });
@@ -110,7 +110,7 @@
       }
       const version = ++operation; id = nextId;
       if (!id) return;
-      closeMenu(); setState('loading'); lock();
+      setState('loading'); lock();
       try {
         await styles; if (version !== operation) return;
         await prepare(id); if (version !== operation) return;
