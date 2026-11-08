@@ -206,6 +206,7 @@ const CircularCarousel = ({
   innerShade = 0.6,
   cornerRadius = 12,
   captions = false,
+  visualScale = 1,
   onChange,
   onItemClick,
   className = '',
@@ -274,6 +275,7 @@ const CircularCarousel = ({
   const stateRef = useRef({
     angle: -startIndex * step,
     velocity: 0,
+    suspended: false,
     target: null,
     dir: 0,
     press: null,
@@ -316,6 +318,7 @@ const CircularCarousel = ({
     stretch: reduced ? 0 : clamp(stretch, 0, 1),
     depthFade: clamp(depthFade, 0, 1),
     captions,
+    visualScale: clamp(visualScale, 0.1, 1),
     reduced
   };
   const settingsRef = useRef(settings);
@@ -450,7 +453,7 @@ const CircularCarousel = ({
       }
       const spanX = Math.max(maxX - minX, 1);
       const spanY = Math.max(maxY - minY, 1);
-      const fit = Math.min(1, width / spanX, height / spanY);
+      const fit = Math.min(1, width / spanX, height / spanY) * s.visualScale;
       state.fit = fit;
       state.shift = -((minY + maxY) / 2) * fit - room / 2;
       state.drop = s.axis === 'x' ? (rect.width / fit) * 0.55 + s.cardW : (rect.height / fit) * 0.55 + s.cardH;
@@ -481,6 +484,7 @@ const CircularCarousel = ({
     };
 
     const advance = (s, dt, now) => {
+      if (state.suspended) return false;
       if (!state.introDone && readyRef.current) {
         if (!state.intro) {
           if (s.intro === 'none') state.introDone = true;
@@ -518,7 +522,7 @@ const CircularCarousel = ({
         const tau = 0.18 + s.momentum * 1.5;
         state.velocity += (cruise - state.velocity) * (1 - Math.exp(-dt / tau));
         state.angle += state.velocity * dt;
-        if (cruise === 0 && s.snap && Math.abs(state.velocity) < SETTLE_SPEED) {
+        if (cruise === 0 && s.snap && Math.abs(state.velocity) < SETTLE_SPEED && Math.abs(nearest(state.angle) - state.angle) > 0.004) {
           state.target = nearest(state.angle);
         }
         busy = busy || cruise !== 0 || Math.abs(state.velocity) > 0.01 || state.target !== null;
@@ -535,7 +539,7 @@ const CircularCarousel = ({
         state.stepAt = 0;
       }
 
-      if (now < state.holdUntil) busy = true;
+      if (s.autoplay !== 'off' && now < state.holdUntil) busy = true;
 
       const ease = 1 - Math.exp(-dt / 0.35);
       const aimYaw = state.pointer.inside ? state.pointer.x * s.parallax * 9 : 0;
@@ -648,7 +652,7 @@ const CircularCarousel = ({
 
     const onWheel = event => {
       const s = settingsRef.current;
-      if (!s.draggable) return;
+      if (!s.draggable || state.suspended) return;
       const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
       if (!delta || event.ctrlKey || state.drag) return;
       event.preventDefault();
@@ -686,7 +690,7 @@ const CircularCarousel = ({
   useLayoutEffect(() => {
     measureRef.current();
     wakeRef.current();
-  }, [radius, cardW, cardH, tiltValue, perspective, preset, captions, count]);
+  }, [radius, cardW, cardH, tiltValue, perspective, preset, captions, count, visualScale]);
 
   useEffect(() => {
     wakeRef.current();
@@ -715,7 +719,21 @@ const CircularCarousel = ({
 
   useEffect(() => {
     if (!apiRef) return;
-    apiRef.current = { focusIndex, stepBy, readState: () => ({ angle: stateRef.current.angle, target: stateRef.current.target, fit: stateRef.current.fit }) };
+    apiRef.current = { focusIndex, stepBy,
+      selectIndex: index => {
+        const state=stateRef.current,s=settingsRef.current;
+        const target=-index*s.step;
+        state.angle=target+360*Math.round((state.angle-target)/360);
+        state.target=null;state.velocity=0;state.last=0;wakeRef.current();
+      },
+      setSuspended: value => {
+        const state = stateRef.current;
+        if(state.suspended===!!value)return;
+        state.suspended = !!value;
+        if (value) { clearTimeout(state.wheelTimer); state.velocity = 0; state.target = null; state.press = null; if(state.drag){state.drag=false;setDragging(false);} }
+        state.last = 0;
+        wakeRef.current();
+      }, readState: () => ({ angle: stateRef.current.angle, target: stateRef.current.target, fit: stateRef.current.fit, suspended: stateRef.current.suspended }) };
     return () => { apiRef.current = null; };
   }, [apiRef, focusIndex, stepBy]);
 

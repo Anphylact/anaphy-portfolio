@@ -26,6 +26,7 @@ function Works() {
   const api = useRef(null), region = useRef(null);
   const [selected, setSelected] = useState(initialIndex), [width, setWidth] = useState(500);
   const [failed, setFailed] = useState({});
+  const [visualScale, setVisualScale] = useState(innerWidth > 650 ? .9 : 1);
   const items = useMemo(() => projects.map((project, index) => ({
     title: project.title || `作品 ${pad(index + 1)}`,
     src: project.cover && !failed[project.id] ? project.cover : placeholder(index)
@@ -34,7 +35,8 @@ function Works() {
     if (!region.current) return;
     const measure = () => {
       const r = region.current.getBoundingClientRect();
-      // Identical sizing and installation layout to the visually approved prototype.
+      // The existing model keeps its proportions; the desktop stage receives one uniform scale.
+      setVisualScale(innerWidth > 650 ? .9 : 1);
       setWidth(Math.max(90, Math.min(r.width * .90, r.height * 2)));
     };
     const observer = new ResizeObserver(measure); observer.observe(region.current); measure();
@@ -50,6 +52,22 @@ function Works() {
     });
     return () => { cancelled = true; images.forEach(image => { image.onerror = null; }); };
   }, []);
+  useEffect(() => {
+    // Narrow integration hook: preserve the actual ring, including its angle and parallax.
+    const handle = {
+      suspend: value => { if (!api.current) return false; api.current.setSuspended(value); return true; },
+      readState: () => api.current?.readState(),
+      getIndex: () => savedIndex(),
+      select: id => {
+        const index=projects.findIndex(project=>project.id===id);
+        if(index<0||!api.current)return false;
+        api.current.selectIndex(index);setSelected(index);persist(index);return true;
+      }
+    };
+    window.PortfolioWorks = handle;
+    window.dispatchEvent(new Event('portfolio:works-ready'));
+    return () => { if (window.PortfolioWorks === handle) delete window.PortfolioWorks; };
+  }, []);
   const change = index => { setSelected(index); persist(index); };
   const openProject = (_, index) => {
     const state = api.current?.readState();
@@ -59,7 +77,9 @@ function Works() {
     // The source component focuses side cards first; only an aligned front card opens.
     if (Math.abs(offset) > .1) return;
     persist(index);
-    location.href = `project.html?id=${encodeURIComponent(projects[index].id)}`;
+    const destination = `project.html?id=${encodeURIComponent(projects[index].id)}`;
+    if (window.PortfolioNavigation?.openProject) window.PortfolioNavigation.openProject(destination);
+    else location.href = destination;
   };
   if (!projects.length) return <>
     <h1>暂时还没有作品</h1>
@@ -69,7 +89,7 @@ function Works() {
     <h1 key={selected}>{items[selected].title}</h1>
     <div className="installation" ref={region}>
       <CircularCarousel apiRef={api} initialIndex={initialIndex} items={items} preset="cylinder" intro="none"
-        cardWidth={width} aspectRatio={16 / 9} gap={width * .10} curve={1} tilt={-2}
+        cardWidth={width} visualScale={visualScale} aspectRatio={16 / 9} gap={width * .10} curve={1} tilt={-2}
         perspective={width * 10} autoplay="off" momentum={.6} snap
         parallax={.3} stretch={.5} depthFade={.55} fadeColor="#002FA7"
         innerShade={.6} cornerRadius={Math.min(12, width * .035)} captions={false}
