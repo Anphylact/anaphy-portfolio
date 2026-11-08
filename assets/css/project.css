@@ -1,21 +1,45 @@
-:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100svh;background:#002FA7;color:white;font-family:Arial,"Microsoft YaHei",sans-serif}header{display:flex;justify-content:space-between;align-items:center;padding:32px 40px}header a{color:inherit;text-decoration:none;font-size:12px;letter-spacing:.5px}header span{font-size:22px;letter-spacing:-.7px}a:focus-visible,video:focus-visible{outline:2px solid white;outline-offset:6px}main{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:5vw;align-items:center;min-height:calc(100svh - 100px);padding:60px 40px 100px}.information{max-width:480px}.eyebrow{font-size:10px;letter-spacing:3px;opacity:.6;margin:0 0 26px}h1{font-size:clamp(32px,4.3vw,64px);font-weight:400;line-height:1.2;margin:0 0 40px;overflow-wrap:anywhere}dl{margin:0 0 32px}dl div{display:grid;grid-template-columns:80px 1fr;gap:14px;margin-bottom:16px;font-size:12px;line-height:1.7}dt{opacity:.55}dd{margin:0;overflow-wrap:anywhere}.description{font-size:13px;line-height:2;opacity:.8;white-space:pre-line;overflow-wrap:anywhere}.media{min-width:0}.video-frame{position:relative;width:100%;aspect-ratio:16/9;border:1px solid #ffffff40;background:#001f70;overflow:hidden}video{display:block;width:100%;height:100%;object-fit:contain;background:#001f70}video[hidden],.placeholder[hidden]{display:none}.placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}.placeholder span{font-size:9px;letter-spacing:3px;opacity:.5}.placeholder p{font-size:clamp(18px,2vw,26px);margin:22px 0 12px;font-weight:400}.placeholder small{font-size:11px;opacity:.55}.video-note{font-size:10px;opacity:.55;letter-spacing:1px;margin-top:16px}@media(max-width:750px){header{padding:24px}header span{font-size:20px}main{grid-template-columns:1fr;gap:32px;min-height:auto;padding:46px 24px 60px}.information{max-width:none}h1{font-size:38px;margin-bottom:28px}.description{max-width:560px}.media{width:100%}}
-
-/* Browse within the existing detail layout; controls occupy their own grid row. */
-.project-navigation{position:fixed;bottom:calc(28px + env(safe-area-inset-bottom,0px));left:0;right:0;display:flex;align-items:center;justify-content:center;gap:28px;align-self:end;min-width:0}
-.project-navigation button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;min-width:48px;padding:8px;border:0;background:transparent;color:white;cursor:pointer;font:10px Arial,"Microsoft YaHei",sans-serif}
-.project-navigation svg{width:20px;height:20px;flex:none}.project-navigation button:hover{opacity:.75}.project-navigation button:disabled{opacity:.45;cursor:default}.project-navigation button:focus-visible,.play-video:focus-visible{outline:1px dashed white;outline-offset:3px}
-#project-counter{font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums}
-.project-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.project-poster[hidden],.play-video[hidden]{display:none}
-.play-video{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;border:0;background:transparent;color:white;cursor:pointer;font-size:12px;text-shadow:0 1px 3px #001f70}
-@media(max-width:750px){.project-navigation{position:static;transform:none;padding:0 16px calc(28px + env(safe-area-inset-bottom,0px));gap:12px}.project-navigation button{gap:2px;font-size:9px}}
-
-.project-nav-label{display:flex;flex-direction:column;gap:4px;font-size:12px}.project-nav-label [lang="en"]{font-size:9px;letter-spacing:.5px}
-
-/* Chinese carries the primary information; English is supporting metadata. */
-.role-label{display:flex;align-items:baseline;gap:10px;margin:0 0 12px;font-size:14px;line-height:1.5}
-.role-label [lang="en"]{font-size:10px;letter-spacing:2px;opacity:.65}
-.project-role{font-size:clamp(34px,4.3vw,60px);font-weight:600;line-height:1.3;margin:0 0 24px;overflow-wrap:anywhere}
-h1{font-size:clamp(26px,3.1vw,46px);line-height:1.3;margin-bottom:28px}
-.description{font-size:16px;line-height:1.85;opacity:.95}
-dl{margin-bottom:24px}dl div{font-size:14px}
-@media(max-width:750px){.project-role{font-size:34px;margin-bottom:20px}h1{font-size:28px;margin-bottom:24px}.description{font-size:16px}}
+:root{color-scheme:dark;--project-left:clamp(32px,4vw,80px);--project-right:160px}
+*{box-sizing:border-box}
+body{margin:0;min-height:100svh;padding-inline:var(--project-left) var(--project-right);background:#002FA7;color:white;font-family:Arial,"Microsoft YaHei",sans-serif}
+header{display:flex;justify-content:space-between;align-items:flex-start;min-height:124px;max-width:1320px;margin-inline:auto;padding:32px 0}
+header a{color:inherit;text-decoration:none}
+header span{font-size:13px;letter-spacing:1.3px;line-height:1.5}
+a:focus-visible,video:focus-visible{outline:2px solid white;outline-offset:6px}
+/* One bounded composition; the right gutter clears the fixed rail's full hit area. */
+.project-content{max-width:1320px;margin-inline:auto;min-height:calc(100svh - 124px);display:flex;flex-direction:column;justify-content:center;padding-block:24px 40px}
+main{display:grid;grid-template-columns:minmax(0,35fr) minmax(0,65fr);gap:40px;align-items:center}
+.information,.media{min-width:0}
+.eyebrow{font-size:11px;letter-spacing:2px;opacity:.65;margin:0 0 20px}
+.role-label{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font-size:14px;line-height:1.5}
+.role-label [lang="en"]{font-size:11px;letter-spacing:1.5px;opacity:.65}
+.project-role{font-size:clamp(28px,2.2vw,36px);font-weight:600;line-height:1.4;margin:0 0 16px;overflow-wrap:anywhere}
+h1{font-size:clamp(22px,1.8vw,28px);font-weight:400;line-height:1.45;margin:0 0 24px;overflow-wrap:anywhere}
+dl{margin:0 0 22px}dl div{display:grid;grid-template-columns:52px 1fr;gap:12px;margin-bottom:10px;font-size:15px;line-height:1.7}
+dt{opacity:.65}dd{margin:0;overflow-wrap:anywhere}
+.description{font-size:16px;line-height:1.85;opacity:.95;white-space:pre-line;overflow-wrap:anywhere;margin:0}
+.video-frame{position:relative;width:100%;aspect-ratio:16/9;border:1px solid #ffffff40;background:#001f70;overflow:hidden}
+video{display:block;width:100%;height:100%;object-fit:contain;background:#001f70}
+video[hidden],.placeholder[hidden],.project-poster[hidden],.play-video[hidden]{display:none}
+.placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+.placeholder span{font-size:11px;letter-spacing:2px;opacity:.6}
+.placeholder p{font-size:clamp(18px,1.6vw,24px);margin:18px 0 10px;font-weight:400}
+.placeholder small{font-size:12px;opacity:.7}
+.video-note{font-size:12px;opacity:.7;line-height:1.6;margin:12px 0 0}
+.project-navigation{display:flex;align-items:center;justify-content:center;gap:28px;min-width:0;margin-top:28px}
+.project-navigation button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;min-width:48px;padding:8px;border:0;background:transparent;color:white;cursor:pointer;font:12px Arial,"Microsoft YaHei",sans-serif}
+.project-navigation svg{width:20px;height:20px;flex:none}
+.project-navigation button:hover{opacity:.75}.project-navigation button:disabled{opacity:.45;cursor:default}
+.project-navigation button:focus-visible,.play-video:focus-visible{outline:1px dashed white;outline-offset:3px}
+#project-counter{font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.project-nav-label{display:flex;flex-direction:column;gap:4px;font-size:12px}
+.project-nav-label [lang="en"]{font-size:11px;letter-spacing:.5px}
+.project-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.play-video{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;border:0;background:transparent;color:white;cursor:pointer;font-size:14px;text-shadow:0 1px 3px #001f70}
+@media(max-width:900px){main{grid-template-columns:1fr;gap:28px}.project-content{justify-content:flex-start}.project-role{font-size:28px}h1{font-size:24px}}
+@media(max-width:650px){
+  :root{--project-left:max(24px,env(safe-area-inset-left,0px));--project-right:max(40px,env(safe-area-inset-right,0px))}
+  header{padding-top:24px}header span{font-size:11px}
+  .project-content{padding-block:24px calc(28px + env(safe-area-inset-bottom,0px))}
+  .project-navigation{gap:12px}.project-navigation button{gap:2px;padding:6px}
+  .project-nav-label [lang="en"]{font-size:10px}
+}

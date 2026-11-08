@@ -2,9 +2,25 @@
 
 本轮继续更新同一分支 integrate-approved-portfolio 和同一 PR #15，不创建重复 PR，不合并 main。
 
-预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=hierarchy-8
+预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=composition-9
 
-## 本轮：ABOUT导航状态与中文职责优先（hierarchy-8）
+## 本轮：详情紧凑构图与导航安全区（composition-9）
+
+- 详情使用同一个最大1320px内容容器，主内容35/65双栏、间距40px。上一部/下一部位于同一容器下方28px正常文档流中，不再固定漂浮于视口底部；长文可正常滚动，不覆盖内容。
+- 桌面正文左边距32–80px，右侧160px专用安全区，连同容器居中余量避开右侧导航完整112px点击区与16px右间距。手机右侧40px，避开16px竖向栏及其向左8px扩展热区；不改变导航层级、样式、位置或指示条。900px以下改上下布局。
+- 职责28–36px/600，作品名22–28px/400，介绍16px/1.85，年份/类型15px，ROLE辅助11px；手机职责28px、作品名24px。只调整排版，不改项目字段或介绍。
+- 详情遗留Anaphy署名替换为GAO MINGYUAN，保持一个原有署名位置，无新增品牌标题；浏览器默认标题也同步。HOME和其他已确认章节不改设计。
+- 没有修改任何运行JavaScript、轮盘、ABOUT/CONTACT原型、作品数据或媒体加载策略。复用原详情组件，公共HTML入口仅更新缓存版本。
+
+Chromium实际检查1920×1080、1440×900、1366×768、390×844、320×568，每尺寸遍历全部5部作品；职责/标题/正文在指定字号范围，16:9无拉伸，无横向溢出。视频右缘与导航完整热区最小间隙桌面32px、手机15px；实际hit-test落到详情iframe，X与视频不相交。内容控件中心与内容容器对齐。X返回保留最后作品05。
+
+现有所有职责都是相同占位，已逐部检查；另以浏览器临时路由注入长职责及约250字测试说明，不提交修改后的作品数据、不虚构经历。1366和390px长文可滚动、无溢出、可切换下一部。
+
+共享封面动画三个尺寸起终点误差<0.1px、X收回通过；临时H.264测试验证主动播放、停止/释放、失败恢复及画框稳定。未新增动画循环、滤镜或逐帧布局读数；本轮未重测FPS或堆，不把此前性能数据视为本轮测量。手机为Chromium触屏仿真，未声称真实设备/Safari测试。
+
+[桌面1440](docs/integration/previews/composition-9/detail-1440.png) · [1366](docs/integration/previews/composition-9/detail-1366.png) · [1920](docs/integration/previews/composition-9/detail-1920.png) · [手机390](docs/integration/previews/composition-9/detail-390.png) · [320](docs/integration/previews/composition-9/detail-320.png) · [长文测试](docs/integration/previews/composition-9/long-test-1366.png) · [验收记录](docs/integration/composition-9-checks.json)。
+
+## 历史：ABOUT导航状态与中文职责优先（hierarchy-8）
 
 - ABOUT桥接层仅观察原模块的data-state变化；opening即将NEXT禁用/inert并240ms淡出，展开和closing阶段保持隐藏；overview恢复后淡入。未改变ABOUT的SVG路径、姓名、时间轴、关闭逻辑或任何动画时钟。右侧导航保持可用，其他章节NEXT照常显示。减少动态效果时不播放淡入淡出。
 - WORKS详情将原role字段移至作品名前作为主视觉（桌面34–60px、600字重，手机34px）；中文职责标签14px、ROLE辅助10px。作品名上限64→46px，手机38→28px，约缩小26–28%；中文介绍16px、行高1.85、清晰白色，年份/类型14px。没有新增、修改或翻译项目经历，所有作品仍共用原数据和渲染器。
