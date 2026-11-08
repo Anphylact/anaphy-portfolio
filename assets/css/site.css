@@ -2,24 +2,27 @@
 html { background: #002FA7; color-scheme: dark; }
 #site-chrome { position: fixed; inset: 0; z-index: 1000; pointer-events: none; color: white; font-family: Arial, 'Microsoft YaHei', sans-serif; }
 #site-chrome *, #site-quick *, #site-brand { box-sizing: border-box; }
-#site-chrome a, #site-brand, #site-quick a { color: white; text-decoration: none; cursor: pointer; pointer-events: auto; }
+#site-chrome a, #site-next, #site-brand, #site-quick a { color: white; text-decoration: none; cursor: pointer; pointer-events: auto; }
 #site-brand { background: transparent; border: 0; padding: 0; font: inherit; letter-spacing: inherit; text-align: left; border-radius: 0; }
 #site-brand.site-brand-new { position: fixed; top: 28px; left: 4.5vw; z-index: 1001; font: 11px Arial, sans-serif; letter-spacing: 1.8px; }
 #site-brand::after { content: ' +'; font-size: 12px; }
 #site-brand[aria-expanded='true']::after { content: ' −'; }
-#site-brand:focus-visible, #site-chrome a:focus-visible, #site-quick a:focus-visible { outline: 1px dashed white; outline-offset: 4px; }
+#site-brand:focus-visible, #site-next:focus-visible, #site-chrome a:focus-visible, #site-quick a:focus-visible { outline: 1px dashed white; outline-offset: 4px; }
 #site-rail { position: absolute; top: 50%; right: 16px; transform: translateY(-50%); display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
 #site-rail .site-chapter { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 4px; width: 112px; min-height: 48px; padding: 4px 32px 4px 0; opacity: .72; }
 #site-rail .site-en { font-size: 10px; letter-spacing: 1.2px; line-height: 1.2; }
 #site-rail .site-zh { font-size: 12px; line-height: 1.4; }
 #site-rail .site-chapter[aria-current='page'] { opacity: 1; }
 #site-indicator { position: absolute; right: 0; top: 0; width: 24px; height: 2px; background: white; opacity: 1; pointer-events: none; transition: transform .42s cubic-bezier(.22,.61,.36,1); }
-#site-next { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 9px; min-height: 44px; }
+#site-next { position: fixed; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; align-items: center; justify-content: center; gap: 9px; min-width: 112px; min-height: 48px; padding: 4px 12px; border: 0; background: transparent; font: inherit; text-align: left; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+#site-next, #site-next * { pointer-events: auto; }
+#site-next[aria-disabled="true"] { cursor: progress; }
+#site-next:hover .site-next-circle { outline: 1px solid white; outline-offset: 4px; }
 #site-next .site-next-circle { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: white; color: #002FA7; font: 23px Arial, sans-serif; }
 #site-next .site-next-label { display: flex; flex-direction: column; gap: 3px; }
 #site-next .site-en { font-size: 10px; letter-spacing: 1px; }
 #site-next .site-zh { font-size: 12px; line-height: 1.4; }
-html[data-site-page='contact'] #site-next { bottom: 92px; }
+html[data-site-page='contact'] #site-next { bottom: calc(82px + env(safe-area-inset-bottom, 0px)); }
 #site-quick { display: block; position: fixed; top: 76px; left: 4.5vw; z-index: 1100; width: 238px; padding: 12px 0; background: #002FA7; border-top: 1px solid white; }
 #site-quick[hidden] { display: none; }
 #site-quick a { display: flex; gap: 16px; align-items: center; min-height: 46px; padding: 8px 12px; font: 12px Arial, 'Microsoft YaHei', sans-serif; letter-spacing: 1px; }
@@ -32,8 +35,8 @@ html[data-site-page='contact'] #site-next { bottom: 92px; }
   #site-rail .site-en::after { content: ' / '; }
   #site-indicator { width: 14px; }
   #site-rail .site-zh { display: inline; font-size: 12px; line-height: 1.2; }
-  #site-next, html[data-site-page='contact'] #site-next { bottom: 54px; left: 12px; transform: none; gap: 7px; }
-  html[data-site-page='home'] #site-next { bottom: 95px; }
+  #site-next, html[data-site-page='contact'] #site-next { bottom: calc(54px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); gap: 7px; }
+  html[data-site-page='home'] #site-next { bottom: calc(95px + env(safe-area-inset-bottom, 0px)); }
   #site-next .site-next-circle { width: 32px; height: 32px; font-size: 21px; }
   #site-next .site-en { font-size: 9px; }
   #site-brand.site-brand-new { top: 24px; left: 24px; }
@@ -72,9 +75,24 @@ html.site-host, html.site-host body { margin: 0; width: 100%; height: 100%; over
 html[data-site-moving] #site-track { pointer-events: none; }
 #site-status { position: fixed; bottom: 12px; left: 12px; z-index: 1200; padding: 8px; background: #002FA7; color: white; font-size: 12px; }
 #site-status:empty { display: none; }
-@media (max-width: 650px) and (max-height: 650px) {
-  html[data-site-page='contact'] #site-next { bottom: 16px; }
-}
 /* Retain contrast when HOME's white bubbles pass behind the fixed navigation. */
 #site-rail .site-chapter { text-shadow: 0 0 4px #002FA7, 0 0 2px #002FA7; }
 #site-indicator { box-shadow: 0 0 0 2px #002FA7; }
+
+/* Same viewport-aligned close target for details and expanded ABOUT modules. */
+.site-close, #close.site-close { position: fixed; top: calc(64px + env(safe-area-inset-top, 0px)); right: max(24px, 4.5vw, env(safe-area-inset-right, 0px)); left: auto; bottom: auto; width: 48px; height: 48px; display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: white; cursor: pointer; z-index: 1002; text-decoration: none; touch-action: manipulation; }
+.site-close[hidden] { display: none !important; }
+.site-close svg { display: block; width: 20px; height: 20px; pointer-events: none; }
+.site-close:hover { background: #ffffff14; }
+.site-close:focus-visible { outline: 1px dashed white; outline-offset: 3px; }
+body.site-project header > span { margin-left: auto; }
+@media (max-width: 650px) { .site-close, #close.site-close { right: max(24px, env(safe-area-inset-right, 0px)); } }
+/* Keep centered navigation clear of CONTACT's credit and capture controls. */
+@media (max-width: 650px) {
+  html[data-site-page='contact'] #site-next { bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (max-width: 650px) and (max-height: 800px) {
+  /* Short viewports get a dedicated navigation strip; the original document scrolls inside its frame. */
+  .site-slot[data-chapter='contact'] iframe { height: calc(100% - 76px - env(safe-area-inset-bottom, 0px)); }
+  html[data-site-page='contact'] #site-next { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+}

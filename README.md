@@ -4,7 +4,7 @@
 
 ## 预览
 
-https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=vertical-2
+https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=integration-fixes-3
 
 使用当前 ChatGPT 账号访问；该独立预览不覆盖正式网站或旧原型。
 

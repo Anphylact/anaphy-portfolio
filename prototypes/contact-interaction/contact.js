@@ -10,19 +10,30 @@
   function render() {
     // The composition stays fixed; only optical clarity and the auxiliary AF strokes change.
     const phase=(a,b)=>ease(Math.max(0,Math.min(1,(playhead-a)/(b-a))));
-    panel.style.filter=`blur(${20*(1-phase(.12,.64))}px)`;
+    // One fixed information DOM, with a short lens hunt before the final lock.
+    const blurStops=[[0,20],[.30,4.5],[.46,12],[.72,0],[1,0]];
+    const sample=(stops,t)=>{
+      for(let i=1;i<stops.length;i++)if(t<=stops[i][0]){
+        const [a,x]=stops[i-1],[b,y]=stops[i];return x+(y-x)*ease((t-a)/(b-a));
+      }
+      return stops.at(-1)[1];
+    };
+    // Refocus resets clarity monotonically; it does not replay a shutter backwards.
+    const reset=animation?ease((animation.from-playhead)/(animation.from-animation.to||1)):1;
+    const blur=goal===0&&animation?animation.fromBlur+(20-animation.fromBlur)*reset:goal===0?20:sample(blurStops,playhead);
+    panel.style.filter=`blur(${blur}px)`;
     // A permanent cross and nearby corner strokes form one compact AF reticle.
-    const tightening=phase(0,.24)*(1-phase(.60,.68));
+    const tightening=phase(0,.18)*(1-phase(.25,.43))+.65*phase(.46,.64)*(1-phase(.72,.78));
     const inset=34-7*tightening, arm=12;
     for(const path of $('af-corners').children)path.setAttribute('d',`M ${inset-arm} ${-inset} L ${inset} ${-inset} L ${inset} ${-inset+arm}`);
     autofocus.style.opacity=String(1-phase(.79,.85));
-    autofocus.style.transform=`translate(-50%, -50%) scale(${1-.1*phase(0,.24)*(1-phase(.60,.68))})`;
-    const weight=1.2+.45*phase(.60,.66);
+    autofocus.style.transform=`translate(-50%, -50%) scale(${1-.08*tightening})`;
+    const weight=1.2+.6*phase(.72,.77);
     for(const path of $('af-corners').children)path.style.strokeWidth=String(weight);
     const exposure=goal===1&&animation&&playhead>.79&&playhead<.85;
     flash.style.opacity=String(exposure ? .16*Math.sin(Math.PI*(playhead-.79)/.06):0);
     const focused=playhead===1&&goal===1;
-    const state=focused?'focused':!animation?'standby':goal===0?'defocusing':playhead<.64?'focusing':playhead<.79?'locked':'shutter';
+    const state=focused?'focused':!animation?'standby':goal===0?'defocusing':playhead<.72?'focusing':playhead<.79?'locked':'shutter';
     root.dataset.state=state;
     root.dataset.progress=String(playhead);
     panel.inert=!focused;
@@ -45,11 +56,12 @@
   function go(next) {
     cancelAnimationFrame(raf);raf=0;
     feedbackToken++;feedback.replaceChildren();
+    const fromBlur=parseFloat(panel.style.filter.match(/[\d.]+/)?.[0]||'20');
     goal=next;
     if(reduced.matches){finish(next);return;}
     if(next===playhead){finish(next);return;}
     // Reversal starts from the current blur value; no geometry or content is replaced.
-    animation={from:playhead,to:next,start:performance.now(),duration:(next?1500:650)*Math.abs(next-playhead)};
+    animation={from:playhead,to:next,fromBlur,start:performance.now(),duration:(next?1800:650)*Math.abs(next-playhead)};
     frame.setAttribute('aria-busy','true');render();raf=requestAnimationFrame(tick);
   }
   function tick(now) {

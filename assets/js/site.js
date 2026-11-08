@@ -5,20 +5,26 @@
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const absolute=name=>new URL(name,base).href;
   const onReady=fn=>document.readyState==='loading'?document.addEventListener('DOMContentLoaded',fn,{once:true}):fn();
+  function closeControl(element,label){
+    if(!element)return;
+    element.classList.add('site-close');element.setAttribute('aria-label',label);element.title=label;
+    element.innerHTML='<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5L19 19M19 5L5 19" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>';
+  }
   const chapter=root.dataset.chapter;
   if(chapter){
     if(parent===window){ location.replace(absolute(pages.find(p=>p[0]===chapter)[1])+location.search); return; }
     bridge();return;
   }
   if(location.pathname.endsWith('/project.html')){
-    onReady(()=>document.getElementById('back')?.setAttribute('aria-label','返回作品选集 / Back to works'));return;
+    onReady(()=>{document.body.classList.add('site-project');closeControl(document.getElementById('back'),'关闭作品详情，返回作品选集 / Close project, back to works');});return;
   }
   root.classList.add('site-host');onReady(host);
 
   function bridge(){
     const token=new URLSearchParams(location.search).get('site-frame');
     const send=(type,extra={})=>parent.postMessage({channel:'portfolio-chapters',type,token,...extra},location.origin);
-    let brand, hostPaused=false, active=false;
+    let brand, hostPaused=false, active=false, ready=false;
+    const announce=()=>send('ready',{id:chapter==='works'?new URLSearchParams(location.search).get('selected'):null});
     window.PortfolioNavigation=Object.freeze({openProject:href=>send('project',{href})});
     // Keep the approved carousel's own URL/session persistence; mirror its stable ID to the host URL.
     if(chapter==='works'){
@@ -28,7 +34,8 @@
     window.addEventListener('message',event=>{
       if(event.source!==parent||event.origin!==location.origin||event.data?.channel!=='portfolio-host')return;
       const data=event.data;
-      if(data.type==='active'){
+      if(data.type==='connect'){if(ready)announce();}
+      else if(data.type==='active'){
         active=!!data.active;
         if(chapter==='home'){
           const motion=document.getElementById('motion');
@@ -54,7 +61,7 @@
       });
       document.addEventListener('about:related-works',()=>{const feedback=document.getElementById('feedback');if(feedback)feedback.textContent='正在前往作品选集…';send('jump',{index:1});});
       if(chapter==='about'){
-        document.getElementById('close').textContent='× CLOSE / 关闭';
+        closeControl(document.getElementById('close'),'关闭模块，返回关于概览 / Close module, back to About');
         document.getElementById('related').textContent='↗ VIEW RELATED WORKS / 查看相关作品';
       }
       document.addEventListener('wheel',event=>{
@@ -70,7 +77,8 @@
         if(scroll.scrollHeight>innerHeight+1&&((direction>0&&scroll.scrollTop+innerHeight<scroll.scrollHeight-1)||(direction<0&&scroll.scrollTop>0)))return;
         event.preventDefault();send('wheel',{delta:event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1)});
       },{passive:false});
-      requestAnimationFrame(()=>requestAnimationFrame(()=>send('ready',{id:chapter==='works'?new URLSearchParams(location.search).get('selected'):null})));
+      // Offscreen frames may suspend rAF. Readiness must not wait for a paint that navigation itself enables.
+      ready=true;announce();
     });
   }
 
@@ -81,7 +89,7 @@
     let wheelSum=0,lastWheel=0,wheelDirection=0,lockUntil=0;
     const slots=pages.map((page,index)=>{
       const element=document.createElement('section');element.className='site-slot';element.dataset.chapter=page[0];element.style.top=`${index*100}%`;
-      const frame=document.createElement('iframe');frame.title=`${page[2]} / ${page[3]}`;frame.name=`portfolio-${page[0]}`;
+      const frame=document.createElement('iframe');frame.addEventListener('load',()=>frame.contentWindow?.postMessage({channel:'portfolio-host',type:'connect'},location.origin));frame.title=`${page[2]} / ${page[3]}`;frame.name=`portfolio-${page[0]}`;
       element.append(frame);track.append(element);return{element,frame,ready:false,token:'',version:0,selected:null,resolve:null,promise:null};
     });
     const chrome=document.createElement('aside');chrome.id='site-chrome';chrome.setAttribute('aria-label','章节导航 / Chapter navigation');
@@ -93,7 +101,7 @@
     });
     // Exactly one persistent indicator node. It is never replaced or faded.
     const indicator=document.createElement('div');indicator.id='site-indicator';indicator.setAttribute('aria-hidden','true');rail.append(indicator);chrome.append(rail);
-    const next=document.createElement('a');next.id='site-next';next.innerHTML='<span class="site-next-circle" aria-hidden="true">↓</span><span class="site-next-label"><span class="site-en" lang="en">NEXT</span><span class="site-zh">下一页</span></span>';chrome.append(next);
+    const next=document.createElement('button');next.type='button';next.id='site-next';next.innerHTML='<span class="site-next-circle" aria-hidden="true">↓</span><span class="site-next-label"><span class="site-en" lang="en">NEXT</span><span class="site-zh">下一页</span></span>';chrome.append(next);
     const status=document.createElement('p');status.id='site-status';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
     document.body.append(chrome,menu,status);
     const height=()=>viewport.clientHeight;
@@ -110,7 +118,7 @@
     function chromeState(instant=false){
       root.dataset.sitePage=pages[current][0];root.dataset.siteReady=String(slots[current].ready);document.title=`${pages[current][2]} / ${pages[current][3]} · GAO MINGYUAN`;
       links.forEach((a,i)=>{for(const link of[a,menu.children[i]]){if(i===current)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}});
-      const target=pages[(current+1)%4];next.href=absolute(target[1]);next.setAttribute('aria-label',`下一页：${target[3]} / Next: ${target[2]}`);placeIndicator(instant);
+      const target=pages[(current+1)%4];next.dataset.next=target[0];next.setAttribute('aria-label',`下一页：${target[3]} / Next: ${target[2]}`);placeIndicator(instant);
     }
     function route(replace=false){
       const url=new URL(absolute(pages[current][1]));if(current===1&&slots[1].selected)url.searchParams.set('selected',slots[1].selected);
@@ -175,10 +183,11 @@
         }
       }
     });
+    // Native button owns its entire hit area (circle, labels and padding), including touch/keyboard.
+    next.addEventListener('click',()=>void slide(1));
     document.addEventListener('click',event=>{
       const a=event.target.closest('a[href]');if(!a||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
-      if(a===next){event.preventDefault();void slide(1);}
-      else if(a.closest('#site-rail, #site-quick')){event.preventDefault();jump(Number(a.dataset.index));}
+      if(a.closest('#site-rail, #site-quick')){event.preventDefault();jump(Number(a.dataset.index));}
     });
     document.addEventListener('keydown',event=>{
       if(menu.hidden)return;

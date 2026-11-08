@@ -2,9 +2,31 @@
 
 本轮继续更新同一分支 integrate-approved-portfolio 和同一 PR #15，不创建重复 PR，不合并 main。
 
-预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=vertical-2
+预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=integration-fixes-3
 
-## 本轮导航方式
+## 本轮功能修复（integration-fixes-3）
+
+- **NEXT 就绪死锁**：旧桥接在 `DOMContentLoaded` 后再等两次 `requestAnimationFrame` 才发 ready；当浏览器暂停屏外 iframe 绘制时，外层等待下一章 ready，下一章又要等进入视口后才能绘制。现在 DOM 就绪即可通信，另有 iframe load/connect 握手，不依赖屏外绘制。受控浏览器复现中，暂停屏外 rAF 的旧版点击 NEXT 后仍停留 HOME/moving；新版正常进入 WORKS 并结束 moving。这个测试验证暂停条件下的死锁，并不声称已复现每种线上浏览器的所有故障。
+- NEXT 使用独立原生 button 和直接 click 绑定，圆、文字、间距与边缘留白共享明确命中区域；键盘 Enter/Space 与触屏均可触发。翻章继续使用 1000ms 真实纵向位移，没有 opacity 替代。
+- 手机端移除 `left:12px; transform:none` 覆盖，控件以视口 50% 和自身宽度居中，支持安全区域。CONTACT 单独避让拍摄按钮和片尾；800px 以下短手机视口为固定导航留出 76px 区域，原 CONTACT 文档在其 iframe 内按原响应式布局滚动，不移动其信息模块或修改内部 CSS。
+- ABOUT 展开模块和 PROJECT 共用同一白色 SVG X、48×48 点击区域、右上角边距、悬停与焦点反馈。仅关闭控件换装，原关闭/返回处理保留。普通四章节没有新增 X。
+- CONTACT 同一信息 DOM 的 blur 连续经过 `20 → 4.5 → 12 → 0px`，先寻找焦点、再锁定；小对焦框收紧/放松，锁定后白色短闪，最后辅助标记消失。完整拍摄约 1.53 秒；重置/中途 Escape 保持连续，减少动态效果直接清晰且无闪光。
+- 未修改首页泡泡、轮盘源组件与参数、ABOUT 模块代码、作品数据或视频信息功能。入口 HTML 只更新共享资源版本参数。
+
+### 本轮实际验证
+
+Chromium，本地 HTTP；1920×1080、1440×900、1366×768、390×844、320×568。手机为触屏仿真，不是真机。
+
+- 真实鼠标点击 NEXT 中文文字、控件边缘，以及手机 tap、键盘 Space/Enter；确认 HOME→WORKS、WORKS→ABOUT、CONTACT→HOME，结束后完整吸附；中途测量两章相接边缘误差 <0.1px、轨道 opacity=1。
+- 右侧直接跳转 CONTACT、唯一横杠 DOM 持续存在、历史前进/后退、允许区域向上滚轮返回 HOME、轮盘滚轮不翻章。
+- 320/390 控件中心等于视口中心，左右边缘命中；CONTACT NEXT 不与拍摄控件或片尾文本相交。
+- ABOUT 五模块打开关闭、TOOLKIT 软件切换、PROFILE 内部滚动；详情关闭与 ABOUT 关闭的 48×48 位置一致，作品 03 的中央卡片真实点击进入详情，X 返回后仍选中作品 03。
+- 拍摄过程逐帧采样验证第二次失焦、锁定、闪光和最终状态；前后 `.contact-grid` 的几何完全一致。初始 OUT OF FOCUS，过程中 FOCUSING，最终 IN FOCUS；最终十字/小框 opacity=0。
+- 减少动态效果、三种尺寸的详情返回和五模块关闭，以及 JS 语法与 Git 差异检查通过。临时服务、自动化脚本、报告不提交。旧轮次测试记录如下，适用范围按该轮说明；未声称测试 Safari、Firefox 或真实手机。
+
+本轮截图：[CONTACT 桌面](docs/integration/previews/fixes-3/contact-desktop.png) · [手机失焦](docs/integration/previews/fixes-3/contact-standby-mobile.png) · [手机定格](docs/integration/previews/fixes-3/contact-focused-mobile.png) · [320px 短屏](docs/integration/previews/fixes-3/contact-short-mobile.png) · [ABOUT 关闭](docs/integration/previews/fixes-3/about-close-mobile.png) · [详情关闭](docs/integration/previews/fixes-3/project-close-mobile.png)。
+
+## 原有轨道导航方式
 
 四个入口路径保持不变：index.html → works.html → about.html → contact.html → index.html。它们现在共用一个常驻外层文档、一条真实纵向轨道和一份固定导航。原有内容文档位于 chapters/home.html、works.html、about.html、contact.html，在同源 iframe 内保持独立样式和脚本作用域。
 
@@ -42,7 +64,7 @@
 | ABOUT | PR #9 / about-overview-balance，c2930a9 |
 | CONTACT | PR #14 / contact-focus-state-fix，0693928 |
 
-上一轮整合提交为 7514c5c。本轮将其四个内容文档原样移入 chapters，仅补充 base 路径、章节标识和资源版本；内部 body 标记不变。bubbles.js、ABOUT/CONTACT 的 34 个原型文件、作品数据、视频详情脚本/样式、WORKS 视觉 CSS 和原轮盘组件源码保持原样。
+原轨道整合提交为 869299c（基于 7514c5c）。当时将其四个内容文档原样移入 chapters，仅补充 base 路径、章节标识和资源版本；内部 body 标记不变。bubbles.js、ABOUT 的原型文件、作品数据、视频详情脚本/样式、WORKS 视觉 CSS 和原轮盘组件源码保持原样。本轮只在共享整合层统一关闭控件，并调整 CONTACT 脚本中的光学时间曲线，未改 CONTACT 的布局、DOM、资料或样式。
 
 WORKS 源码仅在已有详情跳转处加入导航桥接，避免在子文档里打开详情；重新构建现有 bundle，未改变卡片尺寸、曲率、透视、滚轮、惯性或吸附参数。详情仍在原 project.html 中正常打开，返回 WORKS 后以稳定作品 ID 恢复位置。URL selected 与原有 sessionStorage 状态同步到外层，非首个作品、跨章节返回及刷新均验证保持。
 
