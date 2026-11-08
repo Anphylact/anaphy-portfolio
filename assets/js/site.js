@@ -69,6 +69,9 @@
       document.addEventListener('about:related-works',()=>{const feedback=document.getElementById('feedback');if(feedback)feedback.textContent='正在前往作品选集…';send('jump',{index:1});});
       if(chapter==='about'){
         closeControl(document.getElementById('close'),'关闭模块，返回关于概览 / Close module, back to About');
+        const about=document.getElementById('about');
+        const report=()=>send('about-state',{expanded:about.dataset.state!=='overview'});
+        new MutationObserver(report).observe(about,{attributes:true,attributeFilter:['data-state']});report();
         document.getElementById('related').textContent='↗ VIEW RELATED WORKS / 查看相关作品';
       }
       document.addEventListener('wheel',event=>{
@@ -127,13 +130,18 @@
       indicator.style.transform=`translateY(${y}px)`;
       if(instant)requestAnimationFrame(()=>indicator.style.removeProperty('transition'));
     }
+    function syncNext(){
+      const expanded=current===2&&!!slots[2].expanded;
+      root.toggleAttribute('data-about-expanded',expanded);
+      next.disabled=expanded;next.inert=expanded;next.setAttribute('aria-hidden',String(expanded));
+    }
     function chromeState(instant=false){
       root.dataset.sitePage=pages[current][0];root.dataset.siteReady=String(slots[current].ready);document.title=`${pages[current][2]} / ${pages[current][3]} · GAO MINGYUAN`;
       links.forEach((a,i)=>{for(const link of[a]){if(i===current)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}});
       const target=pages[(current+1)%4],last=current===3;next.dataset.next=target[0];
       next.querySelector('.site-next-label .site-en').textContent=last?'BACK TO HOME':'NEXT';
       next.querySelector('.site-next-label .site-zh').textContent=last?'返回首页':'下一页';
-      next.setAttribute('aria-label',last?'返回首页 / Back to home':`下一页：${target[3]} / Next: ${target[2]}`);placeIndicator(instant);
+      next.setAttribute('aria-label',last?'返回首页 / Back to home':`下一页：${target[3]} / Next: ${target[2]}`);placeIndicator(instant);syncNext();
     }
     function route(replace=false){
       if(detail.active())return;
@@ -208,7 +216,8 @@
       if(event.origin!==location.origin||event.data?.channel!=='portfolio-chapters')return;
       const index=slots.findIndex(s=>s.frame.contentWindow===event.source);if(index<0)return;
       const data=event.data,s=slots[index];if(data.token!==s.token)return;
-      if(data.type==='ready'){
+      if(data.type==='about-state'&&index===2){s.expanded=!!data.expanded;syncNext();}
+      else if(data.type==='ready'){
         clearTimeout(s.timeout);s.ready=true;if(index===1){const idle=window.requestIdleCallback||((fn)=>setTimeout(fn,100));idle(()=>detail.warm());}if(typeof data.id==='string')s.selected=data.id;s.resolve?.(true);send(s,'active',{active:index===current&&!moving&&!detail.active()&&!document.hidden});
         if(index===current){status.textContent='';root.dataset.siteReady='true';if(index===1)route(true);}
       }else if(data.type==='selection'&&typeof data.id==='string'&&data.id.length<=200){s.selected=data.id;if(current===1)route(true);}

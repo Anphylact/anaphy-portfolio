@@ -101,3 +101,9 @@ html[data-project-embedded] header { position: relative; z-index: 1002; }
 @media (hover: hover) and (pointer: fine) { #site-next:hover .site-next-icon { transform: translateY(3px); } }
 html[data-site-rewinding] #site-indicator { transition-duration: 1s; }
 @media (prefers-reduced-motion: reduce) { #site-next .site-next-icon { transition: none; } #site-next:hover .site-next-icon { transform: none; } html[data-site-rewinding] #site-indicator { transition: none; } }
+
+/* Module navigation belongs to ABOUT overview, not an expanded practice. */
+#site-next{transition:opacity .24s ease,visibility 0s;}
+html[data-about-expanded] #site-next{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .24s ease,visibility 0s .24s;}
+html[data-about-expanded] #site-next *{pointer-events:none;}
+@media(prefers-reduced-motion:reduce){#site-next,html[data-about-expanded] #site-next{transition:none;}}

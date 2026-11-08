@@ -4,7 +4,7 @@
 
 ## 预览
 
-https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=project-7
+https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=hierarchy-8
 
 使用当前 ChatGPT 账号访问；该独立预览不覆盖正式网站或旧原型。
 
@@ -40,3 +40,9 @@ WORKS 轮盘和 ABOUT 展开模块优先处理自己的滚轮；PROFILE 独立�
 气泡参考原始说明：https://tympanus.net/codrops/2026/10/06/yichen-xie-portfolio/
 
 原轮盘第三方许可继续保留在 assets/js/works-LICENSES.txt 与 prototypes/3d-carousel/。不自动合并 main。
+
+## 中英文视觉层级
+
+中文承担主要信息传达，英文用于导航、分类和辅助视觉；重要中文优先保证字号、对比与可读性。本轮仅落实到WORKS详情：中文职责为第一层级，作品名为第二层级，项目介绍使用16px正文；不改写项目内容、不补造英文职责或经历。其他已确认页面不进行全站重设计。
+
+ABOUT模块展开及关闭途中隐藏、禁用NEXT；返回五圆环概览后平滑恢复。其他章节的底部导航不变。

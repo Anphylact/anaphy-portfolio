@@ -1,0 +1,218 @@
+[
+  {
+    "width": 1440,
+    "fiveModules": true,
+    "details": [
+      {
+        "roleSize": 60,
+        "titleSize": 44.64,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。请在数据文件中填写真实作品名称、年份、类型、个人职责及简介。",
+        "expectedDescription": "这是占位作品。请在数据文件中填写真实作品名称、年份、类型、个人职责及简介。",
+        "overflow": false,
+        "roleTop": 331.59375,
+        "titleTop": 433.59375,
+        "id": "placeholder-01"
+      },
+      {
+        "roleSize": 60,
+        "titleSize": 44.64,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。此处将用于介绍作品内容与创作思路。",
+        "expectedDescription": "这是占位作品。此处将用于介绍作品内容与创作思路。",
+        "overflow": false,
+        "roleTop": 346.390625,
+        "titleTop": 448.390625,
+        "id": "placeholder-02"
+      },
+      {
+        "roleSize": 60,
+        "titleSize": 44.64,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。请以真实信息替换本段文字。",
+        "expectedDescription": "这是占位作品。请以真实信息替换本段文字。",
+        "overflow": false,
+        "roleTop": 346.390625,
+        "titleTop": 448.390625,
+        "id": "placeholder-03"
+      },
+      {
+        "roleSize": 60,
+        "titleSize": 44.64,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。封面和视频上传后将在页面中显示。",
+        "expectedDescription": "这是占位作品。封面和视频上传后将在页面中显示。",
+        "overflow": false,
+        "roleTop": 346.390625,
+        "titleTop": 448.390625,
+        "id": "placeholder-04"
+      },
+      {
+        "roleSize": 60,
+        "titleSize": 44.64,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。可以继续向数据数组中添加更多真实作品。",
+        "expectedDescription": "这是占位作品。可以继续向数据数组中添加更多真实作品。",
+        "overflow": false,
+        "roleTop": 346.390625,
+        "titleTop": 448.390625,
+        "id": "placeholder-05"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 390,
+    "fiveModules": true,
+    "details": [
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。请在数据文件中填写真实作品名称、年份、类型、个人职责及简介。",
+        "expectedDescription": "这是占位作品。请在数据文件中填写真实作品名称、年份、类型、个人职责及简介。",
+        "overflow": false,
+        "roleTop": 191,
+        "titleTop": 255.1875,
+        "id": "placeholder-01"
+      },
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。此处将用于介绍作品内容与创作思路。",
+        "expectedDescription": "这是占位作品。此处将用于介绍作品内容与创作思路。",
+        "overflow": false,
+        "roleTop": 183,
+        "titleTop": 247.1875,
+        "id": "placeholder-02"
+      },
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。请以真实信息替换本段文字。",
+        "expectedDescription": "这是占位作品。请以真实信息替换本段文字。",
+        "overflow": false,
+        "roleTop": 185,
+        "titleTop": 249.1875,
+        "id": "placeholder-03"
+      },
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。封面和视频上传后将在页面中显示。",
+        "expectedDescription": "这是占位作品。封面和视频上传后将在页面中显示。",
+        "overflow": false,
+        "roleTop": 185,
+        "titleTop": 249.1875,
+        "id": "placeholder-04"
+      },
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。可以继续向数据数组中添加更多真实作品。",
+        "expectedDescription": "这是占位作品。可以继续向数据数组中添加更多真实作品。",
+        "overflow": false,
+        "roleTop": 183,
+        "titleTop": 247.1875,
+        "id": "placeholder-05"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 320,
+    "fiveModules": true,
+    "details": [
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。请在数据文件中填写真实作品名称、年份、类型、个人职责及简介。",
+        "expectedDescription": "这是占位作品。请在数据文件中填写真实作品名称、年份、类型、个人职责及简介。",
+        "overflow": false,
+        "roleTop": 191,
+        "titleTop": 255.1875,
+        "id": "placeholder-01"
+      },
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。此处将用于介绍作品内容与创作思路。",
+        "expectedDescription": "这是占位作品。此处将用于介绍作品内容与创作思路。",
+        "overflow": false,
+        "roleTop": 191,
+        "titleTop": 255.1875,
+        "id": "placeholder-02"
+      },
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。请以真实信息替换本段文字。",
+        "expectedDescription": "这是占位作品。请以真实信息替换本段文字。",
+        "overflow": false,
+        "roleTop": 191,
+        "titleTop": 255.1875,
+        "id": "placeholder-03"
+      },
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。封面和视频上传后将在页面中显示。",
+        "expectedDescription": "这是占位作品。封面和视频上传后将在页面中显示。",
+        "overflow": false,
+        "roleTop": 191,
+        "titleTop": 255.1875,
+        "id": "placeholder-04"
+      },
+      {
+        "roleSize": 34,
+        "titleSize": 28,
+        "bodySize": 16,
+        "role": "职责待填写",
+        "expectedRole": "职责待填写",
+        "description": "这是占位作品。可以继续向数据数组中添加更多真实作品。",
+        "expectedDescription": "这是占位作品。可以继续向数据数组中添加更多真实作品。",
+        "overflow": false,
+        "roleTop": 191,
+        "titleTop": 255.1875,
+        "id": "placeholder-05"
+      }
+    ],
+    "errors": []
+  }
+]

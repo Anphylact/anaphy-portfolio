@@ -2,9 +2,19 @@
 
 本轮继续更新同一分支 integrate-approved-portfolio 和同一 PR #15，不创建重复 PR，不合并 main。
 
-预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=project-7
+预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=hierarchy-8
 
-## 本轮：详情内切换与展开性能（project-7）
+## 本轮：ABOUT导航状态与中文职责优先（hierarchy-8）
+
+- ABOUT桥接层仅观察原模块的data-state变化；opening即将NEXT禁用/inert并240ms淡出，展开和closing阶段保持隐藏；overview恢复后淡入。未改变ABOUT的SVG路径、姓名、时间轴、关闭逻辑或任何动画时钟。右侧导航保持可用，其他章节NEXT照常显示。减少动态效果时不播放淡入淡出。
+- WORKS详情将原role字段移至作品名前作为主视觉（桌面34–60px、600字重，手机34px）；中文职责标签14px、ROLE辅助10px。作品名上限64→46px，手机38→28px，约缩小26–28%；中文介绍16px、行高1.85、清晰白色，年份/类型14px。没有新增、修改或翻译项目经历，所有作品仍共用原数据和渲染器。
+- 没有新增循环或逐帧测量；NEXT仅状态变化时发送消息，采用CSS透明度过渡。原缓存详情、视频策略、轮盘和共享展开/收回逻辑未变。
+- Chromium实际操作1440×900、390×844、320×844：每个尺寸逐一打开/关闭全部5个ABOUT模块，验证NEXT隐藏/禁用且程序click不跳转，关闭恢复；从概览NEXT进入CONTACT正常。逐一浏览5部作品，核对职责/介绍与数据完全一致，字号职责>作品名、正文16px，无横向溢出；详情内上一部/下一部及X返回最后作品通过。三尺寸共享动画起终点误差<0.1px，关闭可点击。
+- 手机为触屏仿真，未声称真实硬件或新增性能基准。HOME泡泡、轮盘、ABOUT/CONTACT源动画及projects-data.js均未改；各入口仅更新公共资源缓存版本。
+
+[桌面职责层级](docs/integration/previews/hierarchy-8/detail-1440.png) · [手机职责层级](docs/integration/previews/hierarchy-8/detail-390.png) · [ABOUT展开无NEXT](docs/integration/previews/hierarchy-8/about-390.png) · [320px](docs/integration/previews/hierarchy-8/detail-320.png) · [验收记录](docs/integration/hierarchy-8-checks.json)。
+
+## 历史：详情内切换与展开性能（project-7）
 
 详情新增上一部/下一部与编号，360ms轻微横移/淡入，使用同一数据、详情文档与播放器；关闭返回最后浏览的作品。详情内换片使用replaceState，浏览器后退关闭、前进恢复该作品。
 
