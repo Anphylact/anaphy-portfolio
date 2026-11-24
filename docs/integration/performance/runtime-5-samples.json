@@ -1,0 +1,1240 @@
+{
+  "baseline_commit": "4964e7f195bcd9f021df29ef8f3221bed5782d4c",
+  "candidate": "runtime-5",
+  "method": "Local HTTP, Chromium CDP Performance + CPU Profiler + Timeline; application rAF counters and PerformanceObserver long tasks; same instrumentation before and after. No hardware FPS measurement.",
+  "device_scale_factor": 1,
+  "cpu_throttling": 1,
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "before": {
+    "label": "before",
+    "browser": "154.0.8037.57",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "phases": [
+      {
+        "name": "HOME idle",
+        "delta": {
+          "TaskDuration": 4.7512810000000005,
+          "ScriptDuration": 0.014219000000000037,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 4.782225999999355
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 29
+          },
+          "portfolio-home": {
+            "raf": 30,
+            "callbackMs": 11.3,
+            "longTasks": 31
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 29
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 29
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 27
+          }
+        },
+        "heap": 7936044,
+        "nodes": 1136,
+        "listeners": 454,
+        "cpuSamples": [
+          [
+            "(program)",
+            1860
+          ],
+          [
+            "bubbles.js",
+            1
+          ],
+          [
+            "uniform4fv",
+            1
+          ],
+          [
+            "(root)",
+            0
+          ],
+          [
+            "(native)",
+            0
+          ]
+        ]
+      },
+      {
+        "name": "WORKS idle",
+        "delta": {
+          "TaskDuration": 0.12606099999999998,
+          "ScriptDuration": 0.02846399999999999,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 3.0542789999999513
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 183,
+            "callbackMs": 26.5,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          }
+        },
+        "heap": 7824420,
+        "nodes": 1142,
+        "listeners": 454,
+        "cpuSamples": [
+          [
+            "(idle)",
+            2595
+          ],
+          [
+            "(program)",
+            41
+          ],
+          [
+            "requestAnimationFrame",
+            8
+          ],
+          [
+            "works.js",
+            6
+          ],
+          [
+            "setProperty",
+            5
+          ],
+          [
+            "(native)",
+            2
+          ],
+          [
+            "(garbage collector)",
+            1
+          ],
+          [
+            "set portfolio-contact",
+            1
+          ]
+        ]
+      },
+      {
+        "name": "ABOUT idle",
+        "delta": {
+          "TaskDuration": 0.03667400000000143,
+          "ScriptDuration": 0,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 3.062223000000813
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          }
+        },
+        "heap": 7982232,
+        "nodes": 1148,
+        "listeners": 454,
+        "cpuSamples": [
+          [
+            "(idle)",
+            2664
+          ],
+          [
+            "(root)",
+            0
+          ],
+          [
+            "(program)",
+            0
+          ]
+        ]
+      },
+      {
+        "name": "CONTACT idle",
+        "delta": {
+          "TaskDuration": 0.07319999999999993,
+          "ScriptDuration": 0,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 3.084693000000698
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          }
+        },
+        "heap": 8851924,
+        "nodes": 1160,
+        "listeners": 480,
+        "cpuSamples": [
+          [
+            "(idle)",
+            2677
+          ],
+          [
+            "(root)",
+            0
+          ],
+          [
+            "(program)",
+            0
+          ]
+        ]
+      },
+      {
+        "name": "CONTACT capture",
+        "delta": {
+          "TaskDuration": 0.5412970000000001,
+          "ScriptDuration": 0.02590300000000001,
+          "LayoutDuration": 0.03653999999999999,
+          "RecalcStyleDuration": 0.020305000000000004,
+          "LayoutCount": 94,
+          "RecalcStyleCount": 100,
+          "wallSeconds": 1.9122239999996964
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 93,
+            "callbackMs": 21.1,
+            "longTasks": 0
+          }
+        },
+        "heap": 9373248,
+        "nodes": 1457,
+        "listeners": 480,
+        "cpuSamples": [
+          [
+            "(idle)",
+            1174
+          ],
+          [
+            "(program)",
+            354
+          ],
+          [
+            "contact.js",
+            8
+          ],
+          [
+            "(native)",
+            2
+          ],
+          [
+            "evaluate",
+            2
+          ],
+          [
+            "requestAnimationFrame",
+            2
+          ],
+          [
+            "callMatchedElements",
+            1
+          ],
+          [
+            "previewNode",
+            1
+          ]
+        ]
+      },
+      {
+        "name": "five navigation cycles",
+        "delta": {
+          "TaskDuration": 9.412551999999998,
+          "ScriptDuration": 0.10019599999999995,
+          "LayoutDuration": 0.011546,
+          "RecalcStyleDuration": 0.030767000000000003,
+          "LayoutCount": 30,
+          "RecalcStyleCount": 276,
+          "wallSeconds": 11.673263000000588
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 54
+          },
+          "portfolio-home": {
+            "raf": 54,
+            "callbackMs": 23.3,
+            "longTasks": 54
+          },
+          "portfolio-works": {
+            "raf": 53,
+            "callbackMs": 7.9,
+            "longTasks": 54
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 54
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 54
+          }
+        },
+        "heap": 7469472,
+        "nodes": 1078,
+        "listeners": 461,
+        "cpuSamples": [
+          [
+            "(program)",
+            5529
+          ],
+          [
+            "(idle)",
+            1936
+          ],
+          [
+            "(garbage collector)",
+            22
+          ],
+          [
+            "getBoundingClientRect",
+            19
+          ],
+          [
+            "(native)",
+            16
+          ],
+          [
+            "site.js",
+            16
+          ],
+          [
+            "pushState",
+            13
+          ],
+          [
+            "bubbles.js",
+            8
+          ]
+        ]
+      },
+      {
+        "name": "CONTACT after cycles",
+        "delta": {
+          "TaskDuration": 0.036307000000000755,
+          "ScriptDuration": 0,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 3.0485869999974966
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          }
+        },
+        "heap": 7526296,
+        "nodes": 1078,
+        "listeners": 461,
+        "cpuSamples": [
+          [
+            "(idle)",
+            2672
+          ],
+          [
+            "(root)",
+            0
+          ],
+          [
+            "(program)",
+            0
+          ]
+        ]
+      }
+    ],
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "blurArea": {
+      "width": 1040,
+      "height": 268,
+      "filter": "blur(20px)"
+    },
+    "traceSummary": [
+      [
+        "FunctionCall",
+        {
+          "count": 1780,
+          "totalMs": 396.97599999999926,
+          "maxMs": 41.71
+        }
+      ],
+      [
+        "EvaluateScript",
+        {
+          "count": 17,
+          "totalMs": 386.806,
+          "maxMs": 193.343
+        }
+      ],
+      [
+        "Layerize",
+        {
+          "count": 708,
+          "totalMs": 335.6829999999996,
+          "maxMs": 7.53
+        }
+      ],
+      [
+        "Layout",
+        {
+          "count": 163,
+          "totalMs": 203.1849999999999,
+          "maxMs": 41.209
+        }
+      ],
+      [
+        "FireAnimationFrame",
+        {
+          "count": 695,
+          "totalMs": 202.43199999999993,
+          "maxMs": 4.218
+        }
+      ],
+      [
+        "Paint",
+        {
+          "count": 581,
+          "totalMs": 160.924,
+          "maxMs": 10.779
+        }
+      ],
+      [
+        "EventDispatch",
+        {
+          "count": 767,
+          "totalMs": 118.99900000000015,
+          "maxMs": 5.526
+        }
+      ],
+      [
+        "ParseHTML",
+        {
+          "count": 71,
+          "totalMs": 103.43499999999999,
+          "maxMs": 67.944
+        }
+      ],
+      [
+        "UpdateLayoutTree",
+        {
+          "count": 460,
+          "totalMs": 103.39600000000011,
+          "maxMs": 19.776
+        }
+      ],
+      [
+        "RunMicrotasks",
+        {
+          "count": 360,
+          "totalMs": 91.24800000000006,
+          "maxMs": 22.561
+        }
+      ],
+      [
+        "PrePaint",
+        {
+          "count": 1368,
+          "totalMs": 80.44000000000007,
+          "maxMs": 4.831
+        }
+      ],
+      [
+        "BackgroundJSStreamManager::RunScriptStreamingTask",
+        {
+          "count": 9,
+          "totalMs": 78.546,
+          "maxMs": 61.276
+        }
+      ],
+      [
+        "v8.parseOnBackground",
+        {
+          "count": 9,
+          "totalMs": 78.3,
+          "maxMs": 61.147
+        }
+      ],
+      [
+        "v8.parseOnBackgroundParsing",
+        {
+          "count": 13,
+          "totalMs": 65.424,
+          "maxMs": 59.757
+        }
+      ],
+      [
+        "V8.GC_MC_BACKGROUND_MARKING",
+        {
+          "count": 15,
+          "totalMs": 38.905,
+          "maxMs": 11.93
+        }
+      ],
+      [
+        "HandlePostMessage",
+        {
+          "count": 211,
+          "totalMs": 26.55899999999999,
+          "maxMs": 5.637
+        }
+      ],
+      [
+        "MajorGC",
+        {
+          "count": 2,
+          "totalMs": 23.247,
+          "maxMs": 11.939
+        }
+      ],
+      [
+        "V8.GC_MARK_COMPACTOR",
+        {
+          "count": 2,
+          "totalMs": 23.133,
+          "maxMs": 11.866
+        }
+      ]
+    ]
+  },
+  "after": {
+    "label": "after-final",
+    "browser": "154.0.8037.57",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "phases": [
+      {
+        "name": "HOME idle",
+        "delta": {
+          "TaskDuration": 1.2507269999999997,
+          "ScriptDuration": 0.012678999999999996,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 3.070522999998502
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 37,
+            "callbackMs": 9.3,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          }
+        },
+        "heap": 4523024,
+        "nodes": 154,
+        "listeners": 63,
+        "cpuSamples": [
+          [
+            "(idle)",
+            1618
+          ],
+          [
+            "(program)",
+            908
+          ],
+          [
+            "bubbles.js",
+            4
+          ],
+          [
+            "requestAnimationFrame",
+            2
+          ],
+          [
+            "(root)",
+            0
+          ],
+          [
+            "(native)",
+            0
+          ],
+          [
+            "window.requestAnimationFrame",
+            0
+          ]
+        ]
+      },
+      {
+        "name": "WORKS idle",
+        "delta": {
+          "TaskDuration": 0.051139000000000046,
+          "ScriptDuration": 0,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 3.0725410000013653
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          }
+        },
+        "heap": 5182792,
+        "nodes": 600,
+        "listeners": 378,
+        "cpuSamples": [
+          [
+            "(idle)",
+            2662
+          ],
+          [
+            "(root)",
+            0
+          ],
+          [
+            "(program)",
+            0
+          ]
+        ]
+      },
+      {
+        "name": "ABOUT idle",
+        "delta": {
+          "TaskDuration": 0.039282999999999735,
+          "ScriptDuration": 0,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 3.0699079999976675
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          }
+        },
+        "heap": 6067244,
+        "nodes": 851,
+        "listeners": 429,
+        "cpuSamples": [
+          [
+            "(idle)",
+            2658
+          ],
+          [
+            "(program)",
+            1
+          ],
+          [
+            "(root)",
+            0
+          ]
+        ]
+      },
+      {
+        "name": "CONTACT idle",
+        "delta": {
+          "TaskDuration": 0.08096199999999998,
+          "ScriptDuration": 0,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 3.092564999999013
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          }
+        },
+        "heap": 8073124,
+        "nodes": 1077,
+        "listeners": 471,
+        "cpuSamples": [
+          [
+            "(idle)",
+            2655
+          ],
+          [
+            "(program)",
+            1
+          ],
+          [
+            "(root)",
+            0
+          ]
+        ]
+      },
+      {
+        "name": "CONTACT capture",
+        "delta": {
+          "TaskDuration": 0.21452200000000055,
+          "ScriptDuration": 0.027540999999999982,
+          "LayoutDuration": 0.008254000000000011,
+          "RecalcStyleDuration": 0.016350000000000003,
+          "LayoutCount": 72,
+          "RecalcStyleCount": 99,
+          "wallSeconds": 1.8967769999981101
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 93,
+            "callbackMs": 23.9,
+            "longTasks": 0
+          }
+        },
+        "heap": 8488008,
+        "nodes": 1098,
+        "listeners": 471,
+        "cpuSamples": [
+          [
+            "(idle)",
+            1461
+          ],
+          [
+            "(program)",
+            109
+          ],
+          [
+            "contact.js",
+            15
+          ],
+          [
+            "(native)",
+            2
+          ],
+          [
+            "previewNode",
+            2
+          ],
+          [
+            "requestAnimationFrame",
+            2
+          ],
+          [
+            "innerSerialize",
+            1
+          ],
+          [
+            "checkElementStates",
+            1
+          ]
+        ]
+      },
+      {
+        "name": "five navigation cycles",
+        "delta": {
+          "TaskDuration": 0.9934530000000006,
+          "ScriptDuration": 0.07960400000000001,
+          "LayoutDuration": 0.02556900000000001,
+          "RecalcStyleDuration": 0.03802199999999999,
+          "LayoutCount": 55,
+          "RecalcStyleCount": 272,
+          "wallSeconds": 3.7957360000000335
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 2
+          },
+          "portfolio-home": {
+            "raf": 11,
+            "callbackMs": 4.2,
+            "longTasks": 2
+          },
+          "portfolio-works": {
+            "raf": 5,
+            "callbackMs": 1.1,
+            "longTasks": 2
+          },
+          "portfolio-about": {
+            "raf": 5,
+            "callbackMs": 5.6,
+            "longTasks": 2
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 2
+          }
+        },
+        "heap": 6896460,
+        "nodes": 1064,
+        "listeners": 469,
+        "cpuSamples": [
+          [
+            "(idle)",
+            2402
+          ],
+          [
+            "(program)",
+            528
+          ],
+          [
+            "getBoundingClientRect",
+            31
+          ],
+          [
+            "site.js",
+            24
+          ],
+          [
+            "(native)",
+            15
+          ],
+          [
+            "(garbage collector)",
+            11
+          ],
+          [
+            "pushState",
+            8
+          ],
+          [
+            "elementsFromPoint",
+            5
+          ]
+        ]
+      },
+      {
+        "name": "CONTACT after cycles",
+        "delta": {
+          "TaskDuration": 0.0353880000000002,
+          "ScriptDuration": 0,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0,
+          "LayoutCount": 0,
+          "RecalcStyleCount": 0,
+          "wallSeconds": 3.0498419999967155
+        },
+        "frames": {
+          "host": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-home": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-works": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-about": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          },
+          "portfolio-contact": {
+            "raf": 0,
+            "callbackMs": 0,
+            "longTasks": 0
+          }
+        },
+        "heap": 6952036,
+        "nodes": 1064,
+        "listeners": 469,
+        "cpuSamples": [
+          [
+            "(idle)",
+            2473
+          ],
+          [
+            "(program)",
+            1
+          ],
+          [
+            "(root)",
+            0
+          ]
+        ]
+      }
+    ],
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "blurArea": {
+      "width": 1040,
+      "height": 268,
+      "filter": "blur(20px)"
+    },
+    "traceSummary": [
+      [
+        "EvaluateScript",
+        {
+          "count": 17,
+          "totalMs": 374.15599999999995,
+          "maxMs": 185.801
+        }
+      ],
+      [
+        "FunctionCall",
+        {
+          "count": 1159,
+          "totalMs": 344.50699999999813,
+          "maxMs": 42.483
+        }
+      ],
+      [
+        "Paint",
+        {
+          "count": 474,
+          "totalMs": 209.13999999999993,
+          "maxMs": 14.358
+        }
+      ],
+      [
+        "Layout",
+        {
+          "count": 174,
+          "totalMs": 208.796,
+          "maxMs": 72.039
+        }
+      ],
+      [
+        "EventDispatch",
+        {
+          "count": 766,
+          "totalMs": 149.7500000000005,
+          "maxMs": 9.386
+        }
+      ],
+      [
+        "UpdateLayoutTree",
+        {
+          "count": 515,
+          "totalMs": 129.20300000000012,
+          "maxMs": 29.811
+        }
+      ],
+      [
+        "FireAnimationFrame",
+        {
+          "count": 282,
+          "totalMs": 107.46600000000002,
+          "maxMs": 16.801
+        }
+      ],
+      [
+        "ParseHTML",
+        {
+          "count": 73,
+          "totalMs": 106.81900000000003,
+          "maxMs": 77.295
+        }
+      ],
+      [
+        "PrePaint",
+        {
+          "count": 1374,
+          "totalMs": 73.51099999999998,
+          "maxMs": 4.09
+        }
+      ],
+      [
+        "RunMicrotasks",
+        {
+          "count": 358,
+          "totalMs": 69.66300000000003,
+          "maxMs": 25.248
+        }
+      ],
+      [
+        "V8.GC_MC_BACKGROUND_MARKING",
+        {
+          "count": 21,
+          "totalMs": 55.814,
+          "maxMs": 10.67
+        }
+      ],
+      [
+        "Layerize",
+        {
+          "count": 346,
+          "totalMs": 51.00300000000012,
+          "maxMs": 3.144
+        }
+      ],
+      [
+        "BackgroundJSStreamManager::RunScriptStreamingTask",
+        {
+          "count": 9,
+          "totalMs": 44.031000000000006,
+          "maxMs": 33.637
+        }
+      ],
+      [
+        "v8.parseOnBackground",
+        {
+          "count": 9,
+          "totalMs": 43.735,
+          "maxMs": 33.604
+        }
+      ],
+      [
+        "v8.parseOnBackgroundParsing",
+        {
+          "count": 13,
+          "totalMs": 40.57,
+          "maxMs": 33.595
+        }
+      ],
+      [
+        "HandlePostMessage",
+        {
+          "count": 212,
+          "totalMs": 31.36599999999998,
+          "maxMs": 6.17
+        }
+      ],
+      [
+        "MajorGC",
+        {
+          "count": 3,
+          "totalMs": 20.582,
+          "maxMs": 7.892
+        }
+      ],
+      [
+        "V8.GC_MARK_COMPACTOR",
+        {
+          "count": 3,
+          "totalMs": 20.108,
+          "maxMs": 7.692
+        }
+      ]
+    ]
+  }
+}

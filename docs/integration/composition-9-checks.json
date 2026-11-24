@@ -1,0 +1,1262 @@
+[
+  {
+    "width": 1920,
+    "height": 1080,
+    "checks": [
+      {
+        "video": {
+          "x": 746.390625,
+          "y": 305.90625,
+          "width": 832,
+          "height": 468
+        },
+        "safeLeft": 1792,
+        "metrics": {
+          "role": 36,
+          "title": 28,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 258.390625,
+            "y": 305.90625,
+            "width": 1320,
+            "height": 499.1875,
+            "top": 305.90625,
+            "right": 1578.390625,
+            "bottom": 805.09375,
+            "left": 258.390625
+          },
+          "content": {
+            "x": 258.390625,
+            "y": 124,
+            "width": 1320,
+            "height": 956,
+            "top": 124,
+            "right": 1578.390625,
+            "bottom": 1080,
+            "left": 258.390625
+          },
+          "nav": {
+            "x": 258.390625,
+            "y": 833.09375,
+            "width": 1320,
+            "height": 49,
+            "top": 833.09375,
+            "right": 1578.390625,
+            "bottom": 882.09375,
+            "left": 258.390625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 746.390625,
+          "y": 305.90625,
+          "width": 832,
+          "height": 468
+        },
+        "safeLeft": 1792,
+        "metrics": {
+          "role": 36,
+          "title": 28,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 258.390625,
+            "y": 305.90625,
+            "width": 1320,
+            "height": 499.1875,
+            "top": 305.90625,
+            "right": 1578.390625,
+            "bottom": 805.09375,
+            "left": 258.390625
+          },
+          "content": {
+            "x": 258.390625,
+            "y": 124,
+            "width": 1320,
+            "height": 956,
+            "top": 124,
+            "right": 1578.390625,
+            "bottom": 1080,
+            "left": 258.390625
+          },
+          "nav": {
+            "x": 258.390625,
+            "y": 833.09375,
+            "width": 1320,
+            "height": 49,
+            "top": 833.09375,
+            "right": 1578.390625,
+            "bottom": 882.09375,
+            "left": 258.390625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 746.390625,
+          "y": 305.90625,
+          "width": 832,
+          "height": 468
+        },
+        "safeLeft": 1792,
+        "metrics": {
+          "role": 36,
+          "title": 28,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 258.390625,
+            "y": 305.90625,
+            "width": 1320,
+            "height": 499.1875,
+            "top": 305.90625,
+            "right": 1578.390625,
+            "bottom": 805.09375,
+            "left": 258.390625
+          },
+          "content": {
+            "x": 258.390625,
+            "y": 124,
+            "width": 1320,
+            "height": 956,
+            "top": 124,
+            "right": 1578.390625,
+            "bottom": 1080,
+            "left": 258.390625
+          },
+          "nav": {
+            "x": 258.390625,
+            "y": 833.09375,
+            "width": 1320,
+            "height": 49,
+            "top": 833.09375,
+            "right": 1578.390625,
+            "bottom": 882.09375,
+            "left": 258.390625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 746.390625,
+          "y": 305.90625,
+          "width": 832,
+          "height": 468
+        },
+        "safeLeft": 1792,
+        "metrics": {
+          "role": 36,
+          "title": 28,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 258.390625,
+            "y": 305.90625,
+            "width": 1320,
+            "height": 499.1875,
+            "top": 305.90625,
+            "right": 1578.390625,
+            "bottom": 805.09375,
+            "left": 258.390625
+          },
+          "content": {
+            "x": 258.390625,
+            "y": 124,
+            "width": 1320,
+            "height": 956,
+            "top": 124,
+            "right": 1578.390625,
+            "bottom": 1080,
+            "left": 258.390625
+          },
+          "nav": {
+            "x": 258.390625,
+            "y": 833.09375,
+            "width": 1320,
+            "height": 49,
+            "top": 833.09375,
+            "right": 1578.390625,
+            "bottom": 882.09375,
+            "left": 258.390625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 746.390625,
+          "y": 305.90625,
+          "width": 832,
+          "height": 468
+        },
+        "safeLeft": 1792,
+        "metrics": {
+          "role": 36,
+          "title": 28,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 258.390625,
+            "y": 305.90625,
+            "width": 1320,
+            "height": 499.1875,
+            "top": 305.90625,
+            "right": 1578.390625,
+            "bottom": 805.09375,
+            "left": 258.390625
+          },
+          "content": {
+            "x": 258.390625,
+            "y": 124,
+            "width": 1320,
+            "height": 956,
+            "top": 124,
+            "right": 1578.390625,
+            "bottom": 1080,
+            "left": 258.390625
+          },
+          "nav": {
+            "x": 258.390625,
+            "y": 833.09375,
+            "width": 1320,
+            "height": 49,
+            "top": 833.09375,
+            "right": 1578.390625,
+            "bottom": 882.09375,
+            "left": 258.390625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "checks": [
+      {
+        "video": {
+          "x": 511.421875,
+          "y": 233.75,
+          "width": 768.578125,
+          "height": 432.3125
+        },
+        "safeLeft": 1312,
+        "metrics": {
+          "role": 31.68,
+          "title": 25.92,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 57.59375,
+            "y": 233.75,
+            "width": 1222.40625,
+            "height": 463.5,
+            "top": 233.75,
+            "right": 1280,
+            "bottom": 697.25,
+            "left": 57.59375
+          },
+          "content": {
+            "x": 57.59375,
+            "y": 124,
+            "width": 1222.40625,
+            "height": 776,
+            "top": 124,
+            "right": 1280,
+            "bottom": 900,
+            "left": 57.59375
+          },
+          "nav": {
+            "x": 57.59375,
+            "y": 725.25,
+            "width": 1222.40625,
+            "height": 49,
+            "top": 725.25,
+            "right": 1280,
+            "bottom": 774.25,
+            "left": 57.59375
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 511.421875,
+          "y": 233.75,
+          "width": 768.578125,
+          "height": 432.3125
+        },
+        "safeLeft": 1312,
+        "metrics": {
+          "role": 31.68,
+          "title": 25.92,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 57.59375,
+            "y": 233.75,
+            "width": 1222.40625,
+            "height": 463.5,
+            "top": 233.75,
+            "right": 1280,
+            "bottom": 697.25,
+            "left": 57.59375
+          },
+          "content": {
+            "x": 57.59375,
+            "y": 124,
+            "width": 1222.40625,
+            "height": 776,
+            "top": 124,
+            "right": 1280,
+            "bottom": 900,
+            "left": 57.59375
+          },
+          "nav": {
+            "x": 57.59375,
+            "y": 725.25,
+            "width": 1222.40625,
+            "height": 49,
+            "top": 725.25,
+            "right": 1280,
+            "bottom": 774.25,
+            "left": 57.59375
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 511.421875,
+          "y": 233.75,
+          "width": 768.578125,
+          "height": 432.3125
+        },
+        "safeLeft": 1312,
+        "metrics": {
+          "role": 31.68,
+          "title": 25.92,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 57.59375,
+            "y": 233.75,
+            "width": 1222.40625,
+            "height": 463.5,
+            "top": 233.75,
+            "right": 1280,
+            "bottom": 697.25,
+            "left": 57.59375
+          },
+          "content": {
+            "x": 57.59375,
+            "y": 124,
+            "width": 1222.40625,
+            "height": 776,
+            "top": 124,
+            "right": 1280,
+            "bottom": 900,
+            "left": 57.59375
+          },
+          "nav": {
+            "x": 57.59375,
+            "y": 725.25,
+            "width": 1222.40625,
+            "height": 49,
+            "top": 725.25,
+            "right": 1280,
+            "bottom": 774.25,
+            "left": 57.59375
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 511.421875,
+          "y": 233.75,
+          "width": 768.578125,
+          "height": 432.3125
+        },
+        "safeLeft": 1312,
+        "metrics": {
+          "role": 31.68,
+          "title": 25.92,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 57.59375,
+            "y": 233.75,
+            "width": 1222.40625,
+            "height": 463.5,
+            "top": 233.75,
+            "right": 1280,
+            "bottom": 697.25,
+            "left": 57.59375
+          },
+          "content": {
+            "x": 57.59375,
+            "y": 124,
+            "width": 1222.40625,
+            "height": 776,
+            "top": 124,
+            "right": 1280,
+            "bottom": 900,
+            "left": 57.59375
+          },
+          "nav": {
+            "x": 57.59375,
+            "y": 725.25,
+            "width": 1222.40625,
+            "height": 49,
+            "top": 725.25,
+            "right": 1280,
+            "bottom": 774.25,
+            "left": 57.59375
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 511.421875,
+          "y": 233.75,
+          "width": 768.578125,
+          "height": 432.3125
+        },
+        "safeLeft": 1312,
+        "metrics": {
+          "role": 31.68,
+          "title": 25.92,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 57.59375,
+            "y": 233.75,
+            "width": 1222.40625,
+            "height": 463.5,
+            "top": 233.75,
+            "right": 1280,
+            "bottom": 697.25,
+            "left": 57.59375
+          },
+          "content": {
+            "x": 57.59375,
+            "y": 124,
+            "width": 1222.40625,
+            "height": 776,
+            "top": 124,
+            "right": 1280,
+            "bottom": 900,
+            "left": 57.59375
+          },
+          "nav": {
+            "x": 57.59375,
+            "y": 725.25,
+            "width": 1222.40625,
+            "height": 49,
+            "top": 725.25,
+            "right": 1280,
+            "bottom": 774.25,
+            "left": 57.59375
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 1366,
+    "height": 768,
+    "checks": [
+      {
+        "video": {
+          "x": 483.59375,
+          "y": 180.734375,
+          "width": 722.40625,
+          "height": 406.34375
+        },
+        "safeLeft": 1238,
+        "metrics": {
+          "role": 30.052,
+          "title": 24.588,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 54.625,
+            "y": 180.734375,
+            "width": 1151.375,
+            "height": 437.53125,
+            "top": 180.734375,
+            "right": 1206,
+            "bottom": 618.265625,
+            "left": 54.625
+          },
+          "content": {
+            "x": 54.625,
+            "y": 124,
+            "width": 1151.375,
+            "height": 644,
+            "top": 124,
+            "right": 1206,
+            "bottom": 768,
+            "left": 54.625
+          },
+          "nav": {
+            "x": 54.625,
+            "y": 646.265625,
+            "width": 1151.375,
+            "height": 49,
+            "top": 646.265625,
+            "right": 1206,
+            "bottom": 695.265625,
+            "left": 54.625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 483.59375,
+          "y": 180.734375,
+          "width": 722.40625,
+          "height": 406.34375
+        },
+        "safeLeft": 1238,
+        "metrics": {
+          "role": 30.052,
+          "title": 24.588,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 54.625,
+            "y": 180.734375,
+            "width": 1151.375,
+            "height": 437.53125,
+            "top": 180.734375,
+            "right": 1206,
+            "bottom": 618.265625,
+            "left": 54.625
+          },
+          "content": {
+            "x": 54.625,
+            "y": 124,
+            "width": 1151.375,
+            "height": 644,
+            "top": 124,
+            "right": 1206,
+            "bottom": 768,
+            "left": 54.625
+          },
+          "nav": {
+            "x": 54.625,
+            "y": 646.265625,
+            "width": 1151.375,
+            "height": 49,
+            "top": 646.265625,
+            "right": 1206,
+            "bottom": 695.265625,
+            "left": 54.625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 483.59375,
+          "y": 180.734375,
+          "width": 722.40625,
+          "height": 406.34375
+        },
+        "safeLeft": 1238,
+        "metrics": {
+          "role": 30.052,
+          "title": 24.588,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 54.625,
+            "y": 180.734375,
+            "width": 1151.375,
+            "height": 437.53125,
+            "top": 180.734375,
+            "right": 1206,
+            "bottom": 618.265625,
+            "left": 54.625
+          },
+          "content": {
+            "x": 54.625,
+            "y": 124,
+            "width": 1151.375,
+            "height": 644,
+            "top": 124,
+            "right": 1206,
+            "bottom": 768,
+            "left": 54.625
+          },
+          "nav": {
+            "x": 54.625,
+            "y": 646.265625,
+            "width": 1151.375,
+            "height": 49,
+            "top": 646.265625,
+            "right": 1206,
+            "bottom": 695.265625,
+            "left": 54.625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 483.59375,
+          "y": 180.734375,
+          "width": 722.40625,
+          "height": 406.34375
+        },
+        "safeLeft": 1238,
+        "metrics": {
+          "role": 30.052,
+          "title": 24.588,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 54.625,
+            "y": 180.734375,
+            "width": 1151.375,
+            "height": 437.53125,
+            "top": 180.734375,
+            "right": 1206,
+            "bottom": 618.265625,
+            "left": 54.625
+          },
+          "content": {
+            "x": 54.625,
+            "y": 124,
+            "width": 1151.375,
+            "height": 644,
+            "top": 124,
+            "right": 1206,
+            "bottom": 768,
+            "left": 54.625
+          },
+          "nav": {
+            "x": 54.625,
+            "y": 646.265625,
+            "width": 1151.375,
+            "height": 49,
+            "top": 646.265625,
+            "right": 1206,
+            "bottom": 695.265625,
+            "left": 54.625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 483.59375,
+          "y": 180.734375,
+          "width": 722.40625,
+          "height": 406.34375
+        },
+        "safeLeft": 1238,
+        "metrics": {
+          "role": 30.052,
+          "title": 24.588,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 54.625,
+            "y": 180.734375,
+            "width": 1151.375,
+            "height": 437.53125,
+            "top": 180.734375,
+            "right": 1206,
+            "bottom": 618.265625,
+            "left": 54.625
+          },
+          "content": {
+            "x": 54.625,
+            "y": 124,
+            "width": 1151.375,
+            "height": 644,
+            "top": 124,
+            "right": 1206,
+            "bottom": 768,
+            "left": 54.625
+          },
+          "nav": {
+            "x": 54.625,
+            "y": 646.265625,
+            "width": 1151.375,
+            "height": 49,
+            "top": 646.265625,
+            "right": 1206,
+            "bottom": 695.265625,
+            "left": 54.625
+          },
+          "gap": "40px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "checks": [
+      {
+        "video": {
+          "x": 24,
+          "y": 499.171875,
+          "width": 326,
+          "height": 183.375
+        },
+        "safeLeft": 365,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": 148,
+            "width": 326,
+            "height": 565.734375,
+            "top": 148,
+            "right": 350,
+            "bottom": 713.734375,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": 124,
+            "width": 326,
+            "height": 720,
+            "top": 124,
+            "right": 350,
+            "bottom": 844,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 741.734375,
+            "width": 326,
+            "height": 48,
+            "top": 741.734375,
+            "right": 350,
+            "bottom": 789.734375,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 24,
+          "y": 499.171875,
+          "width": 326,
+          "height": 183.375
+        },
+        "safeLeft": 365,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": 148,
+            "width": 326,
+            "height": 565.734375,
+            "top": 148,
+            "right": 350,
+            "bottom": 713.734375,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": 124,
+            "width": 326,
+            "height": 720,
+            "top": 124,
+            "right": 350,
+            "bottom": 844,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 741.734375,
+            "width": 326,
+            "height": 48,
+            "top": 741.734375,
+            "right": 350,
+            "bottom": 789.734375,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 24,
+          "y": 469.578125,
+          "width": 326,
+          "height": 183.375
+        },
+        "safeLeft": 365,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": 148,
+            "width": 326,
+            "height": 536.140625,
+            "top": 148,
+            "right": 350,
+            "bottom": 684.140625,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": 124,
+            "width": 326,
+            "height": 720,
+            "top": 124,
+            "right": 350,
+            "bottom": 844,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 712.140625,
+            "width": 326,
+            "height": 48,
+            "top": 712.140625,
+            "right": 350,
+            "bottom": 760.140625,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 24,
+          "y": 499.171875,
+          "width": 326,
+          "height": 183.375
+        },
+        "safeLeft": 365,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": 148,
+            "width": 326,
+            "height": 565.734375,
+            "top": 148,
+            "right": 350,
+            "bottom": 713.734375,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": 124,
+            "width": 326,
+            "height": 720,
+            "top": 124,
+            "right": 350,
+            "bottom": 844,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 741.734375,
+            "width": 326,
+            "height": 48,
+            "top": 741.734375,
+            "right": 350,
+            "bottom": 789.734375,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 24,
+          "y": 499.171875,
+          "width": 326,
+          "height": 183.375
+        },
+        "safeLeft": 365,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": 148,
+            "width": 326,
+            "height": 565.734375,
+            "top": 148,
+            "right": 350,
+            "bottom": 713.734375,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": 124,
+            "width": 326,
+            "height": 720,
+            "top": 124,
+            "right": 350,
+            "bottom": 844,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 741.734375,
+            "width": 326,
+            "height": 48,
+            "top": 741.734375,
+            "right": 350,
+            "bottom": 789.734375,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      }
+    ],
+    "errors": []
+  },
+  {
+    "width": 320,
+    "height": 568,
+    "checks": [
+      {
+        "video": {
+          "x": 24,
+          "y": 423.765625,
+          "width": 256,
+          "height": 144
+        },
+        "safeLeft": 295,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": 43,
+            "width": 256,
+            "height": 555.953125,
+            "top": 43,
+            "right": 280,
+            "bottom": 598.953125,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": 19,
+            "width": 256,
+            "height": 683.953125,
+            "top": 19,
+            "right": 280,
+            "bottom": 702.953125,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 626.953125,
+            "width": 256,
+            "height": 48,
+            "top": 626.953125,
+            "right": 280,
+            "bottom": 674.953125,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 24,
+          "y": 289.171875,
+          "width": 256,
+          "height": 144
+        },
+        "safeLeft": 295,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": -62,
+            "width": 256,
+            "height": 526.359375,
+            "top": -62,
+            "right": 280,
+            "bottom": 464.359375,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": -86,
+            "width": 256,
+            "height": 654.359375,
+            "top": -86,
+            "right": 280,
+            "bottom": 568.359375,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 492.359375,
+            "width": 256,
+            "height": 48,
+            "top": 492.359375,
+            "right": 280,
+            "bottom": 540.359375,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 24,
+          "y": 289.171875,
+          "width": 256,
+          "height": 144
+        },
+        "safeLeft": 295,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": -62,
+            "width": 256,
+            "height": 526.359375,
+            "top": -62,
+            "right": 280,
+            "bottom": 464.359375,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": -86,
+            "width": 256,
+            "height": 654.359375,
+            "top": -86,
+            "right": 280,
+            "bottom": 568.359375,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 492.359375,
+            "width": 256,
+            "height": 48,
+            "top": 492.359375,
+            "right": 280,
+            "bottom": 540.359375,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 24,
+          "y": 289.171875,
+          "width": 256,
+          "height": 144
+        },
+        "safeLeft": 295,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": -62,
+            "width": 256,
+            "height": 526.359375,
+            "top": -62,
+            "right": 280,
+            "bottom": 464.359375,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": -86,
+            "width": 256,
+            "height": 654.359375,
+            "top": -86,
+            "right": 280,
+            "bottom": 568.359375,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 492.359375,
+            "width": 256,
+            "height": 48,
+            "top": 492.359375,
+            "right": 280,
+            "bottom": 540.359375,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      },
+      {
+        "video": {
+          "x": 24,
+          "y": 289.171875,
+          "width": 256,
+          "height": 144
+        },
+        "safeLeft": 295,
+        "metrics": {
+          "role": 28,
+          "title": 24,
+          "body": 16,
+          "meta": 15,
+          "english": 11,
+          "main": {
+            "x": 24,
+            "y": -62,
+            "width": 256,
+            "height": 526.359375,
+            "top": -62,
+            "right": 280,
+            "bottom": 464.359375,
+            "left": 24
+          },
+          "content": {
+            "x": 24,
+            "y": -86,
+            "width": 256,
+            "height": 654.359375,
+            "top": -86,
+            "right": 280,
+            "bottom": 568.359375,
+            "left": 24
+          },
+          "nav": {
+            "x": 24,
+            "y": 492.359375,
+            "width": 256,
+            "height": 48,
+            "top": 492.359375,
+            "right": 280,
+            "bottom": 540.359375,
+            "left": 24
+          },
+          "gap": "28px",
+          "overflow": false,
+          "brand": "GAO MINGYUAN"
+        }
+      }
+    ],
+    "errors": []
+  }
+]

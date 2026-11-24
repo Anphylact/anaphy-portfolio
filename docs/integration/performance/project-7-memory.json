@@ -1,0 +1,72 @@
+[
+  {
+    "cycle": 1,
+    "heap": 6901892,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  },
+  {
+    "cycle": 2,
+    "heap": 7096580,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  },
+  {
+    "cycle": 3,
+    "heap": 7152492,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  },
+  {
+    "cycle": 4,
+    "heap": 7174040,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  },
+  {
+    "cycle": 5,
+    "heap": 7192988,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  },
+  {
+    "cycle": 6,
+    "heap": 7202140,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  },
+  {
+    "cycle": 7,
+    "heap": 7203776,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  },
+  {
+    "cycle": 8,
+    "heap": 7248220,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  },
+  {
+    "cycle": 9,
+    "heap": 7291352,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  },
+  {
+    "cycle": 10,
+    "heap": 7305420,
+    "documents": 11,
+    "nodes": 784,
+    "jsEventListeners": 405
+  }
+]

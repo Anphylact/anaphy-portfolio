@@ -1,0 +1,86 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "about": {
+      "time": 79.34007048606873,
+      "y": -1800,
+      "homeTop": "0%"
+    },
+    "works": {
+      "time": 204.25710082054138,
+      "y": -900.001,
+      "homeTop": "0%"
+    },
+    "before": {
+      "portfolio-home": 0,
+      "portfolio-works": 3,
+      "portfolio-about": 0,
+      "portfolio-contact": 0
+    },
+    "after": {
+      "portfolio-home": 0,
+      "portfolio-works": 3,
+      "portfolio-about": 0,
+      "portfolio-contact": 0
+    },
+    "duration": 1000,
+    "noDuplicateHome": true
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "about": {
+      "time": 79.34001088142395,
+      "y": -1688.01,
+      "homeTop": "0%"
+    },
+    "works": {
+      "time": 204.25710082054138,
+      "y": -844.001,
+      "homeTop": "0%"
+    },
+    "before": {
+      "portfolio-home": 0,
+      "portfolio-works": 2,
+      "portfolio-about": 0,
+      "portfolio-contact": 0
+    },
+    "after": {
+      "portfolio-home": 0,
+      "portfolio-works": 2,
+      "portfolio-about": 0,
+      "portfolio-contact": 0
+    },
+    "duration": 1000,
+    "noDuplicateHome": true
+  },
+  {
+    "width": 320,
+    "height": 568,
+    "about": {
+      "time": 79.33977246284485,
+      "y": -1136,
+      "homeTop": "0%"
+    },
+    "works": {
+      "time": 204.2570412158966,
+      "y": -568.001,
+      "homeTop": "0%"
+    },
+    "before": {
+      "portfolio-home": 0,
+      "portfolio-works": 2,
+      "portfolio-about": 0,
+      "portfolio-contact": 0
+    },
+    "after": {
+      "portfolio-home": 0,
+      "portfolio-works": 2,
+      "portfolio-about": 0,
+      "portfolio-contact": 0
+    },
+    "duration": 1000,
+    "noDuplicateHome": true
+  }
+]

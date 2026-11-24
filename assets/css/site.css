@@ -1,0 +1,109 @@
+/* Shared navigation only. Approved page layouts and animation styles stay isolated. */
+html { background: #002FA7; color-scheme: dark; }
+#site-chrome { position: fixed; inset: 0; z-index: 1000; pointer-events: none; color: white; font-family: Arial, 'Microsoft YaHei', sans-serif; }
+#site-chrome a, #site-next { color: white; text-decoration: none; cursor: pointer; pointer-events: auto; }
+#site-chrome *, #site-brand { box-sizing: border-box; }
+#site-brand { color: inherit; pointer-events: none; }
+#site-brand.site-brand-new { position: fixed; top: 28px; left: 4.5vw; z-index: 1001; font: 11px Arial, sans-serif; letter-spacing: 1.8px; }
+#site-next:focus-visible, #site-chrome a:focus-visible { outline: 1px dashed white; outline-offset: 4px; }
+#site-rail { position: absolute; top: 50%; right: 16px; transform: translateY(-50%); display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
+#site-rail .site-chapter { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 4px; width: 112px; min-height: 48px; padding: 4px 32px 4px 0; opacity: .72; }
+#site-rail .site-en { font-size: 10px; letter-spacing: 1.2px; line-height: 1.2; }
+#site-rail .site-zh { font-size: 12px; line-height: 1.4; }
+#site-rail .site-chapter[aria-current='page'] { opacity: 1; }
+#site-indicator { position: absolute; right: 0; top: 0; width: 24px; height: 2px; background: white; opacity: 1; pointer-events: none; transition: transform .42s cubic-bezier(.22,.61,.36,1); }
+#site-next { position: fixed; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); z-index: 1002; display: flex; align-items: center; justify-content: center; gap: 9px; min-width: 112px; min-height: 48px; padding: 4px 12px; border: 0; background: transparent; font: inherit; text-align: left; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+#site-next, #site-next * { pointer-events: auto; }
+#site-next[aria-disabled="true"] { cursor: progress; }
+#site-next .site-next-label { display: flex; flex-direction: column; gap: 3px; }
+#site-next .site-en { font-size: 10px; letter-spacing: 1px; }
+#site-next .site-zh { font-size: 12px; line-height: 1.4; }
+html[data-site-page='contact'] #site-next { bottom: calc(82px + env(safe-area-inset-bottom, 0px)); }
+@media (max-width: 650px) {
+  /* A narrow vertical rail preserves the original mobile artboards at full size. */
+  #site-rail { right: 1px; gap: 5px; }
+  #site-rail .site-chapter { display: block; writing-mode: vertical-rl; text-orientation: mixed; width: 16px; height: 84px; min-height: 84px; line-height: 16px; white-space: nowrap; padding: 0; }
+  #site-rail .site-en { display: inline; font-size: 9px; letter-spacing: .8px; }
+  #site-rail .site-en::after { content: ' / '; }
+  #site-indicator { width: 14px; }
+  #site-rail .site-zh { display: inline; font-size: 12px; line-height: 1.2; }
+  #site-next, html[data-site-page='contact'] #site-next { bottom: calc(54px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); gap: 7px; }
+  html[data-site-page='home'] #site-next { bottom: calc(95px + env(safe-area-inset-bottom, 0px)); }
+  #site-next .site-en { font-size: 9px; }
+  #site-brand.site-brand-new { top: 24px; left: 24px; }
+}
+@media (prefers-reduced-motion: reduce) { #site-indicator { transition: none; } }
+/* Preserve the approved passive brand typography. */
+.ui header > #site-brand { font-size: 22px; letter-spacing: -.7px; font-weight: 500; }
+.signature > #site-brand { font-size: 11px; letter-spacing: 1.8px; }
+@media (max-width: 650px) {
+  .ui header > #site-brand { font-size: 20px; }
+  .signature > #site-brand { font-size: 10px; letter-spacing: 1px; }
+}
+#site-brand { position: relative; }
+@media (max-width: 650px) {
+  #site-rail .site-zh { font-size: 12px; }
+  #site-rail .site-chapter::before { content: ''; position: absolute; inset: 0 -8px; }
+}
+@media (max-width: 380px) {
+  /* Only the passive signature compacts; HOME's title/canvas keep their approved size. */
+  .ui header > #site-brand { font-size: 11px; letter-spacing: .2px; white-space: nowrap; flex-shrink: 0; }
+  .ui #site-brand small { font-size: 7px; letter-spacing: .4px; }
+  .ui header > nav { flex-shrink: 0; white-space: nowrap; gap: 12px; }
+  .ui header > nav button { white-space: nowrap; }
+}
+
+/* One real vertical track; the fixed chrome is its sibling, never a moving child. */
+html.site-host, html.site-host body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #002FA7; color: white; font-family: Arial, 'Microsoft YaHei', sans-serif; }
+#site-viewport { position: fixed; inset: 0; height: 100svh; overflow: hidden; background: #002FA7; }
+#site-track { position: absolute; inset: 0; transform: translate3d(0,0,0); will-change: auto; }
+.site-slot { position: absolute; left: 0; width: 100%; height: 100%; overflow: hidden; background: #002FA7; }
+.site-slot iframe { display: block; width: 100%; height: 100%; border: 0; background: #002FA7; }
+html[data-site-moving] #site-track { pointer-events: none; will-change: transform; }
+#site-status { position: fixed; bottom: 12px; left: 12px; z-index: 1200; padding: 8px; background: #002FA7; color: white; font-size: 12px; }
+#site-status:empty { display: none; }
+/* Retain contrast when HOME's white bubbles pass behind the fixed navigation. */
+#site-rail .site-chapter { text-shadow: 0 0 4px #002FA7, 0 0 2px #002FA7; }
+#site-indicator { box-shadow: 0 0 0 2px #002FA7; }
+
+/* Same viewport-aligned close target for details and expanded ABOUT modules. */
+.site-close, #close.site-close { position: fixed; top: calc(64px + env(safe-area-inset-top, 0px)); right: max(24px, 4.5vw, env(safe-area-inset-right, 0px)); left: auto; bottom: auto; width: 48px; height: 48px; display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: white; cursor: pointer; z-index: 1002; text-decoration: none; touch-action: manipulation; }
+.site-close[hidden] { display: none !important; }
+.site-close svg { display: block; width: 20px; height: 20px; pointer-events: none; }
+.site-close:hover { background: #ffffff14; }
+.site-close:focus-visible { outline: 1px dashed white; outline-offset: 3px; }
+body.site-project header > span { margin-left: auto; }
+@media (max-width: 650px) { .site-close, #close.site-close { right: max(24px, env(safe-area-inset-right, 0px)); } }
+/* Keep centered navigation clear of CONTACT's credit and capture controls. */
+@media (max-width: 650px) {
+  html[data-site-page='contact'] #site-next { bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (max-width: 650px) and (max-height: 800px) {
+  /* Short viewports get a dedicated navigation strip; the original document scrolls inside its frame. */
+  .site-slot[data-chapter='contact'] iframe { height: calc(100% - 76px - env(safe-area-inset-bottom, 0px)); }
+  html[data-site-page='contact'] #site-next { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+}
+/* A retained project document and one moving 3D cover; chapter artboards are untouched. */
+#site-project-layer { position: fixed; inset: 0; z-index: 800; background: transparent; }
+#site-project-layer[hidden] { display: none; }
+#site-project-layer iframe { display: block; width: 100%; height: 100%; border: 0; background: transparent; }
+html[data-project-embedded], html[data-project-embedded] body { background: transparent; }
+html[data-project-embedded] header, html[data-project-embedded] .information, html[data-project-embedded] .video-frame, html[data-project-embedded] .video-note, html[data-project-embedded] .project-navigation { opacity: 0; }
+html[data-project-visible] header, html[data-project-visible] .information, html[data-project-visible] .video-frame, html[data-project-visible] .video-note, html[data-project-visible] .project-navigation { opacity: 1; }
+html[data-site-project] #site-next { visibility: hidden; }
+#site-project-cover { contain: layout style; }
+#site-project-cover .circular-carousel__stage { opacity: 1; transition: none; }
+/* Keep the fixed X above animated information when the short detail document scrolls. */
+html[data-project-embedded] header { position: relative; z-index: 1002; }
+
+/* Small double chevrons inside the unchanged, generous chapter-navigation hit area. */
+#site-next .site-next-icon { width: 24px; height: 28px; flex: none; color: white; transition: transform .18s ease; }
+@media (hover: hover) and (pointer: fine) { #site-next:hover .site-next-icon { transform: translateY(3px); } }
+html[data-site-rewinding] #site-indicator { transition-duration: 1s; }
+@media (prefers-reduced-motion: reduce) { #site-next .site-next-icon { transition: none; } #site-next:hover .site-next-icon { transform: none; } html[data-site-rewinding] #site-indicator { transition: none; } }
+
+/* Module navigation belongs to ABOUT overview, not an expanded practice. */
+#site-next{transition:opacity .24s ease,visibility 0s;}
+html[data-about-expanded] #site-next{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .24s ease,visibility 0s .24s;}
+html[data-about-expanded] #site-next *{pointer-events:none;}
+@media(prefers-reduced-motion:reduce){#site-next,html[data-about-expanded] #site-next{transition:none;}}
