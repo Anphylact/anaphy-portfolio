@@ -40,11 +40,11 @@
     for (const key of ['title','year','type','role','description']) document.getElementById(key).textContent = project[key] || (key === 'year' ? '年份待填写' : '待填写');
     if (project.cover) { poster.src = project.cover; poster.hidden = false; video.poster = project.cover; }
     placeholder.querySelector('span').textContent = project.video ? 'VIDEO / 作品影像' : 'VIDEO / COMING SOON';
-    placeholder.querySelector('p').textContent = project.video ? '点击播放作品' : '视频待上传';
+    placeholder.querySelector('p').textContent = project.video ? '点击播放作品' : '视频待接入';
     placeholder.querySelector('small').textContent = project.video ? 'PLAY VIDEO / 播放视频' : '作品影像将在这里呈现';
     placeholder.hidden = !!project.cover;
     play.hidden = !project.video;
-    note.textContent = project.video ? '点击播放后加载视频 / Video loads when you press play' : '此作品尚未添加视频';
+    note.textContent = project.video ? '点击播放后加载视频 / Video loads when you press play' : '此作品的视频尚未接入';
   }
   async function show(id,{animate=false,direction=1}={}) {
     const turn=++generation; cancel(); video.pause(); busy=true; nav.setAttribute('aria-busy','true');

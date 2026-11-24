@@ -5,9 +5,8 @@ import CircularCarousel from '../../prototypes/3d-carousel/src/vendor/CircularCa
 const projects = Array.isArray(window.PORTFOLIO_PROJECTS) ? window.PORTFOLIO_PROJECTS : [];
 const pad = n => String(n).padStart(2, '0');
 function savedIndex() {
-  let stored = '';
-  try { stored = sessionStorage.getItem('anaphy-selected') || ''; } catch {}
-  const id = new URLSearchParams(location.search).get('selected') || stored;
+  // Plain WORKS visits start at FUSION; explicit return/deep links retain their selection.
+  const id = new URLSearchParams(location.search).get('selected');
   return Math.max(0, projects.findIndex(project => project.id === id));
 }
 const initialIndex = savedIndex();

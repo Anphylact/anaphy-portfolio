@@ -1,0 +1,64 @@
+[
+  {
+    "width": 1440,
+    "samples": [
+      {
+        "src": "assets/videos/hunan-tourism-screen.mp4",
+        "width": 1920,
+        "height": 1080,
+        "duration": 15.04,
+        "muted": false,
+        "volume": 1,
+        "audioBytes": 32883,
+        "preload": "none"
+      },
+      {
+        "src": "assets/videos/biosafety-excerpt.mp4",
+        "width": 3840,
+        "height": 2160,
+        "duration": 22.36,
+        "muted": false,
+        "volume": 1,
+        "audioBytes": 32327,
+        "preload": "none"
+      }
+    ],
+    "requests": [
+      "http://127.0.0.1:8010/assets/videos/hunan-tourism-screen.mp4",
+      "http://127.0.0.1:8010/assets/videos/biosafety-excerpt.mp4"
+    ],
+    "noListPreload": true,
+    "defaultFusionDespiteStoredSelection": true
+  },
+  {
+    "width": 390,
+    "samples": [
+      {
+        "src": "assets/videos/hunan-tourism-screen.mp4",
+        "width": 1920,
+        "height": 1080,
+        "duration": 15.04,
+        "muted": false,
+        "volume": 1,
+        "audioBytes": 32883,
+        "preload": "none"
+      },
+      {
+        "src": "assets/videos/biosafety-excerpt.mp4",
+        "width": 3840,
+        "height": 2160,
+        "duration": 22.36,
+        "muted": false,
+        "volume": 1,
+        "audioBytes": 32327,
+        "preload": "none"
+      }
+    ],
+    "requests": [
+      "http://127.0.0.1:8010/assets/videos/hunan-tourism-screen.mp4",
+      "http://127.0.0.1:8010/assets/videos/biosafety-excerpt.mp4"
+    ],
+    "noListPreload": true,
+    "defaultFusionDespiteStoredSelection": true
+  }
+]

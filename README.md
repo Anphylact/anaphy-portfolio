@@ -4,7 +4,7 @@
 
 ## 预览
 
-https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=composition-9
+https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=media-10
 
 使用当前 ChatGPT 账号访问；该独立预览不覆盖正式网站或旧原型。
 
@@ -48,3 +48,9 @@ WORKS 轮盘和 ABOUT 展开模块优先处理自己的滚轮；PROFILE 独立�
 ABOUT模块展开及关闭途中隐藏、禁用NEXT；返回五圆环概览后平滑恢复。其他章节的底部导航不变。
 
 详情双栏在最大1320px容器内以35/65和40px间距排布；桌面右侧预留160px、手机40px以避开固定导航完整热区。作品切换控件跟随内容容器，长文可正常滚动。
+
+## 本轮真实视频接入状态
+
+五部顺序为FUSION、湖南旅发大会、双子星、重视生物安全、黄湖雁鸭。普通WORKS入口默认FUSION，详情/返回仍保留选中状态。当前仅湖南旅发大会和重视生物安全的附件能读取并已原样接入；其余三附件超过工具32MiB读取上限，等待原文件可下载链接。不会以其他片段替代用户选好的双子星倒计时。
+
+视频点击播放才加载，保留原声、无自动播放。两份原文件校验与实际测试见INTEGRATION-GUIDE.md。

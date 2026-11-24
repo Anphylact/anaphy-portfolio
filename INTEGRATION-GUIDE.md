@@ -2,9 +2,30 @@
 
 本轮继续更新同一分支 integrate-approved-portfolio 和同一 PR #15，不创建重复 PR，不合并 main。
 
-预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=composition-9
+预览：https://anaphy-portfolio-integrated-preview.alightowlet66.chatgpt.site/?v=media-10
 
-## 本轮：详情紧凑构图与导航安全区（composition-9）
+## 本轮：真实作品排序与附件接入（media-10，部分完成）
+
+**当前仅第2、第4部可播放。** 第1 FUSION、第3双子星、第5黄湖雁鸭的原附件超过当前download_file工具32MiB读取上限，已请求原文件下载链接；不将未读取的文件标记为已接入，不生成虚假视频URL，也不另找/剪辑/压缩替代片段。
+
+统一顺序（轮盘与详情同一projects-data.js）：
+1. FUSION 选品会开场视频 ← FUSION PARK(FUSION选品会开幕视频).mp4（待可下载原文件链接）
+2. 湖南省旅发大会地铁大屏 ← 第二届湖南旅发大会宣传视频.m4v（已接入）
+3. 《双子星出走计划》 ← 双子星出走计划_片段.mp4（用户选好的倒计时片段，待链接，不另行剪选）
+4. 《重视生物安全》 ← 重视生物安全_片段.mp4（已接入）
+5. 《黄湖雁鸭》 ← 黄湖雁鸭_片段.mp4（待链接）
+
+普通WORKS入口无selected参数时从FUSION开始，忽略上次会话保存；明确的selected深链、详情关闭/历史返回仍恢复对应作品。保留稳定ID，防止已有链接失效。年份、职责、类型和简介维持明确待填写状态，不推测经历。封面仍为既有中性占位，本轮未选取或生成封面。
+
+两份已接入文件是逐字节复制，无转码、重剪、静音或重混：
+- assets/videos/hunan-tourism-screen.mp4：原.m4v实际为MP4容器，1920×1080，15.04秒，H.264/AAC，20,214,630B。仅站内扩展名使用.mp4确保媒体类型，文件字节不变。SHA-256 c37bc33aeeb244b50cd898580473e01cf0b78aed2c8ff081ef22117107b19bba。
+- assets/videos/biosafety-excerpt.mp4：3840×2160，22.36秒，H.264/AAC，25,726,921B。SHA-256 bf4def718fa1cf2252dad5bc16fbc59b467711d9c024191c315910b1ef4fa039。
+
+Chromium1440×900和390×844：有旧第5部会话记录时新WORKS仍选FUSION；五个标题顺序准确；轮盘及进入详情前/后均0视频请求，主动播放才请求对应视频；两视频真实播放，尺寸/时长正确，muted=false、volume=1，AAC音频解码字节数>0。未以此声称人工听音验收；原音轨字节完整性由文件SHA一致支持。切换至第3部释放src且显示待接入，不展示假播放入口；第4部播放后X返回轮盘04，隐藏播放器无src。手机为触屏仿真，不是实机测试。
+
+[验收JSON](docs/integration/media-10-checks.json) · [湖南桌面实播](docs/integration/previews/media-10/placeholder-02-1440.png) · [生物安全手机实播](docs/integration/previews/media-10/placeholder-04-390.png)。
+
+## 历史：详情紧凑构图与导航安全区（composition-9）
 
 - 详情使用同一个最大1320px内容容器，主内容35/65双栏、间距40px。上一部/下一部位于同一容器下方28px正常文档流中，不再固定漂浮于视口底部；长文可正常滚动，不覆盖内容。
 - 桌面正文左边距32–80px，右侧160px专用安全区，连同容器居中余量避开右侧导航完整112px点击区与16px右间距。手机右侧40px，避开16px竖向栏及其向左8px扩展热区；不改变导航层级、样式、位置或指示条。900px以下改上下布局。
